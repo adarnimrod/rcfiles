@@ -113,6 +113,7 @@ alias ansible-vagrant='ansible-playbook Ansible/vagrant.yml -s -i \
 .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory \
 --private-key=$HOME/.vagrant.d/insecure_private_key -u vagrant -e "state=\
 dev"'
+alias ansible-local='ansible localhost -c local -i localhost,'
 alias backup='cat Documents/Backup\ list.yml | \
 Documents/yaml2duplicity_include_list.py | duplicity --exclude $HOME \
 --include-filelist-stdin $HOME file:///media/nimrod/backup'
