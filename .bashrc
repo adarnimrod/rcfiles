@@ -1,7 +1,3 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -65,15 +61,6 @@ xterm*|rxvt*)
     ;;
 esac
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-#if [ -f ~/.bash_aliases ]; then
-#    . ~/.bash_aliases
-#fi
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     eval "`dircolors -b`"
@@ -85,11 +72,6 @@ if [ -x /usr/bin/dircolors ]; then
     #alias fgrep='fgrep --color=auto'
     #alias egrep='egrep --color=auto'
 fi
-
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -103,6 +85,9 @@ then
     . /usr/local/bin/virtualenvwrapper.sh
 fi
 
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
 alias gcc='gcc --std=c99 -Wall'
 alias dpkglog='cat /var/log/dpkg.log | grep -v status | grep -v trigproc | grep -v configure'
 alias deborphan='deborphan -a --no-show-section'
@@ -118,15 +103,19 @@ alias backup='cat Documents/Backup\ list.yml | \
 Documents/yaml2duplicity_include_list.py | duplicity --exclude $HOME \
 --include-filelist-stdin $HOME file:///media/nimrod/backup'
 alias gen_ssh_config='cat $HOME/.ssh/config.d/* > $HOME/.ssh/config'
-export HOMEBREW_CASK_OPTS="--appdir=/Applications" #put this in our .zshrc | .bash_profile
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
-fi
 new_cgit_repo ()
 {
     ssh cgit "git init --bare /srv/git/$1"
     git clone ssh://cgit/srv/git/$1
 }
 # Because OSX is the opposite of useful
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+if [ "$(uname)" == "Darwin" ]
+then
+    if [ -f $(brew --prefix)/etc/bash_completion ]; then
+        . $(brew --prefix)/etc/bash_completion
+    fi
+    export HOMEBREW_CASK_OPTS="--appdir=/Applications" #put this in our .zshrc | .bash_profile
+    export LC_ALL=en_US.UTF-8
+    export LANG=en_US.UTF-8
+    export PATH="/usr/local/sbin:$PATH"
+fi
