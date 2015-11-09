@@ -3,3 +3,5 @@
 	email = nimrod@shore.co.il
 [push]
 	default = simple
+[alias]
+	push = push --follow-tags
