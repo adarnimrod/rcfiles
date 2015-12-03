@@ -99,23 +99,14 @@ alias ansible-vagrant='ansible-playbook Ansible/vagrant.yml -s -i \
 --private-key=$HOME/.vagrant.d/insecure_private_key -u vagrant -e "state=\
 dev"'
 alias ansible-local='ansible localhost -c local -i localhost,'
+alias ansible-local-playbook='ansible-playbook -i localhost,'
 alias backup='cat Documents/Backup\ list.yml | \
 Documents/yaml2duplicity_include_list.py | duplicity --exclude $HOME \
 --include-filelist-stdin $HOME file:///media/nimrod/backup'
 alias gen_ssh_config='cat $HOME/.ssh/config.d/* > $HOME/.ssh/config'
+alias ssl-ca='$HOME/Documents/Shore/ssl-ca/ssl-ca'
 new_cgit_repo ()
 {
     ssh cgit "git init --bare /srv/git/$1"
     git clone ssh://cgit/srv/git/$1
 }
-# Because OSX is the opposite of useful
-if [ "$(uname)" == "Darwin" ]
-then
-    if [ -f $(brew --prefix)/etc/bash_completion ]; then
-        . $(brew --prefix)/etc/bash_completion
-    fi
-    export HOMEBREW_CASK_OPTS="--appdir=/Applications" #put this in our .zshrc | .bash_profile
-    export LC_ALL=en_US.UTF-8
-    export LANG=en_US.UTF-8
-    export PATH="/usr/local/sbin:$PATH"
-fi
