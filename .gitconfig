@@ -7,3 +7,4 @@
     clone-recursive = clone --recursive
     push-tags = push --follow-tags
     pull-submodules = submodule foreach git pull
+    diff-cached = diff --cached
