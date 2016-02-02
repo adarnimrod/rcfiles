@@ -8,3 +8,9 @@
     push-tags = push --follow-tags
     pull-submodules = submodule foreach git pull
     diff-cached = diff --cached
+[transfer]
+    fsckobjects = true
+[fetch]
+    fsckobjects = true
+[receive]
+    fsckObjects = true
