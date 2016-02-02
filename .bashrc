@@ -2,6 +2,7 @@
 [ -z "$PS1" ] && return
 
 export HISTCONTROL=ignoreboth
+export LANG=en_US.UTF8
 shopt -s histappend
 shopt -s checkwinsize
 
@@ -29,7 +30,9 @@ then
     . /usr/local/bin/virtualenvwrapper.sh
 fi
 
-alias ll='ls -l'
+export REPREPRO_BASE_DIR=$HOME/Documents/Shore/debian-repository
+export EDITOR=vim
+alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
 alias gcc='gcc --std=c99 -Wall'
@@ -38,9 +41,9 @@ alias deborphan='deborphan -a --no-show-section'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
-export REPREPRO_BASE_DIR=$HOME/Documents/Shore/debian-repository
-export EDITOR=vim
+alias removed="dpkg --get-selections | awk '/\tdeinstall/ {print $1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
-alias ansible-local-playbook='ansible-playbook -i localhost,'
+alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
 alias gen-ssh-config='cat $HOME/.ssh/config.d/* > $HOME/.ssh/config'
 alias ssl-ca='$HOME/Documents/Shore/ssl-ca/ssl-ca'
+alias ssh-ca='$HOME/Documents/Shore/ssh-ca/ssh-ca'
