@@ -14,3 +14,9 @@
     fsckobjects = true
 [receive]
     fsckObjects = true
+[merge]
+	tool = kompare
+[diff]
+	tool = kompare
+[difftool]
+	prompt = false
