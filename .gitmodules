@@ -4,3 +4,6 @@
 [submodule "Documents/Shore/ssh-ca"]
 	path = Documents/Shore/ssh-ca
 	url = https://www.shore.co.il/cgit/ssh-ca/
+[submodule "Documents/Shore/bundle_certs"]
+	path = Documents/Shore/bundle_certs
+	url = https://www.shore.co.il/cgit/bundle_certs/

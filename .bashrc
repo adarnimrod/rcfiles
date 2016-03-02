@@ -56,3 +56,5 @@ alias ggo='sudo GOPATH=/usr/share/go go'
 gen-csr () {
     openssl req -new -newkey rsa:4096 -nodes -out $1.csr -keyout $1.key
 }
+
+. Documents/Shore/bundle_certs/bundle_certs
