@@ -1,0 +1,6 @@
+[submodule "Documents/Shore/ssl-ca"]
+	path = Documents/Shore/ssl-ca
+	url = https://www.shore.co.il/cgit/ssl-ca/
+[submodule "Documents/Shore/ssh-ca"]
+	path = Documents/Shore/ssh-ca
+	url = https://www.shore.co.il/cgit/ssh-ca/
