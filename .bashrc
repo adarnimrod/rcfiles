@@ -1,8 +1,11 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export HISTCONTROL=ignoreboth
 export LANG=en_US.UTF8
+export HISTCONTROL=ignoreboth:erasedups
+export HISTSIZE=100000
+export HISTFILESIZE=100000
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 shopt -s histappend
 shopt -s checkwinsize
 
