@@ -5,7 +5,7 @@
 	default = simple
 [alias]
     clone-recursive = clone --recursive
-    push-tags = push --follow-tags
+    push-tags = push --tags
     pull-submodules = submodule update --remote
     diff-cached = diff --cached
 [transfer]
