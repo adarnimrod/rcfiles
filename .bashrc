@@ -56,6 +56,7 @@ alias concat="perl -pe 's/\n/\\\n/g'"
 alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ggo='sudo GOPATH=/usr/share/go go'
 alias flake3='python3 -m flake8'
+alias tag-version='git tag -f v"$(cat VERSION)"'
 
 gen-csr () {
     openssl req -new -newkey rsa:4096 -nodes -out $1.csr -keyout $1.key
