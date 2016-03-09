@@ -1,6 +1,7 @@
 [user]
 	name = Adar Nimrod
 	email = nimrod@shore.co.il
+	signingKey = 9AAA2526
 [push]
 	default = simple
 [alias]
