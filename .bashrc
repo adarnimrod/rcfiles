@@ -37,6 +37,7 @@ export REPREPRO_BASE_DIR=$HOME/Documents/Shore/debian-repository
 export EDITOR=vim
 export GOPATH=$HOME/Documents/Golang
 export PATH=$PATH:$GOPATH/bin:/usr/lib/go/bin/
+export PYTHONSTARTUP=~/.pythonstartup
 alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
