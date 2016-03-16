@@ -10,3 +10,7 @@
 	path = Documents/Shore/bundle_certs
 	url = https://www.shore.co.il/cgit/bundle_certs/
 	branch = master
+[submodule "Documents/Shore/debian-repository"]
+	path = Documents/Shore/debian-repository
+    url = cgit:/srv/git/debian-repository
+    branch = master
