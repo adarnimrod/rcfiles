@@ -58,6 +58,10 @@ alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ggo='sudo GOPATH=/usr/share/go go'
 alias flake3='python3 -m flake8'
 alias tag-version='git tag -f v"$(cat VERSION)"'
+alias docker-clean='docker rm $(docker ps --quiet --filter=status=exited); docker rmi $(docker images --quiet --filter=dangling=true)'
+ssh-keyscan-add () {
+    (ssh-keyscan $@; cat $HOME/.ssh/known_hosts) | sort -u >> $HOME/.ssh/known_hosts
+}
 
 gen-csr () {
     openssl req -new -newkey rsa:4096 -nodes -out $1.csr -keyout $1.key
