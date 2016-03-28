@@ -59,6 +59,7 @@ alias ggo='sudo GOPATH=/usr/share/go go'
 alias flake3='python3 -m flake8'
 alias tag-version='git tag -f v"$(cat VERSION)"'
 alias docker-clean='docker rm $(docker ps --quiet --filter=status=exited); docker rmi $(docker images --quiet --filter=dangling=true)'
+alias ecr-login='eval $(aws ecr get-login)'
 ssh-keyscan-add () {
     (ssh-keyscan $@; cat $HOME/.ssh/known_hosts) | sort -u >> $HOME/.ssh/known_hosts
 }
