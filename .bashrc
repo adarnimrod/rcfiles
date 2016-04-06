@@ -57,7 +57,6 @@ alias concat="perl -pe 's/\n/\\\n/g'"
 alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ggo='sudo GOPATH=/usr/share/go go'
 alias tag-version='git tag -f v"$(cat VERSION)"'
-alias docker-clean='docker rm $(docker ps --quiet --filter=status=exited); docker rmi $(docker images --quiet --filter=dangling=true)'
 alias ecr-login='eval $(aws ecr get-login)'
 ssh-keyscan-add () {
     (ssh-keyscan $@; cat $HOME/.ssh/known_hosts) | sort -u >> $HOME/.ssh/known_hosts
@@ -65,6 +64,19 @@ ssh-keyscan-add () {
 
 gen-csr () {
     openssl req -new -newkey rsa:4096 -nodes -out $1.csr -keyout $1.key
+}
+
+docker () {
+    local docker_exec="$(which docker)"
+    case "$1" in
+        clean)
+            $docker_exec rm $(docker ps --quiet --filter=status=exited)
+            $docker_exec rmi $(docker images --quiet --filter=dangling=true)
+            ;;
+        *)
+            $docker_exec $@
+            ;;
+    esac
 }
 
 . $HOME/Documents/Shore/bundle_certs/bundle_certs
