@@ -38,7 +38,7 @@ export EDITOR=vim
 export GOPATH=$HOME/Documents/Golang
 export PATH=$PATH:$GOPATH/bin:/usr/lib/go/bin/
 export PYTHONSTARTUP=~/.pythonstartup
-alias ll='ls -lh'
+alias ll='ls -lha'
 alias la='ls -A'
 alias l='ls -CF'
 alias gcc='gcc --std=c99 -Wall'
@@ -71,6 +71,7 @@ docker () {
     case "$1" in
         clean)
             $docker_exec rm $(docker ps --quiet --filter=status=exited)
+            $docker_exec rm $(docker ps --quiet --filter=status=created)
             $docker_exec rmi $(docker images --quiet --filter=dangling=true)
             ;;
         *)
