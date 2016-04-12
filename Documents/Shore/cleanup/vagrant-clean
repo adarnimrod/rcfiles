@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+
+from sh import vagrant
+from parse import parse
+
+boxes = {}
+for line in vagrant.box("list"):
+    box = parse("{name:^} ({provider}, {version}", line)
+    if box.name not in boxes:
+        boxes[box.name] = {box.provider: [box.version]}
+    elif box.provider not in boxes[box.name]:
+        boxes[box.name][box.provider] = [box.version]
+    else:
+        boxes[box.name][box.provider].append(box.version)
+
+for box in boxes.keys():
+    for provider in boxes[box].keys():
+        for version in boxes[box][provider][:-1]:  # Save the latest version.
+            vagrant.box('remove', '--provider', provider, '--box-version',
+                        version)
