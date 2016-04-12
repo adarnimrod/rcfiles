@@ -66,18 +66,4 @@ gen-csr () {
     openssl req -new -newkey rsa:4096 -nodes -out $1.csr -keyout $1.key
 }
 
-docker () {
-    local docker_exec="$(which docker)"
-    case "$1" in
-        clean)
-            $docker_exec rm $(docker ps --quiet --filter=status=exited)
-            $docker_exec rm $(docker ps --quiet --filter=status=created)
-            $docker_exec rmi $(docker images --quiet --filter=dangling=true)
-            ;;
-        *)
-            $docker_exec $@
-            ;;
-    esac
-}
-
 . $HOME/Documents/Shore/bundle_certs/bundle_certs

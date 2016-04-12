@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+
+from sh import docker
+from parse import parse
+
+for line in docker.images():
+    image = parse("{REPOSITORY:^} {TAG:^} {ID:^} {CREATED:^} {SIZE:^}",
+                  line).named
+    if image.TAG == "latest":
+        docker.pull(image.REPOSITORY)
