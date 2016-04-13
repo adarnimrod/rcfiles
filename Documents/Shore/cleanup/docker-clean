@@ -1,4 +1,4 @@
-#!/bin/sh -e
-docker rm $(docker ps --quiet --filter=status=exited)
-docker rm $(docker ps --quiet --filter=status=created)
-docker rmi $(docker images --quiet --filter=dangling=true)
+#!/bin/sh
+docker rm $(docker ps --quiet --filter=status=exited) || true
+docker rm $(docker ps --quiet --filter=status=created) || true
+docker rmi $(docker images --quiet --filter=dangling=true) || true
