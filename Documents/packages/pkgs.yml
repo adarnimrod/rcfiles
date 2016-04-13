@@ -1,0 +1,169 @@
+---
+- hosts: all
+  become: false
+  vars:
+      apt:
+          - ansible
+          - acpi
+          - apache2-utils
+          - awscli
+          - bluedevil
+          - bluetooth
+          - bluez-firmware
+          - busybox
+          - capistrano
+          - cargo
+          - clojure1.6
+          - cryptsetup
+          - dnsmasq
+          - docker.io
+          - dos2unix
+          - easy-rsa
+          - fabric
+          - firmware-intel-sound
+          - firmware-iwlwifi
+          - firmware-linux
+          - flake8
+          - fonts-oxygen
+          - gdisk
+          - git-annex
+          - git-buildpackage
+          - golang
+          - grub-efi-amd64
+          - gstreamer1.0-libav
+          - gstreamer1.0-vaapi
+          - gstreamer1.0-x
+          - hyphen-en-us
+          - intel-microcode
+          - iputils-arping
+          - iputils-ping
+          - kde-config-sddm
+          - kde-config-touchpad
+          - kdeconnect
+          - kdegraphics-mobipocket
+          - kdegraphics-strigi-analyzer
+          - kdegraphics-thumbnailers
+          - kdesudo
+          - kde-telepathy
+          - keepassx
+          - kio-extras
+          - kompare
+          - kontact
+          - kpcli
+          - kscreen
+          - kwin-x11
+          - linux-headers-amd64
+          - linux-image-amd64
+          - luarocks
+          - lxqt
+          - muon-discover
+          - muon-notifier
+          - muon-updater
+          - mythes-en-us
+          - nodejs-legacy
+          - notification-daemon
+          - npm
+          - ntfs-3g
+          - obconf-qt
+          - pelican
+          - plasma-nm
+          - plasma-workspace-wayland
+          - powerdevil
+          - pry
+          - pulseaudio-module-x11
+          - python3-dev
+          - python3-pip
+          - python3-wheel
+          - python-dev
+          - python-pip
+          - python-virtualenv
+          - reprepro
+          - sbuild
+          - systemsettings
+          - task-english
+          - task-hebrew
+          - task-hebrew-desktop
+          - task-hebrew-kde-desktop
+          - task-kde-desktop
+          - task-laptop
+          - task-print-server
+          - task-ssh-server
+          - texlive-latex-base
+          - texlive-fonts-recommended
+          - time
+          - tmux
+          - tox
+          - twine
+          - va-driver-all
+          - vagrant
+          - vdpau-driver-all
+          - vim-nox
+          - virtualbox-qt
+          - vlc-plugin-notify
+          - xdg-user-dirs 
+      go:
+          - github.com/giantswarm/semver-bump
+          - github.com/nishanths/license
+          - github.com/giantswarm/semver-bump
+      gem:
+      npm:
+          - yo
+          - grunt-cli
+          - gulp
+      pip:
+          - ansible-lint
+          - molecule
+          - docker-compose
+          - pbr
+          - parse
+          - sh
+          - pre-commit
+          - proselint
+          - testinfra
+      pip3:
+  tasks:
+      - name: apt install
+        when: apt is iterable
+        become: yes
+        become_user: root
+        apt:
+            name: '{{ apt|join(" ") }}'
+            state: latest
+            purge: yes
+            force: yes
+            install_recommends: no
+            update_cache: yes
+            cache_valid_time: 3600
+      - name: go get
+        when: go is iterable
+        shell: go get -u {{ go|join(" ") }}
+      - name: gem install
+        when: gem is iterable
+        become: yes
+        become_user: root
+        gem:
+            name: '{{ gem|join(" ") }}'
+            state: latest
+      - name: npm install
+        when: npm is iterable
+        become: yes
+        become_user: root
+        npm:
+            global: yes
+            name: '{{ npm|join(" ") }}'
+            state: latest
+      - name: pip install
+        when: pip is iterable
+        become: yes
+        become_user: root
+        pip:
+            name: '{{ pip|join(" ") }}'
+            state: latest
+      - name: pip3 install
+        when: pip3 is iterable
+        become: yes
+        become_user: root
+        pip:
+            name: '{{ pip3|join(" ") }}'
+            state: latest
+            executable: pip3
