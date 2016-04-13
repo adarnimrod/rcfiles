@@ -1,5 +1,17 @@
-#!/bin/sh -e
-for box in $(vagrant box list | awk '{print $1}')
-do
-    vagrant box add $box --provider virtualbox
-done
+#!/usr/bin/env python
+
+from sh import vagrant
+from parse import parse
+
+
+boxes = {}
+for line in vagrant.box('list'):
+    box = parse('\x1b[0m{name:^} ({provider}, {version})\x1b[0m', line)
+    if box['name'] in boxes:
+        if not box['provider'] in boxes[box['name']]:
+            boxes[ box['name'] ].append(box['provider'])
+    else:
+        boxes[box['name']] = [ box['provider'] ]
+for box in boxes:
+    for provider in boxes[box]:
+        vagrant.box('update', '--provider', provider, '--box', box)
