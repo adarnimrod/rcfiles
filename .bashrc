@@ -47,7 +47,7 @@ alias deborphan='deborphan -a --no-show-section'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
-alias removed="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
+alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
 alias gen-ssh-config='cat $HOME/.ssh/config.d/* > $HOME/.ssh/config'
