@@ -1,4 +1,4 @@
-personal_ws-1.1 en 56 
+personal_ws-1.1 en 60 
 Makefile
 continuesly
 py
@@ -44,10 +44,13 @@ DSA
 nd
 Lenovo
 hostname
+pre
 ok
 cfg
+repo
 Lua
 submodule
+README
 rc
 Barak
 NIS
@@ -55,3 +58,4 @@ odt
 ansible
 POSIX
 Ideapad
+linters
