@@ -36,7 +36,7 @@ fi
 export REPREPRO_BASE_DIR=$HOME/Documents/Shore/debian-repository
 export EDITOR=vim
 export GOPATH=$HOME/Documents/Golang
-export PATH=$PATH:$GOPATH/bin:/usr/lib/go/bin/:$HOME/Documents/Shore/cleanup
+export PATH=$PATH:$GOPATH/bin:/usr/lib/go/bin/:$HOME/Documents/Shore/cleanup:$HOME/Documents/Shore/ssh-ca:$HOME/Documents/Shore/ssl-ca
 export PYTHONSTARTUP=~/.pythonstartup
 alias ll='ls -lha'
 alias la='ls -A'
@@ -51,8 +51,6 @@ alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
 alias gen-ssh-config='cat $HOME/.ssh/config.d/* > $HOME/.ssh/config'
-alias ssl-ca='$HOME/Documents/Shore/ssl-ca/ssl-ca'
-alias ssh-ca='$HOME/Documents/Shore/ssh-ca/ssh-ca'
 alias concat="perl -pe 's/\n/\\\n/g'"
 alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ggo='sudo GOPATH=/usr/share/go go'
