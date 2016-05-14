@@ -6,8 +6,11 @@ export HISTCONTROL=ignoreboth:erasedups
 export HISTSIZE=100000
 export HISTFILESIZE=100000
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-shopt -s histappend
-shopt -s checkwinsize
+if [ -n "$BASH" ]
+then
+    shopt -s histappend
+    shopt -s checkwinsize
+fi
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
