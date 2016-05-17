@@ -39,7 +39,11 @@ fi
 export REPREPRO_BASE_DIR=$HOME/Documents/Shore/debian-repository
 export EDITOR=vim
 export GOPATH=$HOME/Documents/Golang
-export PATH=$PATH:$GOPATH/bin:/usr/lib/go/bin/:$HOME/Documents/Shore/cleanup:$HOME/Documents/Shore/ssh-ca:$HOME/Documents/Shore/ssl-ca
+export PATH=$PATH:$GOPATH/bin:/usr/lib/go/bin/
+export PATH=$PATH:$HOME/Documents/Shore/cleanup
+export PATH=$PATH:$HOME/Documents/Shore/ssh-ca
+export PATH=$PATH:$HOME/Documents/Shore/ssl-ca
+export PATH=$PATH:$HOME/.cargo/bin
 export PYTHONSTARTUP=~/.pythonstartup
 alias ll='ls -lha'
 alias la='ls -A'
@@ -59,6 +63,12 @@ alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ggo='sudo GOPATH=/usr/share/go go'
 alias tag-version='git tag -f v"$(cat VERSION)"'
 alias ecr-login='eval $(aws ecr get-login)'
+deduce-aws-region () {
+    export AWS_DEFAULT_REGION="$(curl --silent \
+        http://169.254.169.254/latest/dynamic/instance-identity/document \
+        | sed -n 's/ *"region" : "\([a-z0-9\-]*\)"/\1/gp')"
+    echo "$AWS_DEFAULT_REGION"
+}
 ssh-keyscan-add () {
     (ssh-keyscan $@; cat $HOME/.ssh/known_hosts) | sort -u >> $HOME/.ssh/known_hosts
 }
