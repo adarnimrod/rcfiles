@@ -16,8 +16,8 @@
 [receive]
     fsckObjects = true
 [merge]
-	tool = kompare
+	tool = meld
 [diff]
-	tool = kompare
+	tool = meld
 [difftool]
 	prompt = false
