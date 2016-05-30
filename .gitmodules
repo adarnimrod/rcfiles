@@ -15,5 +15,5 @@
 	url = https://www.shore.co.il/git/debian-repository
 	branch = master
 [submodule "Documents/Shore/ansible-desktop-playbooks"]
-	path = Documents/Shore/ansible-desktop-playbooks
+	path = Documents/Shore/Ansible/ansible-desktop-playbooks
 	url = https://www.shore.co.il/git/ansible-desktop-playbooks
