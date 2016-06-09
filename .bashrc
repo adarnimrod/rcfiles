@@ -50,7 +50,7 @@ alias la='ls -A'
 alias l='ls -CF'
 alias gcc='gcc --std=c99 -Wall'
 alias dpkglog="grep -v 'status\|trigproc\|configure' /var/log/dpkg.log"
-alias deborphan='deborphan -a --no-show-section'
+alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
