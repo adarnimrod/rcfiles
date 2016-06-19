@@ -19,3 +19,4 @@ for box in boxes:
         for version in boxes[box][provider][:-1]:
             vagrant.box('remove', '--provider', provider, '--box-version',
                         version, box)
+vagrant('global-status', '--prune')
