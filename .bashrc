@@ -45,6 +45,7 @@ export PATH=$PATH:$HOME/Documents/Shore/ssh-ca
 export PATH=$PATH:$HOME/Documents/Shore/ssl-ca
 export PATH=$PATH:$HOME/.cargo/bin
 export PYTHONSTARTUP=~/.pythonstartup
+export AWS_DEFAULT_PROFILE='shore'
 alias ll='ls -lha'
 alias la='ls -A'
 alias l='ls -CF'
