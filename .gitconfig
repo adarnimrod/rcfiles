@@ -21,3 +21,5 @@
 	tool = meld
 [difftool]
 	prompt = false
+[core]
+	excludesfile = /home/nimrod/.gitignore_global
