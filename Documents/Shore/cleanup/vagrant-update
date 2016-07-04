@@ -5,15 +5,16 @@ from parse import parse
 
 
 boxes = {}
+dummy_providers = ['aws']
 for line in vagrant.box('list'):
     box = parse('\x1b[0m{name:^} ({provider}, {version})\x1b[0m', line)
-    if box['name'] in boxes:
-        if not box['provider'] in boxes[box['name']]:
-            boxes[box['name']].append(box['provider'])
-    else:
-        boxes[box['name']] = [box['provider']]
+    if not box['provider'] in dummy_providers:
+        if box['name'] in boxes:
+            if not box['provider'] in boxes[box['name']]:
+                boxes[box['name']].append(box['provider'])
+        else:
+            boxes[box['name']] = [box['provider']]
 for box in boxes:
     for provider in boxes[box]:
-        print('Updating box {0} provider {1}.').format(box['name'],
-                                                       box['provider'])
+        print('Updating box {0} provider {1}.').format(box, provider)
         vagrant.box('update', '--provider', provider, '--box', box)
