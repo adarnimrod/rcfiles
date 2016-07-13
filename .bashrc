@@ -66,12 +66,15 @@ alias ggo='sudo GOPATH=/usr/share/go go'
 alias tag-version='git tag -f v"$(cat VERSION)"'
 alias ecr-login='eval $(aws ecr get-login)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
+alias apt-daily='sudo apt update && sudo apt dist-upgrade --download-only --yes && sudo apt autoclean'
+
 deduce-aws-region () {
     export AWS_DEFAULT_REGION="$(curl --silent \
         http://169.254.169.254/latest/dynamic/instance-identity/document \
         | sed -n 's/ *"region" : "\([a-z0-9\-]*\)"/\1/gp')"
     echo "$AWS_DEFAULT_REGION"
 }
+
 ssh-keyscan-add () {
     (ssh-keyscan $@; cat $HOME/.ssh/known_hosts) | sort -u >> $HOME/.ssh/known_hosts
 }
