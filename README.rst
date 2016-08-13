@@ -14,11 +14,12 @@ WARNING: This will overwrite your existing files.
 
 .. code:: shell
 
-    git clone --recursive https://www.shore.co.il/git/rcfiles
+    git clone https://www.shore.co.il/git/rcfiles
     cd rcfiles
     mv -f $(ls -A) $HOME/
     cd ..
-    rm -r files
+    rm -r rcfiles
+    git submodule update --init --recursive
 
 License
 -------
