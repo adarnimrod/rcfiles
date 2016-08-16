@@ -63,7 +63,6 @@ alias gen-ssh-config='cat $HOME/.ssh/config.d/* > $HOME/.ssh/config'
 alias concat="perl -pe 's/\n/\\\n/g'"
 alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ggo='sudo GOPATH=/usr/share/go go'
-alias tag-version='git tag -f v"$(cat VERSION)"'
 alias ecr-login='eval $(aws ecr get-login)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias apt-daily='sudo apt update && sudo apt dist-upgrade --download-only --yes && sudo apt autoclean'
