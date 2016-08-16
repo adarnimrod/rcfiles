@@ -10,7 +10,8 @@
     pull-submodules = submodule update --remote
     diff-cached = diff --cached
     tag-version = !git tag -f "v$(cat VERSION)"
-    serve = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
+    serve-git = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
+    serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
 [transfer]
     fsckobjects = true
 [fetch]
