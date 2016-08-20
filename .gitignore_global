@@ -23,3 +23,8 @@ nbproject/
 bower_components/
 *.class
 *.jar
+secring.*
+.*.kate-swp
+.swp.*
+.directory
+.Trash-*
