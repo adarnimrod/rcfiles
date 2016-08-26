@@ -17,6 +17,6 @@ for line in vagrant.box("list"):
 for box in boxes:
     for provider in boxes[box]:
         for version in boxes[box][provider][:-1]:
-            vagrant.box('remove', '--provider', provider, '--box-version',
-                        version, box)
+            vagrant.box('remove', '--force', '--provider', provider, 
+                        '--box-version', version, box)
 vagrant('global-status', '--prune')
