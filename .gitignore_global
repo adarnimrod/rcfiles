@@ -28,3 +28,5 @@ secring.*
 .swp.*
 .directory
 .Trash-*
+build/
+dist/
