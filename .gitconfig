@@ -12,6 +12,7 @@
     tag-version = !git tag -f "v$(cat VERSION)"
     serve-git = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
     serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
+    diff = diff --color-words
 [transfer]
     fsckobjects = true
 [fetch]
