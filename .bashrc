@@ -67,6 +67,7 @@ alias ecr-login='eval $(aws ecr get-login)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias apt-daily='sudo apt update && sudo apt dist-upgrade --download-only --yes && sudo apt autoclean'
 alias docker-build='docker build -t "$(basename $PWD)" ./'
+alias cdtemp='cd $(mktemp -d)'
 
 deduce-aws-region () {
     export AWS_DEFAULT_REGION="$(curl --silent \
