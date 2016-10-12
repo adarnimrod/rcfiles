@@ -10,6 +10,7 @@ if [ -n "$BASH" ]
 then
     shopt -s histappend
     shopt -s checkwinsize
+    shopt -s cmdhist
 fi
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -30,12 +31,11 @@ fi
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
+[ -d $HOME/.bash_completion.d ] && . $HOME/.bash_completion.d/*
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]
 then
     . /usr/local/bin/virtualenvwrapper.sh
 fi
-
-. $HOME/.local/share/bash/molecule.bash-completion.sh
 
 export REPREPRO_BASE_DIR=$HOME/Documents/Shore/debian-repository
 export EDITOR=vim
@@ -50,7 +50,7 @@ export AWS_DEFAULT_PROFILE='shore'
 alias ll='ls -lha'
 alias la='ls -A'
 alias l='ls -CF'
-alias gcc='gcc --std=c99 -Wall'
+alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
 alias dpkglog="grep -v 'status\|trigproc\|configure' /var/log/dpkg.log"
 alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias aptitude='aptitude --display-format %p --quiet'
