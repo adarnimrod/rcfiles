@@ -1,30 +1,42 @@
-[user]
-	name = Adar Nimrod
-	email = nimrod@shore.co.il
-	signingKey = 9AAA2526
-[push]
-	default = simple
 [alias]
-    clone-recursive = clone --recursive
-    push-tags = push --tags
-    pull-submodules = submodule update --remote
-    diff-cached = diff --cached
-    tag-version = !git tag -f "v$(cat VERSION)"
+    bull = submodule update --remote
+    clear = clean -fdx
+    dif = diff --color-words
+    empty-commit = commit --allow-empty
+    ff = merge --no-edit --ff-only master
+    merg = merge --no-edit
+    posh = push --set-upstream origin HEAD
+    pul = pull --progress
+    push-force = push --force-with-lease
     serve-git = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
     serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
-    diff = diff --color-words
-    pull = pull --progress
-[transfer]
-    fsckobjects = true
-[fetch]
-    fsckobjects = true
-[receive]
-    fsckObjects = true
-[merge]
-	tool = meld
+    staash = stash --all
+    stat = status --short --branch
+    tag-version = !git tag -f "v$(cat VERSION)"
+[color]
+    grep = true
+[core]
+    excludesfile = /home/nimrod/.gitignore_global
 [diff]
 	tool = meld
 [difftool]
 	prompt = false
-[core]
-	excludesfile = /home/nimrod/.gitignore_global
+[fetch]
+    fsckobjects = true
+    prune = true
+[merge]
+    tool = meld
+    ff = false
+[push]
+    followTags = true
+	default = simple
+[receive]
+    fsckObjects = true
+[tag]
+    forceSignAnnotated = true
+[transfer]
+    fsckobjects = true
+[user]
+	name = Adar Nimrod
+	email = nimrod@shore.co.il
+	signingKey = E3AE9CD4B8EA564BF746CD909C53CFCB9AAA2526
