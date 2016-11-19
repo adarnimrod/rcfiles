@@ -65,7 +65,7 @@ alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ggo='sudo GOPATH=/usr/share/go go'
 alias ecr-login='eval $(aws ecr get-login)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
-alias apt-daily='sudo apt update && sudo apt dist-upgrade --download-only --yes && sudo apt autoclean'
+alias apt-daily="sudo /bin/sh -c 'apt update && apt dist-upgrade --download-only --yes && apt autoclean'"
 alias docker-build='docker build -t "$(basename $PWD)" ./'
 alias cdtemp='cd $(mktemp -d)'
 
