@@ -9,6 +9,7 @@
     posh = push --set-upstream origin HEAD
     pul = pull --progress
     push-force = push --force-with-lease
+    root = rev-parse --show-toplevel
     serve-git = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
     serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
     staash = stash --all
