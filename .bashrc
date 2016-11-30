@@ -84,4 +84,20 @@ gen-csr () {
     openssl req -new -newkey rsa:4096 -nodes -out $1.csr -keyout $1.key
 }
 
+docker-dev () {
+    local root="$(git rev-parse --show-toplevel)"
+    local repo="$(basename $root)"
+    local uid="$(id -u)"
+    docker build -t "$repo:dev" "$root"
+    docker run --interactive \
+               --publish-all \
+               --name "$repo" \
+               --rm \
+               --tty \
+               --volume "$HOME:$HOME" \
+               --volume "$root:$root" \
+               --user $uid \
+               --workdir "$PWD" "$repo:dev" /bin/sh -l
+}
+
 . $HOME/Documents/Shore/bundle_certs/bundle_certs
