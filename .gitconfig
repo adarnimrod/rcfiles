@@ -3,6 +3,7 @@
     clear = clean -fdx
     dif = diff --color-words
     empty-commit = commit --allow-empty
+	exec = "!exec "
     ff = merge --no-edit --ff-only master
     merg = merge --no-edit
     posh = push --set-upstream origin HEAD
