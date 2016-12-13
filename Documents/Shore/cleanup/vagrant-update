@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from sh import vagrant
 from parse import parse
@@ -16,5 +16,5 @@ for line in vagrant.box('list'):
             boxes[box['name']] = [box['provider']]
 for box in boxes:
     for provider in boxes[box]:
-        print 'Updating box {0} provider {1}.'.format(box, provider)
+        print('Updating box {0} provider {1}.'.format(box, provider))
         vagrant.box('update', '--provider', provider, '--box', box)
