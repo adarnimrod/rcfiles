@@ -101,3 +101,6 @@ docker-dev () {
 }
 
 . $HOME/Documents/Shore/bundle_certs/bundle_certs
+
+# added by travis gem
+[ -f /home/nimrod/.travis/travis.sh ] && source /home/nimrod/.travis/travis.sh
