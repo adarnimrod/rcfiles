@@ -1,4 +1,4 @@
-personal_ws-1.1 en 73 
+personal_ws-1.1 en 82 
 Makefile
 continuesly
 py
@@ -15,6 +15,7 @@ config
 Benchmarking
 tcp
 CLI
+dev
 symlinks
 FreeBSD
 AWK
@@ -24,6 +25,7 @@ init
 txt
 filename
 rsa
+AWS
 kshrc
 PHP
 TODO
@@ -37,16 +39,22 @@ symlinked
 HostCertificate
 gitmodules
 username
+adarnimrod
 mkdir
+Bitbucket
 OpenSSH
 crt
+backend
 openssl
 OpenSSL
+DNS
 filenames
 ufw
 sudo
 html
 JS
+SQS
+YAML
 ssl
 eval
 DSA
@@ -65,6 +73,7 @@ README
 rc
 yml
 Barak
+homelab
 NIS
 odt
 Dockerfile
