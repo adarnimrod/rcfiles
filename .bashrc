@@ -68,6 +68,7 @@ alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias apt-daily="sudo /bin/sh -c 'apt update && apt dist-upgrade --download-only --yes && apt autoclean'"
 alias docker-build='docker build -t "$(basename $PWD)" ./'
 alias cdtemp='cd $(mktemp -d)'
+alias 0-day-cleanup='ssh xbmc "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 
 deduce-aws-region () {
     export AWS_DEFAULT_REGION="$(curl --silent \
