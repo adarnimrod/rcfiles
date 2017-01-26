@@ -1,4 +1,4 @@
-personal_ws-1.1 en 82 
+personal_ws-1.1 en 89 
 Makefile
 continuesly
 py
@@ -23,10 +23,14 @@ keypair
 usr
 init
 txt
+VirtualBox
 filename
 rsa
 AWS
 kshrc
+Wayland
+PolicyKit
+PyPI
 PHP
 TODO
 programmatically
@@ -65,8 +69,10 @@ keygen
 hostname
 pre
 ok
+TOML
 cfg
 repo
+Tox
 Lua
 submodule
 README
@@ -74,6 +80,7 @@ rc
 yml
 Barak
 homelab
+VBoxManage
 NIS
 odt
 Dockerfile
