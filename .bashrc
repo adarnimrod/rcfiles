@@ -11,6 +11,14 @@ then
     shopt -s histappend
     shopt -s checkwinsize
     shopt -s cmdhist
+    if [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+
+    [ -d $HOME/.bash_completion.d ] && . $HOME/.bash_completion.d/*
+
+    # added by travis gem
+    [ -f $HOME/.travis/travis.sh ] && source $HOME/.travis/travis.sh
 fi
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -26,15 +34,6 @@ if [ -x /usr/bin/dircolors ]; then
     eval "`dircolors -b`"
     alias ls='ls --color=auto'
     alias grep='grep --color=auto'
-fi
-
-if [ -n "$BASH" ]
-then
-    if [ -f /etc/bash_completion ]; then
-        . /etc/bash_completion
-    fi
-
-    [ -d $HOME/.bash_completion.d ] && . $HOME/.bash_completion.d/*
 fi
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]
@@ -107,6 +106,3 @@ docker-dev () {
 }
 
 . $HOME/Documents/Shore/bundle_certs/bundle_certs
-
-# added by travis gem
-[ -f /home/nimrod/.travis/travis.sh ] && source /home/nimrod/.travis/travis.sh
