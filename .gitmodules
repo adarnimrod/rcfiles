@@ -17,3 +17,4 @@
 [submodule "Documents/Shore/ansible-desktop-playbooks"]
 	path = Documents/Shore/Ansible/ansible-desktop-playbooks
 	url = https://www.shore.co.il/git/ansible-desktop-playbooks
+	branch = master
