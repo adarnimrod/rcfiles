@@ -28,10 +28,15 @@ if [ -x /usr/bin/dircolors ]; then
     alias grep='grep --color=auto'
 fi
 
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+if [ -n "$BASH" ]
+then
+    if [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+
+    [ -d $HOME/.bash_completion.d ] && . $HOME/.bash_completion.d/*
 fi
-[ -d $HOME/.bash_completion.d ] && . $HOME/.bash_completion.d/*
+
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]
 then
     . /usr/local/bin/virtualenvwrapper.sh
