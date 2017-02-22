@@ -30,3 +30,4 @@ secring.*
 .Trash-*
 build/
 dist/
+.tox/
