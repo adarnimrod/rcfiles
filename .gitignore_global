@@ -29,5 +29,6 @@ secring.*
 .directory
 .Trash-*
 build/
+_build/
 dist/
 .tox/
