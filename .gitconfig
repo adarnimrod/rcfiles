@@ -1,4 +1,5 @@
 [alias]
+    amend = commit --amend
     bull = submodule update --remote
     clear = clean -fdx
     dif = diff --color-words
