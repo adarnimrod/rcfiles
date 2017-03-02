@@ -9,6 +9,7 @@
     merg = merge --no-edit
     posh = push --set-upstream origin HEAD
     pul = pull --progress
+    pull-force = !git fetch && git reset --hard "$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"
     push-force = push --force-with-lease
     root = rev-parse --show-toplevel
     serve-git = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
