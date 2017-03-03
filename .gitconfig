@@ -6,9 +6,12 @@
     empty-commit = commit --allow-empty
 	exec = "!exec "
     ff = merge --no-edit --ff-only master
+    forget = reset --mixed HEAD~1
+    forget-hard = reset --hard HEAD~1
     merg = merge --no-edit
     posh = push --set-upstream origin HEAD
     pul = pull --progress
+    pull-force = !git fetch && git reset --hard "$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"
     push-force = push --force-with-lease
     root = rev-parse --show-toplevel
     serve-git = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
