@@ -53,9 +53,12 @@ if [ "$interface" = "ISRAEL-RAILWAYS" ] && [ "$action" = "up" ]
 then
     redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://google.com/)"
     debug "Train wifi redirect url: $redirect_url"
-    login_url="$(echo "$redirect_url" | awk -F\? '{printf("%s?allowAccess=true", $1)}' )"
-    debug "Train wifi login url: $login_url"
-    curl "$login_url"
+    login_ip="$(echo "$redirect_url" | grep --only-matching '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*')"
+    debug "Train wifi login IP: $ip"
+    login_url="http://$ip/loginHandler.php?allowAccess=true"
+    debug "Train wifi login URL: $login_url"
+    http_code="$(curl --output /dev/null --silent --write-out '%{http_code}' "$login_url")"
+    debug "Train wifi login HTTP code: $http_code"
 else
     debug "Interface isn't ISRAEL-RAILWAYS or action isn't up, not signing in to the train wifi."
 fi
