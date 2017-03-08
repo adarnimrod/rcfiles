@@ -1,8 +1,7 @@
 #!/bin/sh
-set -eu
 # The MIT License (MIT)
 #
-# Copyright (c) 2016 Adar Nimrod <nimrod@shore.co.il>
+# Copyright (c) 2017 Adar Nimrod <nimrod@shore.co.il>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +26,11 @@ set -eu
 # To install run:
 # sudo cp --preserve=mode train-wifi.sh /etc/NetworkManager/dispatcher.d/90trainwifi
 
-die () {
-    echo $@ | logger
-    exit 1
-}
+set -eu
 
-debug () {
-    [ -n ${DEBUG:+x} ] && echo $@ | logger
+die () {
+    logger -p user.err $@
+    exit 1
 }
 
 if [ $# -ne 2 ]
@@ -52,13 +49,13 @@ which logger > /dev/null || dir "Can't login to the train wifi, logger is not in
 if [ "$interface" = "ISRAEL-RAILWAYS" ] && [ "$action" = "up" ]
 then
     redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://google.com/)"
-    debug "Train wifi redirect url: $redirect_url"
+    logger -p user.debug "Train wifi redirect url: $redirect_url"
     login_ip="$(echo "$redirect_url" | grep --only-matching '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*')"
-    debug "Train wifi login IP: $ip"
+    logger -p user.debug "Train wifi login IP: $ip"
     login_url="http://$ip/loginHandler.php?allowAccess=true"
-    debug "Train wifi login URL: $login_url"
+    logger -p user.debug "Train wifi login URL: $login_url"
     http_code="$(curl --output /dev/null --silent --write-out '%{http_code}' "$login_url")"
-    debug "Train wifi login HTTP code: $http_code"
+    logger -p user.debug "Train wifi login HTTP code: $http_code"
 else
-    debug "Interface isn't ISRAEL-RAILWAYS or action isn't up, not signing in to the train wifi."
+    logger -p user.debug "Interface isn't ISRAEL-RAILWAYS or action isn't up, not signing in to the train wifi."
 fi
