@@ -73,6 +73,7 @@ alias apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --downl
 alias docker-build='docker build -t "$(basename $PWD)" ./'
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
+alias httpbin='tox -c $HOME/.tox.ini.httpbin --'
 
 deduce-aws-region () {
     export AWS_DEFAULT_REGION="$(curl --silent \

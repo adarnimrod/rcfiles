@@ -1,0 +1,9 @@
+[tox]
+skipsdist = True
+
+[testenv]
+basepython = python3
+deps =
+    httpbin
+    gunicorn
+commands = gunicorn httpbin:app {posargs}
