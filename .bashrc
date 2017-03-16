@@ -106,4 +106,10 @@ docker-dev () {
                --workdir "$PWD" "$repo:dev" /bin/sh -l
 }
 
+sync-comics () {
+    this_month="$( date '+xbmc:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
+    last_month="$( date --date '1 month ago' '+xbmc:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
+    rsync --recursive --compress --progress "$last_month" "$this_month" "$HOME/Downloads/Comics/"
+}
+
 . $HOME/Documents/Shore/bundle_certs/bundle_certs
