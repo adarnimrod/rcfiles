@@ -22,7 +22,7 @@
 [color]
     grep = true
 [core]
-    excludesfile = /home/nimrod/.gitignore_global
+    excludesfile = ~/.gitignore_global
 [diff]
 	tool = meld
 [difftool]
