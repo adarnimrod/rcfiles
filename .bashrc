@@ -112,4 +112,16 @@ sync-comics () {
     rsync --recursive --compress --progress "$last_month" "$this_month" "$HOME/Downloads/Comics/"
 }
 
+update-requirements () {
+    cd $(git rev-parse --show-toplevel)
+    for file in $(git ls-files *requirements*.txt)
+    do
+        pur --requirement $file
+        git add $file
+    done
+    git commit -m"- Updated requirements."
+    git push
+    cd - > /dev/null
+}
+
 . $HOME/Documents/Shore/bundle_certs/bundle_certs
