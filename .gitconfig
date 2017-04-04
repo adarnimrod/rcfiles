@@ -19,6 +19,7 @@
     staash = stash --all
     stat = status --short --branch
     tag-version = !git tag -f "v$(cat VERSION)"
+    trigger = !git commit --allow-empty --no-edit --amend && git push --force-with-lease
 [color]
     grep = true
 [core]
