@@ -73,6 +73,7 @@ alias apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --downl
 alias docker-build='docker build -t "$(basename $PWD)" ./'
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
+alias httpbin='tox -c $HOME/.tox.ini.httpbin --'
 
 deduce-aws-region () {
     export AWS_DEFAULT_REGION="$(curl --silent \
@@ -103,6 +104,24 @@ docker-dev () {
                --volume "$root:$root" \
                --user $uid \
                --workdir "$PWD" "$repo:dev" /bin/sh -l
+}
+
+sync-comics () {
+    this_month="$( date '+xbmc:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
+    last_month="$( date --date '1 month ago' '+xbmc:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
+    rsync --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
+}
+
+update-requirements () {
+    cd $(git rev-parse --show-toplevel)
+    for file in $(git ls-files *requirements*.txt)
+    do
+        pur --requirement $file
+        git add $file
+    done
+    git commit -m"- Updated requirements."
+    git push
+    cd - > /dev/null
 }
 
 . $HOME/Documents/Shore/bundle_certs/bundle_certs

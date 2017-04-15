@@ -1,8 +1,7 @@
 #!/bin/sh
-set -eu
 # The MIT License (MIT)
 #
-# Copyright (c) 2016 Adar Nimrod <nimrod@shore.co.il>
+# Copyright (c) 2017 Adar Nimrod <nimrod@shore.co.il>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +22,24 @@ set -eu
 # SOFTWARE.
 
 # Logs in to the Israeli train's wifi.
-# Requires: cURL, sh, awk, logger.
+# Requires: cURL, sh, awk, logger, nmcli.
 # To install run:
 # sudo cp --preserve=mode train-wifi.sh /etc/NetworkManager/dispatcher.d/90trainwifi
 
+set -eu
+
 die () {
-    echo $@ | logger
+    logger -p user.err $@
     exit 1
 }
 
-debug () {
-    [ -n ${DEBUG:+x} ] && echo $@ | logger
+iswifi () {
+    # TODO: Check if a network interface is passed.
+    [ "$(nmcli --terse --fields GENERAL.TYPE device show $1 | awk -F: '{print $2}')" = 'wifi' ]
+}
+
+wifi_connection () {
+    nmcli --terse --fields GENERAL.CONNECTION device show $1 | awk -F: '{print $2}'
 }
 
 if [ $# -ne 2 ]
@@ -47,15 +53,19 @@ fi
 
 which curl > /dev/null || die "Can't login to the train wifi, cURL is not installed."
 which awk > /dev/null || die "Can't login to the train wifi, awk is not installed."
-which logger > /dev/null || dir "Can't login to the train wifi, logger is not installed."
+which logger > /dev/null || die "Can't login to the train wifi, logger is not installed."
+which nmcli > /dev/null || die "Can't login to the train wifi, nmcli is not installed."
 
-if [ "$interface" = "ISRAEL-RAILWAYS" ] && [ "$action" = "up" ]
-then
-    redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://google.com/)"
-    debug "Train wifi redirect url: $redirect_url"
-    login_url="$(echo "$redirect_url" | awk -F\? '{printf("%s?allowAccess=true", $1)}' )"
-    debug "Train wifi login url: $login_url"
-    curl "$login_url"
-else
-    debug "Interface isn't ISRAEL-RAILWAYS or action isn't up, not signing in to the train wifi."
-fi
+[ "$action" = 'up' ] || die "Can't login to the train wifi, action $action isn't up."
+iswifi "$interface" || die "Can't login to the train wifi, interface $interface isn't wifi."
+connection="$(wifi_connection $interface)"
+[ "$connection" = "ISRAEL-RAILWAYS" ] || die "Can't login to the train wifi, wifi network $connection isn't ISRAEL-RAILWAYS."
+
+redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://google.com/)"
+logger -p user.debug "Train wifi redirect url: $redirect_url"
+login_ip="$(echo "$redirect_url" | grep --only-matching '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*')" || die "Can't login to the train wifi, redirect URL doesn't contain an IP."
+logger -p user.debug "Train wifi login IP: $ip"
+login_url="http://$ip/loginHandler.php?allowAccess=true"
+logger -p user.debug "Train wifi login URL: $login_url"
+http_code="$(curl --output /dev/null --silent --write-out '%{http_code}' "$login_url")"
+logger -p user.debug "Train wifi login HTTP code: $http_code"
