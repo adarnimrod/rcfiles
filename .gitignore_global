@@ -17,7 +17,7 @@ nbproject/
 *.ipynb
 .idea/
 *.egg-info/
-*.o
+*.[ao]
 .classpath
 .cache/
 bower_components/
