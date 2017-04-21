@@ -13,7 +13,7 @@
     pull-force = !git fetch && git reset --hard "$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"
     push-force = push --force-with-lease
     root = rev-parse --show-toplevel
-    serve-git = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
+    serve-git = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
     serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
     staash = stash --all
     stat = status --short --branch
