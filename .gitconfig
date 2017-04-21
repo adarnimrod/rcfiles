@@ -6,8 +6,7 @@
     empty-commit = commit --allow-empty
 	exec = "!exec "
     ff = merge --no-edit --ff-only master
-    forget = reset --mixed HEAD~1
-    forget-hard = reset --hard HEAD~1
+    forget = reset HEAD~1
     merg = merge --no-edit
     posh = push --set-upstream origin HEAD
     pul = pull --progress
