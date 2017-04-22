@@ -20,6 +20,9 @@ WARNING: This will overwrite your existing files.
     cd ..
     rm -r rcfiles
     git submodule update --init --recursive
+    cd .githooks/
+    find  -type f -exec ln -sf ../../.githooks/{} ../.git/hooks/ \;
+    cd ../
 
 In older versions of Git the paths in the submodules are obsolete and thus need
 to be corrected (before fetching them). The correction needs to be done in the
