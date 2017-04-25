@@ -120,7 +120,6 @@ update-requirements () {
         git add $file
     done
     git commit -m"- Updated requirements."
-    git push
     cd - > /dev/null
 }
 
