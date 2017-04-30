@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148,SC1091
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -11,14 +12,14 @@ then
     shopt -s histappend
     shopt -s checkwinsize
     shopt -s cmdhist
-    if [ -f /etc/bash_completion ]; then
-        . /etc/bash_completion
-    fi
+    [ -f /etc/bash_completion ] && . /etc/bash_completion
 
-    [ -d $HOME/.bash_completion.d ] && . $HOME/.bash_completion.d/*
+    # shellcheck disable=SC2086,SC1090
+    [ -d "$HOME/.bash_completion.d" ] && . $HOME/.bash_completion.d/*
 
+    # shellcheck disable=SC1090
     # added by travis gem
-    [ -f $HOME/.travis/travis.sh ] && source $HOME/.travis/travis.sh
+    [ -f "$HOME/.travis/travis.sh" ] && . "$HOME/.travis/travis.sh"
 fi
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -31,15 +32,13 @@ fi
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    eval "`dircolors -b`"
+    eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias grep='grep --color=auto'
 fi
 
-if [ -f /usr/local/bin/virtualenvwrapper.sh ]
-then
-    . /usr/local/bin/virtualenvwrapper.sh
-fi
+# shellcheck disable=SC2142
+[ -f /usr/local/bin/virtualenvwrapper.sh ] && . /usr/local/bin/virtualenvwrapper.sh
 
 export REPREPRO_BASE_DIR=$HOME/Documents/Shore/debian-repository
 export EDITOR=vim
@@ -60,6 +59,7 @@ alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
+# shellcheck disable=2142
 alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
@@ -76,24 +76,27 @@ alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv
 alias httpbin='tox -c $HOME/.tox.ini.httpbin --'
 
 deduce-aws-region () {
-    export AWS_DEFAULT_REGION="$(curl --silent \
+    AWS_DEFAULT_REGION="$(curl --silent \
         http://169.254.169.254/latest/dynamic/instance-identity/document \
         | sed -n 's/ *"region" : "\([a-z0-9\-]*\)"/\1/gp')"
+    export AWS_DEFAULT_REGION
     echo "$AWS_DEFAULT_REGION"
 }
 
 ssh-keyscan-add () {
-    (ssh-keyscan $@; cat $HOME/.ssh/known_hosts) | sort -u >> $HOME/.ssh/known_hosts
+    # shellcheck disable=SC2094
+    (ssh-keyscan "$@"; cat "$HOME/.ssh/known_hosts") | sort -u >> "$HOME/.ssh/known_hosts"
 }
 
 gen-csr () {
-    openssl req -new -newkey rsa:4096 -nodes -out $1.csr -keyout $1.key
+    openssl req -new -newkey rsa:4096 -nodes -out "$1.csr" -keyout "$1.key"
 }
 
 docker-dev () {
-    local root="$(git rev-parse --show-toplevel)"
-    local repo="$(basename $root)"
-    local uid="$(id -u)"
+    local root repo uid
+    root="$(git rev-parse --show-toplevel)"
+    repo="$(basename "$root")"
+    uid="$(id -u)"
     docker build -t "$repo:dev" "$root"
     docker run --interactive \
                --publish-all \
@@ -102,7 +105,7 @@ docker-dev () {
                --tty \
                --volume "$HOME:$HOME" \
                --volume "$root:$root" \
-               --user $uid \
+               --user "$uid" \
                --workdir "$PWD" "$repo:dev" /bin/sh -l
 }
 
@@ -113,14 +116,19 @@ sync-comics () {
 }
 
 update-requirements () {
-    cd $(git rev-parse --show-toplevel)
-    for file in $(git ls-files *requirements*.txt)
+    reporoot="$(git rev-parse --show-toplevel) || (echo Failed to find Git repo.
+    && return 1)"
+    # shellcheck disable=SC2164
+    cd "$reporoot"
+    for file in $(git ls-files "*requirements*.txt")
     do
-        pur --requirement $file
-        git add $file
+        pur --requirement "$file"
+        git add "$file"
     done
     git commit -m"- Updated requirements."
+    # shellcheck disable=SC2164
     cd - > /dev/null
 }
 
-. $HOME/Documents/Shore/bundle_certs/bundle_certs
+# shellcheck disable=SC1090
+. "$HOME/Documents/Shore/bundle_certs/bundle_certs"
