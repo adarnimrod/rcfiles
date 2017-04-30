@@ -1,5 +1,5 @@
 #!/bin/sh -e
 for image in $(docker images | awk '$1!="<none>" && NR>1 {printf("%s:%s\n", $1, $2)}')
 do
-    docker pull $image || echo "Skipping..."
+    docker pull "$image" || echo "Skipping..."
 done

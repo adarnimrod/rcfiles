@@ -11,13 +11,13 @@ for line in vagrant.box("list"):
         if box['provider'] in boxes[box['name']]:
             boxes[box['name']][box['provider']].append(box['version'])
         else:
-            boxes[box['name']][box['provider']] = [ box['version'] ]
+            boxes[box['name']][box['provider']] = [box['version']]
     else:
-        boxes[box['name']] = {box['provider']: [ box['version'] ]}
+        boxes[box['name']] = {box['provider']: [box['version']]}
 for box in boxes:
     for provider in boxes[box]:
         for version in boxes[box][provider][:-1]:
             print('Removing box {0} version {1}.'.format(box, version))
-            vagrant.box('remove', '--force', '--provider', provider, 
+            vagrant.box('remove', '--force', '--provider', provider,
                         '--box-version', version, box)
 vagrant('global-status', '--prune')

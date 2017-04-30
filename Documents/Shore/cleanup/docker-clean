@@ -1,5 +1,5 @@
 #!/bin/sh
-docker rm $(docker ps --quiet --filter=status=exited) 2>/dev/null || true
-docker rm $(docker ps --quiet --filter=status=created) 2>/dev/null || true
-docker rmi $(docker images --quiet --filter=dangling=true) 2>/dev/null || true
-docker volume rm $(docker volume ls --quiet --filter=dangling=true) 2>/dev/null || true
+docker rm "$(docker ps --quiet --filter=status=exited)" 2>/dev/null || true
+docker rm "$(docker ps --quiet --filter=status=created)" 2>/dev/null || true
+docker rmi "$(docker images --quiet --filter=dangling=true)" 2>/dev/null || true
+docker volume rm "$(docker volume ls --quiet --filter=dangling=true)" 2>/dev/null || true

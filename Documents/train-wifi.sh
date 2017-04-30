@@ -29,17 +29,17 @@
 set -eu
 
 die () {
-    logger -p user.err $@
+    logger -p user.err "$@"
     exit 1
 }
 
 iswifi () {
     # TODO: Check if a network interface is passed.
-    [ "$(nmcli --terse --fields GENERAL.TYPE device show $1 | awk -F: '{print $2}')" = 'wifi' ]
+    [ "$(nmcli --terse --fields GENERAL.TYPE device show "$1" | awk -F: '{print $2}')" = 'wifi' ]
 }
 
 wifi_connection () {
-    nmcli --terse --fields GENERAL.CONNECTION device show $1 | awk -F: '{print $2}'
+    nmcli --terse --fields GENERAL.CONNECTION device show "$1" | awk -F: '{print $2}'
 }
 
 if [ $# -ne 2 ]
@@ -58,14 +58,14 @@ which nmcli > /dev/null || die "Can't login to the train wifi, nmcli is not inst
 
 [ "$action" = 'up' ] || die "Can't login to the train wifi, action $action isn't up."
 iswifi "$interface" || die "Can't login to the train wifi, interface $interface isn't wifi."
-connection="$(wifi_connection $interface)"
+connection="$(wifi_connection "$interface")"
 [ "$connection" = "ISRAEL-RAILWAYS" ] || die "Can't login to the train wifi, wifi network $connection isn't ISRAEL-RAILWAYS."
 
 redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://google.com/)"
 logger -p user.debug "Train wifi redirect url: $redirect_url"
 login_ip="$(echo "$redirect_url" | grep --only-matching '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*')" || die "Can't login to the train wifi, redirect URL doesn't contain an IP."
-logger -p user.debug "Train wifi login IP: $ip"
-login_url="http://$ip/loginHandler.php?allowAccess=true"
+logger -p user.debug "Train wifi login IP: $login_ip"
+login_url="http://$login_ip/loginHandler.php?allowAccess=true"
 logger -p user.debug "Train wifi login URL: $login_url"
 http_code="$(curl --output /dev/null --silent --write-out '%{http_code}' "$login_url")"
 logger -p user.debug "Train wifi login HTTP code: $http_code"
