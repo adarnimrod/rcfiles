@@ -1,0 +1,26 @@
+---
+language: python
+python: "3.6"
+dist: trusty
+sudo: false
+group: beta
+cache:
+  - pip
+  - directories:
+      - $HOME/.pre-commit
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'deb http://archive.ubuntu.com/ubuntu trusty-backports main universe multiverse'
+    packages:
+      - shellcheck
+
+install:
+  - pip install pre_commit | cat
+
+script:
+  - pre-commit run --all-files
+
+notifications:
+  email: false
