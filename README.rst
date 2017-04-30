@@ -1,6 +1,9 @@
 rcfiles
 *******
 
+.. image:: https://travis-ci.org/adarnimrod/rcfiles.svg?branch=master
+    :target: https://travis-ci.org/adarnimrod/rcfiles
+
 A repository with my rc files. The purpose is for me to have revision control of
 my home directory, maybe send somebody a link to an example file and to be
 browsable for others (if anyone wants to copy some snippet). Because these are
