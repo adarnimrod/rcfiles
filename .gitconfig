@@ -17,7 +17,7 @@
     serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
     staash = stash --all
     stat = status --short --branch
-    tag-version = !git tag -f "v$(cat VERSION)"
+    tag-version = !git tag -af "v$(cat VERSION)"
     tracking = rev-parse --abbrev-ref --symbolic-full-name @{upstream}
     trigger = !git commit --allow-empty --no-edit --amend && git push --force-with-lease
 [color]
