@@ -1,7 +1,8 @@
 #!/bin/sh
-# shellcheck disable=SC2046
+# Deliberately don't set -e, allow failures to continue silently.
 set -u
-docker rm $(docker ps --quiet --filter=status=exited) 2>/dev/null
-docker rm $(docker ps --quiet --filter=status=created) 2>/dev/null
-docker rmi $(docker images --quiet --filter=dangling=true) 2>/dev/null
-docker volume rm $(docker volume ls --quiet --filter=dangling=true) 2>/dev/null
+
+docker ps --quiet --filter=status=exited | xargs -r docker rm --volumes 2>/dev/null
+docker ps --quiet --filter=status=created | xargs -r docker rm --volumes 2>/dev/null
+docker images --quiet --filter=dangling=true | xargs -r docker rmi 2>/dev/null
+docker volume ls --quiet --filter=dangling=true | xargs -r docker volume rm 2>/dev/null
