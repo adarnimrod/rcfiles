@@ -9,6 +9,6 @@
     sha: v0.4.0
     hooks:
     -   id: shell-lint
-        files: \.bashrc|\.githooks/post-merge|\.profile|Documents/Shore/cleanup/.*-clean|Documents/train-wifi\.sh
+        files: \.bashrc|\.githooks/post-merge|\.profile|Documents/Shore/cleanup/docker-.*|Documents/train-wifi\.sh
     -   id: shellcheck
         files: \.bashrc|\.githooks/post-merge|\.profile|Documents/Shore/cleanup/docker-.*|Documents/train-wifi\.sh
