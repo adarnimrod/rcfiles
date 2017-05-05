@@ -17,8 +17,14 @@ WARNING: This will overwrite your existing files.
 
 .. code:: shell
 
-    git clone https://www.shore.co.il/git/rcfiles
-    rcfiles/install
+    cd
+    git clone https://www.shore.co.il/git/rcfiles .git
+    sed -i '/bare/d' .git/config
+    git reset --hard
+    git bull
+    cd .githooks
+    find  -type f -exec ln -sf ../../.githooks/{} ../.git/hooks/ \;
+    cd ../
 
 License
 -------

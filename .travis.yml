@@ -1,19 +1,9 @@
 ---
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      sudo: false
-      group: beta
-      language: python
-      python: 3.6
-      install:
-          - pip install pre_commit | cat
-    - os: osx
-      language: generic
-      install:
-          - brew install shellcheck
-          - pip install pre_commit | cat
+language: python
+python: "3.6"
+dist: trusty
+sudo: false
+group: beta
 cache:
   - pip
   - directories:
@@ -26,10 +16,11 @@ addons:
     packages:
       - shellcheck
 
+install:
+  - pip install pre_commit | cat
+
 script:
   - pre-commit run --all-files
-  - cd; $TRAVIS_BUILD_DIR/install
-  - git bull
 
 notifications:
   email: false
