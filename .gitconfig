@@ -1,5 +1,6 @@
 [alias]
     amend = commit --amend
+    autosquash = !GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash
     bull = submodule update --remote
     clear = clean -fdx
     dif = diff --color-words
@@ -36,7 +37,9 @@
     ff = false
 [push]
     followTags = true
-	default = simple
+    default = simple
+[rebase]
+    autoSquash = true
 [receive]
     fsckObjects = true
 [tag]
