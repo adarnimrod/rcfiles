@@ -110,6 +110,7 @@ docker-dev () {
 }
 
 sync-comics () {
+    local this_month last_month
     this_month="$( date '+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
     last_month="$( date --date '1 month ago' '+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
     rsync --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
