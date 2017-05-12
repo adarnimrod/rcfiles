@@ -76,7 +76,7 @@ alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv
 alias httpbin='tox -c $HOME/.tox.ini.httpbin --'
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 
-deduce-aws-region () {
+deduce_aws_region () {
     AWS_DEFAULT_REGION="$(curl --silent \
         http://169.254.169.254/latest/dynamic/instance-identity/document \
         | sed -n 's/ *"region" : "\([a-z0-9\-]*\)"/\1/gp')"
@@ -84,16 +84,16 @@ deduce-aws-region () {
     echo "$AWS_DEFAULT_REGION"
 }
 
-ssh-keyscan-add () {
+ssh_keyscan_add () {
     # shellcheck disable=SC2094
     (ssh-keyscan "$@"; cat "$HOME/.ssh/known_hosts") | sort -u >> "$HOME/.ssh/known_hosts"
 }
 
-gen-csr () {
+gen_csr () {
     openssl req -new -newkey rsa:4096 -nodes -out "$1.csr" -keyout "$1.key"
 }
 
-docker-dev () {
+docker_dev () {
     local root repo uid
     root="$(git rev-parse --show-toplevel)"
     repo="$(basename "$root")"
@@ -110,7 +110,7 @@ docker-dev () {
                --workdir "$PWD" "$repo:dev" /bin/sh -l
 }
 
-sync-comics () {
+sync_comics () {
     local this_month last_month
     this_month="$( date '+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
     last_month="$( date --date '1 month ago' '+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
