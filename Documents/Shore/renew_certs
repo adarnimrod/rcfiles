@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+
+echo Renew cert for shore.co.il,www.shore.co.il.
+ssh ns1.shore.co.il 'sudo letsencrypt certonly --webroot --webroot-path /var/www/htdocs/www.shore.co.il -d shore.co.il,www.shore.co.il'
+
+echo Reload Nginx.
+ssh ns1.shore.co.il 'sudo /etc/rc.d/nginx reload'
+
+echo Renew cert for imap.shore.co.il,smtp.shore.co.il.
+ssh ns1.shore.co.il 'sudo letsencrypt certonly --webroot --webroot-path /var/www/htdocs/mail.shore.co.il/ -d imap.shore.co.il,smtp.shore.co.il'
+
+echo Copy private key to imap container.
+ssh ns1.shore.co.il 'sudo cat /etc/letsencrypt/live/imap.shore.co.il/privkey.pem' | ssh host01.shore.co.il 'cat | sudo tee /var/lib/lxc/imap/rootfs/etc/dovecot/private/dovecot.key' > /dev/null
+
+echo Copy cert to imap container.
+ssh ns1.shore.co.il 'sudo cat /etc/letsencrypt/live/imap.shore.co.il/cert.pem' | ssh host01.shore.co.il 'cat | sudo tee /var/lib/lxc/imap/rootfs/etc/dovecot/private/dovecot.crt' > /dev/null
+
+echo Restart Dovecot.
+ssh host01.shore.co.il 'sudo lxc-attach --name imap -- service dovecot restart'
+
+echo Copy private key to smtp container.
+ssh ns1.shore.co.il 'sudo cat /etc/letsencrypt/live/imap.shore.co.il/privkey.pem' | ssh host01.shore.co.il 'cat | sudo tee /var/lib/lxc/smtp/rootfs/etc/exim4/exim.key' > /dev/null
+
+echo Copy cert to smtp container.
+ssh ns1.shore.co.il 'sudo cat /etc/letsencrypt/live/imap.shore.co.il/cert.pem' | ssh host01.shore.co.il 'cat | sudo tee /var/lib/lxc/smtp/rootfs/etc/exim4/exim.crt' > /dev/null
+
+echo Restart Exim.
+ssh host01.shore.co.il 'sudo lxc-attach --name smtp -- service exim4 restart'
