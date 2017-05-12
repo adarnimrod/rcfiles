@@ -10,6 +10,6 @@
     sha: master
     hooks:
     -   id: shell-lint
-        files: \.bashrc|\.githooks/post-merge|\.profile|Documents/Shore/cleanup/docker-.*|Documents/train-wifi\.sh|install
+        files: &shellscripts '\.bashrc|\.githooks/post-merge|\.profile|Documents/Shore/cleanup/docker-.*|Documents/train-wifi\.sh|renew-certs'
     -   id: shellcheck
-        files: \.bashrc|\.githooks/post-merge|\.profile|Documents/Shore/cleanup/docker-.*|Documents/train-wifi\.sh|install
+        files: *shellscripts
