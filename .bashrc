@@ -85,8 +85,8 @@ deduce_aws_region () {
 }
 
 ssh_keyscan_add () {
-    # shellcheck disable=SC2094
-    (ssh-keyscan "$@"; cat "$HOME/.ssh/known_hosts") | sort -u >> "$HOME/.ssh/known_hosts"
+    ssh-keyscan "$@" >> "$HOME/.ssh/known_hosts"
+    sort -uo "$HOME/.ssh/known_hosts" "$HOME/.ssh/known_hosts"
 }
 
 gen_csr () {
