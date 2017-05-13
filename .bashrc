@@ -117,5 +117,10 @@ sync_comics () {
     rsync --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
 }
 
+bfg () {
+    [ -f "$HOME/Downloads/bfg.jar" ] || curl 'https://search.maven.org/remote_content?g=com.madgag&a=bfg&v=LATEST' -sLo "$HOME/Downloads/bfg.jar"
+    java -jar "$HOME/Downloads/bfg.jar" "$@"
+}
+
 # shellcheck disable=SC1090
 . "$HOME/Documents/Shore/bundle_certs/bundle_certs"
