@@ -50,6 +50,7 @@ export PATH=$PATH:$HOME/Documents/Shore/ssl-ca
 export PATH=$PATH:$HOME/.cargo/bin
 export PYTHONSTARTUP=~/.pythonstartup
 export AWS_DEFAULT_PROFILE='shore'
+export ANSIBLE_VERBOSITY=2
 alias ll='ls -lha'
 alias la='ls -A'
 alias l='ls -CF'
