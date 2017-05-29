@@ -1,0 +1,3 @@
+#!/bin/sh
+set -eu
+find "$HOME/.ssh/config.d/" -type f -exec cat {} \; > "$HOME/.ssh/config"

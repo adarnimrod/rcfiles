@@ -1,5 +1,5 @@
 #!/bin/sh
 set -eu
 cd "$(git rev-parse --show-toplevel)"
-. ./.bashrc
-gen-ssh-config
+echo Generating SSH config
+Documents/bin/gen-ssh-config

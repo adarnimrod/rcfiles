@@ -48,6 +48,7 @@ export PATH=$PATH:$HOME/Documents/Shore/cleanup
 export PATH=$PATH:$HOME/Documents/Shore/ssh-ca
 export PATH=$PATH:$HOME/Documents/Shore/ssl-ca
 export PATH=$PATH:$HOME/.cargo/bin
+export PATH=$PATH:$HOME/Documents/bin
 export PYTHONSTARTUP=~/.pythonstartup
 export AWS_DEFAULT_PROFILE='shore'
 export ANSIBLE_VERBOSITY=2
@@ -64,7 +65,6 @@ alias missing-recommends="aptitude search '~RBrecommends:~i'"
 alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
-alias gen-ssh-config='cat $HOME/.ssh/config.d/* > $HOME/.ssh/config'
 alias concat="perl -pe 's/\n/\\\n/g'"
 alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ggo='sudo GOPATH=/usr/share/go go'

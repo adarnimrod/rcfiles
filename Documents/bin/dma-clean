@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+service cron stop
+ps aux | awk '/dma|send-mail/ {print $2}' | xargs kill
+find /var/spool/dma \! -name flush -delete
+service cron start
