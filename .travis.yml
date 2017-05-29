@@ -8,15 +8,20 @@ cache:
   - pip
   - directories:
       - $HOME/.pre-commit
+      - $HOME/.cabal
+      - $HOME/.ghc
 
 addons:
   apt:
-    sources:
-      - sourceline: 'deb http://archive.ubuntu.com/ubuntu trusty-backports main universe multiverse'
     packages:
-      - shellcheck
+      - cabal-install
+      - ghc
+
+env:
+    PATH: $PATH:$HOME/.cabal/bin
 
 install:
+  - cabal update && cabal install shellcheck
   - pip install pre_commit | cat
 
 script:
