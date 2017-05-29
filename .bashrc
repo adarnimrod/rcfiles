@@ -7,7 +7,7 @@ export HISTCONTROL=ignoreboth:erasedups
 export HISTSIZE=100000
 export HISTFILESIZE=100000
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-if [ -n "$BASH" ]
+if [ -n "${BASH:-}" ]
 then
     shopt -s histappend
     shopt -s checkwinsize
@@ -26,7 +26,7 @@ fi
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
