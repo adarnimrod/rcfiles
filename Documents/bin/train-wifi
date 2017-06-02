@@ -61,7 +61,7 @@ iswifi "$interface" || die "Can't login to the train wifi, interface $interface 
 connection="$(wifi_connection "$interface")"
 [ "$connection" = "ISRAEL-RAILWAYS" ] || die "Can't login to the train wifi, wifi network $connection isn't ISRAEL-RAILWAYS."
 
-redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://google.com/)"
+redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://detectportal.firefox.com/success.txt)"
 logger -p user.debug "Train wifi redirect url: $redirect_url"
 login_ip="$(echo "$redirect_url" | grep --only-matching '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*')" || die "Can't login to the train wifi, redirect URL doesn't contain an IP."
 logger -p user.debug "Train wifi login IP: $login_ip"
