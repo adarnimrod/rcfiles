@@ -23,8 +23,14 @@
 
 # Logs in to the Israeli train's wifi.
 # Requires: cURL, sh, awk, logger, nmcli.
-# To install run:
+# To install, clone the repo, cd to this directory and run:
+#
 # sudo cp --preserve=mode train-wifi /etc/NetworkManager/dispatcher.d/90trainwifi
+#
+# If you don't want to clone the repo but you just want this script, run:
+#
+# curl https://www.shore.co.il/cgit/rcfiles/plain/Documents/bin/train-wifi | sudo tee /etc/NetworkManager/dispatcher.d/90trainwifi
+# sudo chmod +x /etc/NetworkManager/dispatcher.d/90trainwifi
 
 set -eu
 
