@@ -60,6 +60,7 @@ export ANSIBLE_SSH_CONTROL_PATH_DIR='/tmp/ssh-%%h'
 export ANSIBLE_GATHERING=smart
 export ANSIBLE_CACHE_PLUGIN=jsonfile
 export ANSIBLE_CACHE_PLUGIN_CONNECTION="$HOME/.ansible/facts"
+export ANSIBLE_CALLBACK_WHITELIST=profile_tasks
 alias ll='ls -lha'
 alias la='ls -A'
 alias l='ls -CF'
