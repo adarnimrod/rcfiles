@@ -22,7 +22,7 @@
     tag-version = !git tag -af "v$(cat VERSION)"
     tracking = rev-parse --abbrev-ref --symbolic-full-name @{upstream}
     trigger = !git commit --allow-empty --no-edit --amend && git push --force-with-lease
-    update-requirements = !git stash save -a -u -q && ( git ls-files '*requirements*.txt' | xargs pur -r ) && ( git commit -a -m '- Updated requirements.' || echo 'No requirements updated.' ) && git stash pop
+    update-requirements = !git stash save -a -u -q && ( git ls-files '*requirements*.txt' | xargs -n1 pur -r ) && ( git commit -a -m '- Updated requirements.' || echo 'No requirements updated.' ) && git stash pop
 [color]
     grep = true
 [core]
