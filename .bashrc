@@ -40,15 +40,16 @@ fi
 # shellcheck disable=SC2142
 [ -f /usr/local/bin/virtualenvwrapper.sh ] && . /usr/local/bin/virtualenvwrapper.sh
 
-export REPREPRO_BASE_DIR=$HOME/Documents/Shore/debian-repository
+export REPREPRO_BASE_DIR="$HOME/Documents/Shore/debian-repository"
 export EDITOR=vim
-export GOPATH=$HOME/Documents/Golang
-export PATH=$PATH:$GOPATH/bin:/usr/lib/go/bin/
-export PATH=$PATH:$HOME/Documents/Shore/cleanup
-export PATH=$PATH:$HOME/Documents/Shore/ssh-ca
-export PATH=$PATH:$HOME/Documents/Shore/ssl-ca
-export PATH=$PATH:$HOME/.cargo/bin
-export PATH=$PATH:$HOME/Documents/bin
+export GOPATH="$HOME/Documents/Golang"
+export PATH="$GOPATH/bin:/usr/lib/go/bin/:$PATH"
+export PATH="$HOME/Documents/Shore/cleanup:$PATH"
+export PATH="$HOME/Documents/Shore/ssh-ca:$PATH"
+export PATH="$HOME/Documents/Shore/ssl-ca:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.cabal/bin:$PATH"
+export PATH="$HOME/Documents/bin:$PATH"
 export PYTHONSTARTUP=~/.pythonstartup
 export AWS_DEFAULT_PROFILE='shore'
 export ANSIBLE_VERBOSITY=2
