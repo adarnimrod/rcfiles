@@ -3,3 +3,5 @@ set -eu
 cd "$(git rev-parse --show-toplevel)"
 echo Generating SSH config
 Documents/bin/gen-ssh-config
+echo Loading dconf config
+Documents/bin/dconf-load

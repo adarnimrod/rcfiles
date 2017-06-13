@@ -9,6 +9,6 @@
     sha: v0.5.4
     hooks:
     -   id: shell-lint
-        files: &shellscripts 'bashrc|post-merge|profile|docker-|train-wifi|renew-certs|dma-clean|gen-ssh-config'
+        files: &shellscripts 'bashrc|post-merge|profile|docker-|train-wifi|renew-certs|dma-clean|gen-ssh-config|dconf-load'
     -   id: shellcheck
         files: *shellscripts
