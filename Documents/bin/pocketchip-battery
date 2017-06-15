@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+current="$(cat /usr/lib/pocketchip-batt/voltage)"
+
+. "$HOME/.local/voltage"
+
+echo $(( 100 * (current - min) / (max - min) ))
