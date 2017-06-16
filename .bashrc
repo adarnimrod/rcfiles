@@ -88,6 +88,7 @@ alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias httpbin='tox -c $HOME/.tox.ini.httpbin --'
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
+alias restart-kodi='ssh xbmc.shore.co.il "sudo systemctl kill --kill-who all xorg.service"'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(curl --silent \
