@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+if ! which dconf > /dev/null
+then
+    echo "Can't find dconf, exiting."
+    exit 0
+fi
+
+dconf-load < "$HOME/.config/dconf.ini"

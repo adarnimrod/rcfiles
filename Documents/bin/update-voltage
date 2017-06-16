@@ -1,0 +1,34 @@
+#!/bin/sh
+set -eu
+# To install, add the folowing lines to your crontab:
+# PATH="~/Documents/bin:/usr/local/bin:/usr/bin:/bin"
+# */5 * * * * update-voltage
+
+filepath="$HOME/.local/voltage"
+
+update_voltage () {
+    echo "min=$1" >  "$filepath"
+    echo "max=$2" >> "$filepath"
+}
+
+current="$(cat /usr/lib/pocketchip-batt/voltage)"
+
+mkdir -p "$(dirname "$filepath" )"
+
+if [ ! -f "$filepath" ]
+then
+    update_voltage "$current" "$current"
+    exit 0
+fi
+
+. "$filepath"
+
+if [ "$current" -gt "$max" ]
+then
+    max="$current"
+    update_voltage "$min" "$max"
+elif [ "$current" -lt "$min" ]
+then
+    min="$current"
+    update_voltage "$min" "$max"
+fi
