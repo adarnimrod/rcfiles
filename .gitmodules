@@ -18,3 +18,6 @@
 	path = Documents/Shore/Ansible/ansible-desktop-playbooks
 	url = https://www.shore.co.il/git/ansible-desktop-playbooks
 	branch = master
+[submodule "Documents/Shore/poquita"]
+	path = Documents/Shore/poquita
+	url = cgit.shore.co.il:/srv/git/poquita
