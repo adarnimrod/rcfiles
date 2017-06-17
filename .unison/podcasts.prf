@@ -1,0 +1,7 @@
+root = Downloads/Podcasts/
+root = ssh://xbmc.shore.co.il//srv/library/nimrod/Podcasts
+path = .
+batch = true
+
+#nocreation
+#nodeletion
