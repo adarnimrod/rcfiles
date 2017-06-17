@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+cd "$HOME/.githooks"
+find  -type f -exec ln -sf ../../.githooks/{} ../.git/hooks/ \;
