@@ -22,9 +22,7 @@ WARNING: This will overwrite your existing files.
     sed -i '/bare/d' .git/config
     git reset --hard
     git bull
-    cd .githooks
-    find  -type f -exec ln -sf ../../.githooks/{} ../.git/hooks/ \;
-    cd ../
+    Documents/bin/install-git-hooks
 
 License
 -------
