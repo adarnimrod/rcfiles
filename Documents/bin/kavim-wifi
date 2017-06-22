@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Logs in to the Israeli train's wifi.
+# Logs in to the Kavim's buses wifi.
 # Requires: cURL, sh, awk, logger, nmcli.
 # To install, clone the repo, cd to this directory and run:
 #
@@ -29,8 +29,8 @@
 #
 # If you don't want to clone the repo but you just want this script, run:
 #
-# curl https://www.shore.co.il/cgit/rcfiles/plain/Documents/bin/train-wifi | sudo tee /etc/NetworkManager/dispatcher.d/90trainwifi
-# sudo chmod +x /etc/NetworkManager/dispatcher.d/90trainwifi
+# curl https://www.shore.co.il/cgit/rcfiles/plain/Documents/bin/kavim-wifi | sudo tee /etc/NetworkManager/dispatcher.d/90kavimwifi
+# sudo chmod +x /etc/NetworkManager/dispatcher.d/90kavimwifi
 
 set -eu
 
@@ -65,13 +65,11 @@ which nmcli > /dev/null || die "Can't login to the kavim wifi, nmcli is not inst
 [ "$action" = 'up' ] || die "Can't login to the kavim wifi, action $action isn't up."
 iswifi "$interface" || die "Can't login to the kavim wifi, interface $interface isn't wifi."
 connection="$(wifi_connection "$interface")"
-[ "$connection" = "Kavim-wifi" ] || die "Can't login to the kavim wifi, wifi network $connection isn't ISRAEL-RAILWAYS."
+[ "$connection" = "Kavim-wifi" ] || die "Can't login to the kavim wifi, wifi network $connection isn't Kavim-wifi."
 
 redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://detectportal.firefox.com/success.txt)"
-logger -p user.debug "Train wifi redirect url: $redirect_url"
-login_ip="$(echo "$redirect_url" | grep --only-matching '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*')" || die "Can't login to the kavim wifi, redirect URL doesn't contain an IP."
-logger -p user.debug "Train wifi login IP: $login_ip"
-login_url="http://$login_ip/loginHandler.php?allowAccess=true"
-logger -p user.debug "Train wifi login URL: $login_url"
+logger -p user.debug "Kavim wifi redirect url: $redirect_url"
+login_url="$(echo "$redirect_url&command=login&access_mode=open&name=" | sed 's@https://[a-zA-Z0-9_/:\.\-\?]*\?@https://guest1.ic.peplink.com/cp/login?@')"
+logger -p user.debug "Kavim wifi login URL: $login_url"
 http_code="$(curl --output /dev/null --silent --write-out '%{http_code}' "$login_url")"
-logger -p user.debug "Train wifi login HTTP code: $http_code"
+logger -p user.debug "Kavim wifi login HTTP code: $http_code"
