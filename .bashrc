@@ -90,6 +90,8 @@ alias httpbin='tox -c $HOME/.tox.ini.httpbin --'
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias restart-kodi='ssh xbmc.shore.co.il "sudo systemctl kill --kill-who all xorg.service"'
 alias sync-podcasts='(cd && unison podcasts)'
+alias tolower='awk "{print tolower(\$0)}"'
+alias toupper='awk "{print toupper(\$0)}"'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(curl --silent \
