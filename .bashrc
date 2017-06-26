@@ -92,6 +92,7 @@ alias restart-kodi='ssh xbmc.shore.co.il "sudo systemctl kill --kill-who all xor
 alias sync-podcasts='(cd && unison podcasts)'
 alias tolower='awk "{print tolower(\$0)}"'
 alias toupper='awk "{print toupper(\$0)}"'
+alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(curl --silent \
