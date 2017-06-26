@@ -34,6 +34,8 @@
 
 set -eu
 
+alias tolower='awk "{print tolower(\$0)}"'
+
 die () {
     logger -p user.err "$@"
     exit 1
@@ -64,8 +66,8 @@ which nmcli > /dev/null || die "Can't login to the kavim wifi, nmcli is not inst
 
 [ "$action" = 'up' ] || die "Can't login to the kavim wifi, action $action isn't up."
 iswifi "$interface" || die "Can't login to the kavim wifi, interface $interface isn't wifi."
-connection="$(wifi_connection "$interface")"
-[ "$connection" = "Kavim-wifi" ] || die "Can't login to the kavim wifi, wifi network $connection isn't Kavim-wifi."
+connection="$(wifi_connection "$interface" | tolower)"
+[ "$connection" = "kavim-wifi" ] || die "Can't login to the kavim wifi, wifi network $connection isn't Kavim-wifi."
 
 redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://detectportal.firefox.com/success.txt)"
 logger -p user.debug "Kavim wifi redirect url: $redirect_url"
