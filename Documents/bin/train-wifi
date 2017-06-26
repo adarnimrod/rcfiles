@@ -34,6 +34,8 @@
 
 set -eu
 
+alias toupper='awk "{print toupper(\$0)}"'
+
 die () {
     logger -p user.err "$@"
     exit 1
@@ -64,7 +66,7 @@ which nmcli > /dev/null || die "Can't login to the train wifi, nmcli is not inst
 
 [ "$action" = 'up' ] || die "Can't login to the train wifi, action $action isn't up."
 iswifi "$interface" || die "Can't login to the train wifi, interface $interface isn't wifi."
-connection="$(wifi_connection "$interface")"
+connection="$(wifi_connection "$interface" | toupper)"
 [ "$connection" = "ISRAEL-RAILWAYS" ] || die "Can't login to the train wifi, wifi network $connection isn't ISRAEL-RAILWAYS."
 
 redirect_url="$(curl --output /dev/null --silent --write-out '%{redirect_url}' http://detectportal.firefox.com/success.txt)"
