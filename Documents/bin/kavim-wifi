@@ -34,6 +34,7 @@
 
 set -eu
 
+# shellcheck disable=SC2142
 alias tolower='awk "{print tolower(\$0)}"'
 
 die () {
