@@ -20,7 +20,7 @@ then
     # shellcheck disable=SC1090
     # added by travis gem
     [ -f "$HOME/.travis/travis.sh" ] && . "$HOME/.travis/travis.sh"
-    
+
     # shellcheck disable=SC2015
     which aws_completer >/dev/null && complete -C 'aws_completer' aws ||
         true
@@ -77,7 +77,7 @@ alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
-# shellcheck disable=2142
+# shellcheck disable=SC2142
 alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
