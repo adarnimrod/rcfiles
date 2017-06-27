@@ -20,6 +20,10 @@ then
     # shellcheck disable=SC1090
     # added by travis gem
     [ -f "$HOME/.travis/travis.sh" ] && . "$HOME/.travis/travis.sh"
+    
+    # shellcheck disable=SC2015
+    which aws_completer >/dev/null && complete -C 'aws_completer' aws ||
+        true
 fi
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -90,7 +94,9 @@ alias httpbin='tox -c $HOME/.tox.ini.httpbin --'
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias restart-kodi='ssh xbmc.shore.co.il "sudo systemctl kill --kill-who all xorg.service"'
 alias sync-podcasts='(cd && unison podcasts)'
+# shellcheck disable=SC2142
 alias tolower='awk "{print tolower(\$0)}"'
+# shellcheck disable=SC2142
 alias toupper='awk "{print toupper(\$0)}"'
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
 
