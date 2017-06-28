@@ -65,7 +65,8 @@ which awk > /dev/null || die "Can't login to the train wifi, awk is not installe
 which logger > /dev/null || die "Can't login to the train wifi, logger is not installed."
 which nmcli > /dev/null || die "Can't login to the train wifi, nmcli is not installed."
 
-[ "$action" = 'up' ] || die "Can't login to the train wifi, action $action isn't up."
+echo "$action" | grep -xq 'up\|dhcp4-change\|dhcp6-change\|connectivity-change' || \
+    die "Can't login to the train wifi, action $action isn't up nor changed."
 iswifi "$interface" || die "Can't login to the train wifi, interface $interface isn't wifi."
 connection="$(wifi_connection "$interface" | toupper)"
 [ "$connection" = "ISRAEL-RAILWAYS" ] || die "Can't login to the train wifi, wifi network $connection isn't ISRAEL-RAILWAYS."
