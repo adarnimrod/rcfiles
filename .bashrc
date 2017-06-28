@@ -99,6 +99,8 @@ alias tolower='awk "{print tolower(\$0)}"'
 # shellcheck disable=SC2142
 alias toupper='awk "{print toupper(\$0)}"'
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
+alias urlencode='perl -MURI::Escape -ne "chomp;print uri_escape(\$_), \"\n\""'
+alias urldecode='perl -MURI::Escape -ne "chomp;print uri_unescape(\$_), \"\n\""'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(curl --silent \
@@ -145,6 +147,10 @@ sync_comics () {
 bfg () {
     [ -f "$HOME/Downloads/bfg.jar" ] || curl 'https://search.maven.org/remote_content?g=com.madgag&a=bfg&v=LATEST' -sLo "$HOME/Downloads/bfg.jar"
     java -jar "$HOME/Downloads/bfg.jar" "$@"
+}
+
+ddg () {
+    lynx "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
 }
 
 # shellcheck disable=SC1090
