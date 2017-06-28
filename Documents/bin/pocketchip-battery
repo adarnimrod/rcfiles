@@ -3,6 +3,8 @@ set -eu
 
 current="$(cat /usr/lib/pocketchip-batt/voltage)"
 
+# shellcheck disable=SC1090
 . "$HOME/.local/voltage"
 
+# shellcheck disable=SC2154
 echo $(( 100 * (current - min) / (max - min) ))

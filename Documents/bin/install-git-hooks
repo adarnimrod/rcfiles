@@ -2,4 +2,4 @@
 set -eu
 
 cd "$HOME/.githooks"
-find  -type f -exec ln -sf ../../.githooks/{} ../.git/hooks/ \;
+find . -type f -exec ln -sf ../../.githooks/{} ../.git/hooks/ \;

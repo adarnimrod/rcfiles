@@ -21,6 +21,7 @@ then
     exit 0
 fi
 
+# shellcheck disable=SC1090
 . "$filepath"
 
 if [ "$current" -gt "$max" ]
