@@ -10,8 +10,8 @@ browsable for others (if anyone wants to copy some snippet). Because these are
 my actual files that I use right now, the repository is cloned directly to my
 home directory and is not meant for mass consumption as it is.
 
-Usage
------
+Installation
+------------
 
 WARNING: This will overwrite your existing files.
 
@@ -23,6 +23,15 @@ WARNING: This will overwrite your existing files.
     git reset --hard
     git bull
     Documents/bin/install-git-hooks
+
+Dependencies
+------------
+
+All of the dependencies are installed with the workstation playbooks inside the
+ansible-desktop-playbooks submodule, please consult the README in the submodule.
+Care has been given to minimizing the dependencies and making the scripts as
+cross-platform as reasonably possible, so most script would run without any
+installing any tools not found on a Unix-like OS by default.
 
 License
 -------
