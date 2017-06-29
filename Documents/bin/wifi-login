@@ -1,0 +1,95 @@
+#!/bin/sh
+# The MIT License (MIT)
+#
+# Copyright (c) 2017 Adar Nimrod <nimrod@shore.co.il>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Auto login to WiFi portals, currently the israeli train and Kavim buses.
+# Requires: cURL, sh, awk, logger, nmcli.
+# To install, clone the repo, cd to this directory and run:
+#
+# sudo cp --preserve=mode wifi-login /etc/NetworkManager/dispatcher.d/90wifi-login
+#
+# If you don't want to clone the repo but you just want this script, run:
+#
+# curl https://www.shore.co.il/git/rcfiles/plain/Documents/bin/wifi-login | sudo tee /etc/NetworkManager/dispatcher.d/90wifi-login
+# sudo chmod +x /etc/NetworkManager/dispatcher.d/90wifi-login
+
+set -eu
+
+# shellcheck disable=SC2142
+alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
+
+die () {
+    logger -p user.err "$@"
+    exit 1
+}
+
+iswifi () {
+    # TODO: Check if a network interface is passed.
+    [ "$(nmcli --terse --fields GENERAL.TYPE device show "$1" | awk -F: '{print $2}')" = 'wifi' ]
+}
+
+wifi_connection () {
+    nmcli --terse --fields GENERAL.CONNECTION device show "$1" | awk -F: '{print tolowe(r$2)}'
+}
+
+if [ $# -ne 2 ]
+then
+    echo "Usage: $0 interface action"
+    exit 1
+else
+    interface="$1"
+    action="$2"
+fi
+
+which curl > /dev/null || die "Can't login to the WiFi network, cURL is not installed."
+which awk > /dev/null || die "Can't login to the WiFi network, awk is not installed."
+which logger > /dev/null || die "Can't login to the WiFi network, logger is not installed."
+which nmcli > /dev/null || die "Can't login to the WiFi network, nmcli is not installed."
+
+echo "$action" | grep -xq 'up\|dhcp4-change\|dhcp6-change\|connectivity-change' || \
+    die "Can't login to the WiFi network, action $action isn't up nor changed."
+iswifi "$interface" || die "Can't login to the WiFi network, interface $interface isn't WiFi"
+redirect_url="$(wifi-portal)" || die "Can't login to the WiFi network. failed to get the redirect URL."
+logger -p user.debug "wiFi redirect url: $redirect_url"
+[ "$redirect_url" != "" ] || die "Can't login to the WiFi network, not behind a captive portal."
+connection="$(wifi_connection "$interface")"
+if [ "$connection" = "kavim-wifi" ]
+then
+    login_url="$(echo "$redirect_url&command=login&access_mode=open&name=" | sed 's@https://[a-zA-Z0-9_/:\.\-\?]*\?@https://guest1.ic.peplink.com/cp/login?@')"
+elif [ "$connection" = "israel-railways" ]
+then
+    login_ip="$(echo "$redirect_url" | grep --only-matching '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*')" || die "Can't login to the train WiFi, redirect URL doesn't contain an IP."
+    logger -p user.debug "Train WiFi login IP: $login_ip"
+    login_url="http://$login_ip/loginHandler.php?allowAccess=true"
+else
+    die "Can't login to WiFi, not a known SSID."
+fi
+logger -p user.debug "WiFi login URL: $login_url"
+http_code="$(curl --output /dev/null --silent --write-out '%{http_code}' "$login_url")"
+logger -p user.debug "WiFi login HTTP code: $http_code"
+redirect_url="$(wifi-portal)" || die "Failed to get the redirect URL."
+if [ "$redirect_url" = "" ]
+then
+    logger -p user.debug "Successfuly logged in to the WiFi network."
+else
+    logger -p user.debug "Failed to login to the WiFi network, still redirecting to a captive portal."
+fi
