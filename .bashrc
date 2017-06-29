@@ -48,7 +48,6 @@ export REPREPRO_BASE_DIR="$HOME/Documents/Shore/debian-repository"
 export EDITOR=vim
 export GOPATH="$HOME/Documents/Golang"
 export PATH="$GOPATH/bin:/usr/lib/go/bin/:$PATH"
-export PATH="$HOME/Documents/Shore/cleanup:$PATH"
 export PATH="$HOME/Documents/Shore/ssh-ca:$PATH"
 export PATH="$HOME/Documents/Shore/ssl-ca:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
