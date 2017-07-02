@@ -48,7 +48,7 @@ iswifi () {
 }
 
 wifi_connection () {
-    nmcli --terse --fields GENERAL.CONNECTION device show "$1" | awk -F: '{print tolowe(r$2)}'
+    nmcli --terse --fields GENERAL.CONNECTION device show "$1" | awk -F: '{print tolower(r$2)}'
 }
 
 if [ $# -ne 2 ]
