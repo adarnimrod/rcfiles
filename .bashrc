@@ -104,9 +104,16 @@ alias transmission-remote='ssh -fNo ExitOnForwardFailure=yes xbmc.shore.co.il &&
 alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
 
 deduce_aws_region () {
-    AWS_DEFAULT_REGION="$(curl --silent \
-        http://169.254.169.254/latest/dynamic/instance-identity/document \
-        | sed -n 's/ *"region" : "\([a-z0-9\-]*\)"/\1/gp')"
+    AWS_DEFAULT_REGION="$(python << EOF
+from __future__ import print_function
+try:
+    from urllib import urlopen
+except ImportError:
+    from urllib.request import urlopen
+import json
+print(json.load(urlopen('http://169.254.169.254/latest/dynamic/instance-identity/document'))['region'])
+EOF
+    )"
     export AWS_DEFAULT_REGION
     echo "$AWS_DEFAULT_REGION"
 }
