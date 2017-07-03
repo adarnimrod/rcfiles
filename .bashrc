@@ -102,6 +102,7 @@ alias urlencode='perl -MURI::Escape -ne "chomp;print uri_escape(\$_), \"\n\""'
 alias urldecode='perl -MURI::Escape -ne "chomp;print uri_unescape(\$_), \"\n\""'
 alias transmission-remote='ssh -fNo ExitOnForwardFailure=yes xbmc.shore.co.il && transmission-remote'
 alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
+alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(python << EOF
