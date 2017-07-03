@@ -100,6 +100,7 @@ alias toupper='awk "{print toupper(\$0)}"'
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
 alias urlencode='perl -MURI::Escape -ne "chomp;print uri_escape(\$_), \"\n\""'
 alias urldecode='perl -MURI::Escape -ne "chomp;print uri_unescape(\$_), \"\n\""'
+alias transmission-remote='ssh -fNo ExitOnForwardFailure=yes xbmc.shore.co.il && transmission-remote'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(curl --silent \
