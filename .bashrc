@@ -101,6 +101,7 @@ alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /
 alias urlencode='perl -MURI::Escape -ne "chomp;print uri_escape(\$_), \"\n\""'
 alias urldecode='perl -MURI::Escape -ne "chomp;print uri_unescape(\$_), \"\n\""'
 alias transmission-remote='ssh -fNo ExitOnForwardFailure=yes xbmc.shore.co.il && transmission-remote'
+alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(curl --silent \
