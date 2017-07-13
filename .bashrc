@@ -162,5 +162,11 @@ ddg () {
     lynx "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
 }
 
+bump () {
+    semver-bump "$1-release" && \
+    git commit VERSION -m"- Bumped $1 version." && \
+    git tag-version
+}
+
 # shellcheck disable=SC1090
 . "$HOME/Documents/Shore/bundle_certs/bundle_certs"
