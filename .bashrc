@@ -168,5 +168,21 @@ bump () {
     git tag-version
 }
 
+match_ssl_pair () {
+    if [ "$#" -ne 2 ]
+    then
+        echo "Usage: match_ssl_pair private_key certificate"
+        return 1
+    fi
+    tempkey="$(mktemp)"
+    tempcert="$(mktemp)"
+    openssl pkey -pubout -outform PEM -in "$1" > "$tempkey"
+    openssl x509 -pubkey -noout -in "$2" > "$tempcert"
+    cmp "$tempkey" "$tempcert" > /dev/null
+    exitcode="$?"
+    rm "$tempkey" "$tempcert"
+    return "$exitcode"
+}
+
 # shellcheck disable=SC1090
 . "$HOME/Documents/Shore/bundle_certs/bundle_certs"
