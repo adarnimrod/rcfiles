@@ -14,6 +14,7 @@
     pul = pull --progress
     pull-force = !git fetch && git reset --hard "$(git tracking)"
     push-force = push --force-with-lease
+    pushes = !git remote | xargs -n1 git push
     root = rev-parse --show-toplevel
     serve-git = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
     serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
