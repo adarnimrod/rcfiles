@@ -13,7 +13,7 @@ home directory and is not meant for mass consumption as it is.
 Installation
 ------------
 
-WARNING: This will overwrite your existing files.
+*WARNING: This will overwrite your existing files.*
 
 .. code:: shell
 
