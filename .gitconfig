@@ -2,7 +2,8 @@
     amend = commit --amend
     autosquash = !GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash
     bull = submodule update --remote --init
-    clear = clean -fdx
+    cleaan = clean -fdX
+    cleaaan = clean -fdx
     dif = diff --color-words
     empty-commit = commit --allow-empty
 	exec = "!exec "
