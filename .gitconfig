@@ -36,6 +36,8 @@
 [fetch]
     fsckobjects = true
     prune = true
+[grep]
+    linenumber = true
 [merge]
     tool = meld
     ff = false
