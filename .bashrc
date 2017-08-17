@@ -146,9 +146,10 @@ docker_dev () {
 }
 
 sync_comics () {
-    local this_month last_month
-    this_month="$( date '+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
-    last_month="$( date --date '1 month ago' '+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*' )"
+    local this_month last_month format
+    format='+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*'
+    this_month="$( date "$format" )"
+    last_month="$( date --date '1 month ago' "$format" )"
     rsync --prune-empty-dirs --ignore-missing-args --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
     find "$HOME/Downloads/Comics/" -name "$(date --date '2 month ago' +'0-Day\ Week\ of\ %Y.%m.*')" -exec rm -r {} +
 }
