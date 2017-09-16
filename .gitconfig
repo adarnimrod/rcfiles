@@ -8,8 +8,9 @@
     empty-commit = commit --allow-empty
 	exec = "!exec "
     ff = merge --no-edit --ff-only master
-    fixup = commit --fixup
+    fixup = !git commit --fixup $(git last-commit)
     forget = reset HEAD^
+    last-commit = "!git log --no-merges --abbrev-commit --format=\"%h %s\" | awk '{if ($2 != \"fixup!\" && $2 != \"squash!\") {print $1; exit}}'"
     merg = merge --no-edit
     posh = push --set-upstream origin HEAD
     pul = pull --progress
@@ -19,6 +20,7 @@
     root = rev-parse --show-toplevel
     serve-git = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
     serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
+    squash = !git commit --squash $(git last-commit)
     staash = stash --all
     stat = status --short --branch
     tag-version = !git tag --annotate --force --message "v$(cat VERSION)" "v$(cat VERSION)"
