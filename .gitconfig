@@ -1,6 +1,6 @@
 [alias]
     amend = commit --amend
-    autosquash = !GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash
+    autosquash = !GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash $(git last-commit)^
     bull = submodule update --remote --init
     cleaan = clean -fdX
     cleaaan = clean -fdx
