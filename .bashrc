@@ -85,7 +85,7 @@ alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ggo='sudo GOPATH=/usr/share/go go'
 alias ecr-login='eval $(aws ecr get-login)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
-alias apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
+alias apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean && flatpak update --no-deploy' && flatpak --user update --no-deploy"
 alias docker-build='docker build -t "$(basename $PWD)" ./'
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
