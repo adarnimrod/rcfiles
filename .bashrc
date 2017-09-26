@@ -104,6 +104,7 @@ alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
 alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
 alias clean-swp="find \$HOME/ -name '*.swp' -delete"
 alias boxssh="ssh -i \$HOME/.ssh/bullguard-box_rsa -l root -p 64222"
+alias todo="vim \$HOME/Documents/TODO.yml"
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(python << EOF
