@@ -29,8 +29,6 @@
     update-requirements = !git stash save -a -u -q && ( git ls-files '*requirements*.txt' | xargs -n1 pur -r ) && ( git commit -a -m '- Updated requirements.' || echo 'No requirements updated.' ) && git stash pop
 [color]
     grep = true
-[core]
-    excludesfile = ~/.gitignore_global
 [diff]
 	tool = meld
 [difftool]
