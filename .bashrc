@@ -66,6 +66,7 @@ export ANSIBLE_CACHE_PLUGIN_CONNECTION="$HOME/.ansible/facts"
 export ANSIBLE_CALLBACK_WHITELIST=profile_tasks
 export LYNX_SAVE_SPACE="$HOME/Downloads"
 export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
+export VAGRANT_DEFAULT_PROVIDER="virtualbox"
 alias ll='ls -lha'
 alias la='ls -A'
 alias l='ls -CF'
