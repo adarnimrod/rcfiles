@@ -6,6 +6,7 @@ export LANG=en_US.UTF8
 export HISTCONTROL=ignoreboth:erasedups
 export HISTSIZE=100000
 export HISTFILESIZE=100000
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 if [ -n "${BASH:-}" ]
 then
     shopt -s histappend
@@ -23,8 +24,6 @@ then
     # shellcheck disable=SC2015
     which aws_completer >/dev/null && complete -C 'aws_completer' aws ||
         true
-
-    export PROMPT_COMMAND="__bash_prompt"
 fi
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -187,17 +186,6 @@ match_ssl_pair () {
     exitcode="$?"
     rm "$tempkey" "$tempcert"
     return "$exitcode"
-}
-
-__bash_prompt () {
-    local exitcode="$?"
-    history -a
-    if [ "$exitcode" -eq 0 ]
-    then
-        export PS1="\033[0m[Exit code: $exitcode] \u@\h:\w\$ "
-    else
-        export PS1="\033[0m[\033[31mExit code: $exitcode\033[0m] \u@\h:\w\$ "
-    fi
 }
 
 # shellcheck disable=SC1090
