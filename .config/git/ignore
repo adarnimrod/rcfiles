@@ -11,8 +11,10 @@ Thumbs.db
 .svn/
 .sass-cache/
 *.log
-a.out
-node-modules/
+*.out
+*.so
+node_modules/
+.npm/
 nbproject/
 *.ipynb
 .idea/
@@ -22,7 +24,7 @@ nbproject/
 .cache/
 bower_components/
 *.class
-*.jar
+*.[ewj]ar
 secring.*
 .*.kate-swp
 .swp.*
@@ -32,3 +34,15 @@ build/
 _build/
 dist/
 .tox/
+*.pdf
+*.exe
+*.dll
+*.gz
+*.tgz
+*.tar
+*.rar
+*.zip
+*.pid
+*.lock
+*.env
+.bundle/
