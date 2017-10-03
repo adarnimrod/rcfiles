@@ -47,6 +47,14 @@ fi
 # shellcheck disable=SC2142
 [ -f /usr/local/bin/virtualenvwrapper.sh ] && . /usr/local/bin/virtualenvwrapper.sh
 
+if which powerline-daemon > /dev/null && [ -f /usr/share/powerline/bindings/bash/powerline.sh ]
+then
+    export POWERLINE_BASH_CONTINUATION=1
+    export POWERLINE_BASH_SELECT=1
+    pgrep -f powerline-daemon > /dev/null || powerline-daemon -q
+    . /usr/share/powerline/bindings/bash/powerline.sh
+fi
+
 export REPREPRO_BASE_DIR="$HOME/Documents/Shore/debian-repository"
 export EDITOR=vim
 export GOPATH="$HOME/Documents/Golang"
