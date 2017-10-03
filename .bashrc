@@ -183,6 +183,11 @@ bump () {
     git tag-version
 }
 
+toux () {
+    touch "$@"
+    chmod +x "$@"
+}
+
 match_ssl_pair () {
     if [ "$#" -ne 2 ]
     then
