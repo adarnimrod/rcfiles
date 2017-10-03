@@ -14,8 +14,11 @@ then
     shopt -s cmdhist
     [ -f /etc/bash_completion ] && . /etc/bash_completion
 
-    # shellcheck disable=SC2086,SC1090
-    [ -d "$HOME/.bash_completion.d" ] && . $HOME/.bash_completion.d/*
+    # shellcheck disable=SC1090
+    for sourcefile in $HOME/.bash_completion.d/*
+    do
+        [ ! -f "$sourcefile" ] || . "$sourcefile"
+    done
 
     # shellcheck disable=SC1090
     # added by travis gem
