@@ -1,0 +1,13 @@
+{
+    "ext": {
+        "shell": {
+            "theme": "personal"
+        },
+        "vim": {
+            "theme": "default"
+        },
+        "tmux": {
+            "theme": "personal"
+        }
+    }
+}
