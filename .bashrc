@@ -119,6 +119,7 @@ alias clean-swp="find \$HOME/ -name '*.swp' -delete"
 alias boxssh="ssh -i \$HOME/.ssh/bullguard-box_rsa -l root -p 64222"
 alias todo="vim \$HOME/Documents/TODO.yml"
 alias sudo="sudo "
+alias presentation='docker run -itv "$PWD:/project" adarnimrod/presentation'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(python << EOF
