@@ -42,6 +42,7 @@ if [ -x /usr/bin/dircolors ]; then
     eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias grep='grep --color=auto'
+    alias diff='diff --color=auto'
 fi
 
 # shellcheck disable=SC2142
