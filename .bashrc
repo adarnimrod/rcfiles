@@ -2,16 +2,12 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export LANG=en_US.UTF8
-export HISTCONTROL=ignoreboth:erasedups
-export HISTSIZE=100000
-export HISTFILESIZE=100000
-export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 if [ -n "${BASH:-}" ]
 then
     shopt -s histappend
     shopt -s checkwinsize
     shopt -s cmdhist
+    export PROMPT_COMMAND="history -a"
     [ -f /etc/bash_completion ] && . /etc/bash_completion
 
     # shellcheck disable=SC1090
@@ -32,6 +28,13 @@ if [ -x /usr/bin/dircolors ]; then
     alias diff='diff --color=auto'
 fi
 
+export LANG=en_US.UTF8
+export HISTFILE="$HOME/.history"
+export HISTCONTROL=ignoreboth:erasedups
+export HISTSIZE=100000
+export HISTFILESIZE=100000
+export PS0="\$(__prerun)"
+export PS1="\$(__prompt)\u@\h:\w\$ "
 export REPREPRO_BASE_DIR="$HOME/Documents/Shore/debian-repository"
 export EDITOR=vim
 export GOPATH="$HOME/Documents/Golang"
@@ -55,6 +58,7 @@ export ANSIBLE_CALLBACK_WHITELIST=profile_tasks
 export LYNX_SAVE_SPACE="$HOME/Downloads"
 export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
+
 alias ll='ls -lha'
 alias la='ls -A'
 alias l='ls -CF'
@@ -181,6 +185,32 @@ match_ssl_pair () {
     exitcode="$?"
     rm "$tempkey" "$tempcert"
     return "$exitcode"
+}
+
+__run_duration () {
+    # Assumes that $HOME/.prerun.$$ exists.
+    local endtime starttime
+    endtime="$(date +%s)"
+    starttime="$(cat "$HOME/.prerun.$$")"
+    rm "$HOME/.prerun.$$"
+    echo "$(( endtime - starttime ))"
+}
+
+__prerun () {
+    date +%s > "$HOME/.prerun.$$"
+}
+
+__prompt () {
+    local exitstatus="$?"
+    local runduration prompt
+    #nocolor="\033[0m"
+    #red="\033[31;1m"
+    #yellow="\033[33;1m"
+    prompt=""
+    [ "$exitstatus" = "0" ] || prompt="[Exit status: $exitstatus] $prompt"
+    [ ! -f "$HOME/.prerun.$$" ] || runduration="$(__run_duration)"
+    [ "${runduration:-0}" -lt "10" ] || prompt="[Run duration: $runduration] $prompt"
+    echo "$prompt"
 }
 
 # shellcheck disable=SC1090
