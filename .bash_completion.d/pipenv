@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if which pipenv > /dev/null
+then
+    [ -f "$HOME/.bash_completion.d/.pipenv" ] || pipenv --completion > "$HOME/.bash_completion.d/.pipenv"
+    # shellcheck disable=SC1090
+    . "$HOME/.bash_completion.d/.pipenv"
+fi

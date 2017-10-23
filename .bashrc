@@ -19,23 +19,10 @@ then
     do
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
-
-    # shellcheck disable=SC1090
-    # added by travis gem
-    [ -f "$HOME/.travis/travis.sh" ] && . "$HOME/.travis/travis.sh"
-
-    # shellcheck disable=SC2015
-    which aws_completer >/dev/null && complete -C 'aws_completer' aws ||
-        true
 fi
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -43,17 +30,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
     alias grep='grep --color=auto'
     alias diff='diff --color=auto'
-fi
-
-# shellcheck disable=SC2142
-[ -f /usr/local/bin/virtualenvwrapper.sh ] && . /usr/local/bin/virtualenvwrapper.sh
-
-if which powerline-daemon > /dev/null && [ -f /usr/share/powerline/bindings/bash/powerline.sh ]
-then
-    export POWERLINE_BASH_CONTINUATION=1
-    export POWERLINE_BASH_SELECT=1
-    pgrep -f powerline-daemon > /dev/null || powerline-daemon -q
-    . /usr/share/powerline/bindings/bash/powerline.sh
 fi
 
 export REPREPRO_BASE_DIR="$HOME/Documents/Shore/debian-repository"
