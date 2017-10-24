@@ -207,9 +207,10 @@ __prompt () {
     #red="\033[31;1m"
     #yellow="\033[33;1m"
     prompt=""
-    [ "$exitstatus" = "0" ] || prompt="[Exit status: $exitstatus] $prompt"
     [ ! -f "$HOME/.prerun.$$" ] || runduration="$(__run_duration)"
     [ "${runduration:-0}" -lt "10" ] || prompt="[Run duration: $runduration] $prompt"
+    [ -n "${runduration:-}" ] || exitstatus='0'
+    [ "$exitstatus" = "0" ] || prompt="[Exit status: $exitstatus] $prompt"
     echo "$prompt"
 }
 
