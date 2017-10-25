@@ -96,7 +96,8 @@ alias transmission-remote='ssh -fNo ExitOnForwardFailure=yes xbmc.shore.co.il &&
 alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
 alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
 alias clean-swp="find \$HOME/ -name '*.swp' -delete"
-alias boxssh="ssh -i \$HOME/.ssh/bullguard-box_rsa -l root -p 64222"
+alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
+alias boxssh="unssh -i \$HOME/.ssh/bullguard-box_rsa -l root -p 64222"
 alias todo="vim \$HOME/Documents/TODO.yml"
 alias sudo="sudo "
 alias presentation='docker run -itv "$PWD:/project" adarnimrod/presentation'
