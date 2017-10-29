@@ -101,6 +101,7 @@ alias boxssh="unssh -i \$HOME/.ssh/bullguard-box_rsa -l root -p 64222"
 alias todo="vim \$HOME/Documents/TODO.yml"
 alias sudo="sudo "
 alias presentation='docker run -itv "$PWD:/project" adarnimrod/presentation'
+alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun.*" -print0 | grep -zv "$(pgrep -u "$(id -u)" bash)" | xargs -0r rm '
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(python << EOF
@@ -217,3 +218,4 @@ __prompt () {
 
 # shellcheck disable=SC1090
 . "$HOME/Documents/Shore/bundle_certs/bundle_certs"
+prune_prerun
