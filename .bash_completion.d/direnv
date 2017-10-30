@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if which direnv > /dev/null
+then
+    [ -f "$HOME/.bash_completion.d/.direnv" ] || direnv hook bash > "$HOME/.bash_completion.d/.direnv"
+    # shellcheck disable=SC1090
+    . "$HOME/.bash_completion.d/.direnv"
+fi
