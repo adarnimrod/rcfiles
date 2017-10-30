@@ -2,32 +2,6 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-if [ -n "${BASH:-}" ]
-then
-    shopt -s histappend
-    shopt -s checkwinsize
-    shopt -s cmdhist
-    export PROMPT_COMMAND="history -a"
-    [ -f /etc/bash_completion ] && . /etc/bash_completion
-
-    # shellcheck disable=SC1090
-    for sourcefile in $HOME/.bash_completion.d/*
-    do
-        [ ! -f "$sourcefile" ] || . "$sourcefile"
-    done
-fi
-
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias diff='diff --color=auto'
-fi
-
 export LANG=en_US.UTF8
 export HISTFILE="$HOME/.history"
 export HISTCONTROL=ignoreboth:erasedups
@@ -218,4 +192,31 @@ __prompt () {
 
 # shellcheck disable=SC1090
 . "$HOME/Documents/Shore/bundle_certs/bundle_certs"
+
+if [ -n "${BASH:-}" ]
+then
+    shopt -s histappend
+    shopt -s checkwinsize
+    shopt -s cmdhist
+    export PROMPT_COMMAND="history -a"
+    [ -f /etc/bash_completion ] && . /etc/bash_completion
+
+    # shellcheck disable=SC1090
+    for sourcefile in $HOME/.bash_completion.d/*
+    do
+        [ ! -f "$sourcefile" ] || . "$sourcefile"
+    done
+fi
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias diff='diff --color=auto'
+fi
+
 prune_prerun
