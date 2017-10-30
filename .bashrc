@@ -217,6 +217,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
     alias grep='grep --color=auto'
     alias diff='diff --color=auto'
+    alias ip='ip -color'
 fi
 
 prune_prerun
