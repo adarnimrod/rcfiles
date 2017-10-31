@@ -4,7 +4,7 @@
     -   id: check-added-large-files
     -   id: check-merge-conflict
     -   id: flake8
-        files: \.pythonstartup|Documents/Shore/cleanup/vagrant-.*
+        files: \.pythonstartup|Documents/bin/vagrant-.*
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
     sha: v0.5.4
     hooks:
