@@ -1,5 +1,5 @@
--   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: v0.8.0
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    sha: v1.1.1
     hooks:
     -   id: check-added-large-files
     -   id: check-merge-conflict
@@ -9,6 +9,6 @@
     sha: v0.5.4
     hooks:
     -   id: shell-lint
-        files: &shellscripts 'bashrc|post-merge|profile|docker-|wifi-login|renew-certs|dma-clean|gen-ssh-config|dconf-load|install-git-hooks|pocketchip-battery|update-voltage|pipenv'
+        files: bashrc|post-merge|profile|docker-|wifi-login|renew-certs|dma-clean|gen-ssh-config|dconf-load|install-git-hooks|pocketchip-battery|update-voltage|pipenv
     -   id: shellcheck
-        files: *shellscripts
+        files: bashrc|post-merge|profile|docker-|wifi-login|renew-certs|dma-clean|gen-ssh-config|dconf-load|install-git-hooks|pocketchip-battery|update-voltage|pipenv
