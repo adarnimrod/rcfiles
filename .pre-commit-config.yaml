@@ -1,14 +1,19 @@
+---
+repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     sha: v1.1.1
     hooks:
     -   id: check-added-large-files
+    -   id: check-executables-have-shebangs
     -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: detect-aws-credentials
+    -   id: detect-private-key
     -   id: flake8
-        files: \.pythonstartup|Documents/bin/vagrant-.*
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
-    sha: v0.5.4
+    sha: v0.6.0
     hooks:
     -   id: shell-lint
-        files: bashrc|post-merge|profile|docker-|wifi-login|renew-certs|dma-clean|gen-ssh-config|dconf-load|install-git-hooks|pocketchip-battery|update-voltage|pipenv
+        exclude: &excluded_shellscripts \.bash_completion\.d/(docker_machine\.bash|fabric-completion.bash)|\.travis/travis\.sh
     -   id: shellcheck
-        files: bashrc|post-merge|profile|docker-|wifi-login|renew-certs|dma-clean|gen-ssh-config|dconf-load|install-git-hooks|pocketchip-battery|update-voltage|pipenv
+        exclude: *excluded_shellscripts
