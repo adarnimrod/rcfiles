@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+! which pandoc > /dev/null || pandoc --bash-completion > "$HOME/.bash_completion.d/pandoc"
+! which pipenv > /dev/null || pipenv --completion > "$HOME/.bash_completion.d/pipenv"
