@@ -18,7 +18,7 @@ export PATH="$HOME/Documents/Shore/ssl-ca:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/Documents/bin:$PATH"
-export PYTHONSTARTUP=~/.pythonstartup
+export PYTHONSTARTUP=~/.config/python/startup.py
 export AWS_DEFAULT_PROFILE='shore'
 export ANSIBLE_VERBOSITY=2
 export ANSIBLE_COMMAND_WARNINGS=True
@@ -205,7 +205,9 @@ then
     do
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
+    ! which direnv > /dev/null || eval $(direnv hook bash)
 fi
+
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"

@@ -10,6 +10,7 @@ repos:
     -   id: detect-aws-credentials
     -   id: detect-private-key
     -   id: flake8
+        exclude: pythonrc.py
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
     sha: v0.6.0
     hooks:
