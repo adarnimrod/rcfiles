@@ -1,3 +1,4 @@
+$include  /etc/inputrc
 set skip-completed-text on
 set colored-stats on
 set colored-completion-prefix on
