@@ -11,7 +11,6 @@
     ff = merge --no-edit --ff-only master
     fixup = !git commit --fixup $(git last-commit)
     forget = reset HEAD^
-    last-commit = "!git log --no-merges --abbrev-commit --format=\"%h %s\" | awk '{if ($2 != \"fixup!\" && $2 != \"squash!\") {print $1; exit}}'"
     merg = merge --no-edit
     posh = push --set-upstream origin HEAD
     pul = pull --progress
