@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+
+git log --no-merges --abbrev-commit --format="%h %s" | awk '{if ($2 != "fixup!" && $2 != "squash!") {print $1; exit}}'
