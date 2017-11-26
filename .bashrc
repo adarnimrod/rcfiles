@@ -55,7 +55,7 @@ alias flatpak-daily='flatpak --user update --no-deploy'
 alias docker-build='docker build -t "$(basename $PWD)" ./'
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
-alias httpbin='tox -c $HOME/.tox.ini.httpbin --'
+alias httpbin='gunicorn httpbin:app'
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias restart-kodi='ssh xbmc.shore.co.il "sudo systemctl kill --kill-who all xorg.service"'
 alias sync-podcasts='(cd && unison podcasts)'
@@ -76,7 +76,6 @@ alias sudo="sudo "
 alias presentation='docker run -itv "$PWD:/project" adarnimrod/presentation'
 alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun.*" -print0 | grep -zv "$(pgrep -u "$(id -u)" bash)" | xargs -0r rm '
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata'
-alias statsd-vis='docker run --detach --rm --name statsd-vis --publish 8125:8125/tcp --publish 8125:8125/udp --publish 8080:8080/tcp adarnimrod/statsd-vis'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(python << EOF
