@@ -52,7 +52,6 @@ alias ecr-login='eval $(aws ecr get-login)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
 alias flatpak-daily='flatpak --user update --no-deploy'
-alias docker-build='docker build -t "$(basename $PWD)" ./'
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias httpbin='gunicorn httpbin:app'
@@ -73,7 +72,7 @@ alias clean-swp="find \$HOME/ -name '*.swp' -delete"
 alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias todo="vim \$HOME/Documents/TODO.yml"
 alias sudo="sudo "
-alias presentation='docker run -itv "$PWD:/project" adarnimrod/presentation'
+alias presentation='docker dev adarnimrod/presentation'
 alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun.*" -print0 | grep -zv "$(pgrep -u "$(id -u)" bash)" | xargs -0r rm '
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata'
 alias json-tool='python3 -m json.tool'
@@ -100,23 +99,6 @@ ssh_keyscan_add () {
 
 gen_csr () {
     openssl req -new -newkey rsa:4096 -nodes -out "$1.csr" -keyout "$1.key"
-}
-
-docker_dev () {
-    local root repo uid
-    root="$(git rev-parse --show-toplevel)"
-    repo="$(basename "$root")"
-    uid="$(id -u)"
-    docker build -t "$repo:dev" "$root"
-    docker run --interactive \
-               --publish-all \
-               --name "$repo" \
-               --rm \
-               --tty \
-               --volume "$HOME:$HOME" \
-               --volume "$root:$root" \
-               --user "$uid" \
-               --workdir "$PWD" "$repo:dev" /bin/sh -l
 }
 
 sync_comics () {
