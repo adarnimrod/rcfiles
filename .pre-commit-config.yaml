@@ -7,7 +7,6 @@ repos:
     -   id: check-executables-have-shebangs
     -   id: check-merge-conflict
     -   id: check-symlinks
-    -   id: detect-aws-credentials
     -   id: detect-private-key
     -   id: flake8
         exclude: pythonrc.py
