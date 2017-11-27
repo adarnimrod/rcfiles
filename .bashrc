@@ -7,8 +7,6 @@ export HISTFILE="$HOME/.history"
 export HISTCONTROL=ignoreboth:erasedups
 export HISTSIZE=100000
 export HISTFILESIZE=100000
-export PS0="\$(__prerun)"
-export PS1="\$(__prompt)\u@\h:\w\$ "
 export REPREPRO_BASE_DIR="$HOME/Documents/Shore/debian-repository"
 export EDITOR=vim
 export GOPATH="$HOME/Documents/Golang"
@@ -181,6 +179,8 @@ then
     shopt -s histappend
     shopt -s checkwinsize
     shopt -s cmdhist
+    export PS0="\$(__prerun)"
+    export PS1="\$(__prompt)\u@\h:\w\$ "
     export PROMPT_COMMAND="history -a"
     [ -f /etc/bash_completion ] && . /etc/bash_completion
 
