@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-which pur > /dev/null || { echo "Can't find pur."; exit 1; }
+command -v pur > /dev/null || { echo "Can't find pur."; exit 1; }
 
 git stash save --all --include-untracked --quiet
 git ls-files '*requirements*.txt' | xargs -n1 pur -r

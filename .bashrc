@@ -191,7 +191,7 @@ then
     do
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
-    ! which direnv > /dev/null || eval $(direnv hook bash)
+    ! command -v direnv > /dev/null || eval $(direnv hook bash)
 fi
 
 

@@ -60,10 +60,10 @@ else
     action="$2"
 fi
 
-which curl > /dev/null || die "Can't login to the WiFi network, cURL is not installed."
-which awk > /dev/null || die "Can't login to the WiFi network, awk is not installed."
-which logger > /dev/null || die "Can't login to the WiFi network, logger is not installed."
-which nmcli > /dev/null || die "Can't login to the WiFi network, nmcli is not installed."
+command -v curl > /dev/null || die "Can't login to the WiFi network, cURL is not installed."
+command -v awk > /dev/null || die "Can't login to the WiFi network, awk is not installed."
+command -v logger > /dev/null || die "Can't login to the WiFi network, logger is not installed."
+command -v nmcli > /dev/null || die "Can't login to the WiFi network, nmcli is not installed."
 
 echo "$action" | grep -xq 'up\|dhcp4-change\|dhcp6-change\|connectivity-change' || \
     die "Can't login to the WiFi network, action $action isn't up nor changed."
