@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+#  TODO: Verify internet connectivity
+cronjob="0 11 * * 6 $HOME/.git-hooks/post-merge 2>&1 | logger -t rcfiles-post-merge"
+( (crontab -l 2>/dev/null || true) | sed '/post-merge/d'; echo "$cronjob" ) | crontab -
