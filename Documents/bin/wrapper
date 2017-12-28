@@ -2,7 +2,7 @@
 set -eu
 
 basename="$(basename "$0")"
-command="$(env -i sh -c "command -v $basename")" || { echo "$basename: not found"; exit 127; }
+command="$(command -pv "$basename")" || { echo "$basename: not found"; exit 127; }
 if alias="$(command -v "$basename-${1:-}")"
 then
     shift
