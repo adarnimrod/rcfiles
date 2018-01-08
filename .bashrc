@@ -76,6 +76,7 @@ alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun.*" -print0 | grep -z
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata'
 alias json-tool='python3 -m json.tool'
 alias http-server='python3 -m http.server 8080'
+alias dd='dd status=progress'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(python << EOF
