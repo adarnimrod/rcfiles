@@ -77,6 +77,7 @@ alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume 
 alias json-tool='python3 -m json.tool'
 alias http-server='python3 -m http.server 8080'
 alias dd='dd status=progress'
+alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(python << EOF
