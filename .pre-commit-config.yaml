@@ -14,6 +14,6 @@ repos:
     sha: v0.6.0
     hooks:
     -   id: shell-lint
-        exclude: &excluded_shellscripts \.bash_completion\.d/(docker_machine\.bash|fabric-completion.bash)|\.travis/travis\.sh
+        exclude: &excluded_shellscripts \.bash_completion\.d/(docker_machine\.bash|fabric-completion.bash|docker_compose.bash)|\.travis/travis\.sh
     -   id: shellcheck
         exclude: *excluded_shellscripts
