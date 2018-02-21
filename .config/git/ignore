@@ -46,3 +46,4 @@ dist/
 *.lock
 *.env
 .bundle/
+!Pipfile.lock
