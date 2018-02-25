@@ -1,9 +1,11 @@
 #!/bin/sh
 # Deliberately don't set -e, allow failures to continue silently.
-set -u
+set -eu
 
+docker version --format '{{ .Server.Version }}' > /dev/null
+docker version --format '{{ .Client.Version }}' > /dev/null
 docker ps --quiet --filter=status=exited | xargs -r docker rm --volumes 2>/dev/null
 docker ps --quiet --filter=status=created | xargs -r docker rm --volumes 2>/dev/null
 docker images --quiet --filter=dangling=true | xargs -r docker rmi 2>/dev/null
 docker volume ls --quiet --filter=dangling=true | xargs -r docker volume rm 2>/dev/null
-docker system prune --force
+docker system prune --force || true
