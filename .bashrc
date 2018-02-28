@@ -41,6 +41,8 @@ export LESS_TERMCAP_se=$'\E[0m'
 # Underline
 export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
+export PS0="\$(__prerun)"
+export PS1="\$(__prompt)\u@\h:\w\$ "
 
 alias ll='ls -lha'
 alias la='ls -A'
@@ -246,8 +248,6 @@ then
     shopt -s histappend
     shopt -s checkwinsize
     shopt -s cmdhist
-    export PS0="\$(__prerun)"
-    export PS1="\$(__prompt)\u@\h:\w\$ "
     export PROMPT_COMMAND="history -a"
     [ -f /etc/bash_completion ] && . /etc/bash_completion
 
