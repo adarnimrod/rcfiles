@@ -83,7 +83,6 @@ alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking 
 alias todo="vim \$HOME/Documents/TODO.yml"
 alias sudo="sudo "
 alias presentation='docker dev adarnimrod/presentation'
-alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun.*" -print0 | grep -zv "$(pgrep -u "$(id -u)" bash)" | xargs -0r rm '
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata'
 alias json-tool='python3 -m json.tool'
 alias jt='json-tool'
@@ -91,6 +90,14 @@ alias http-server='python3 -m http.server 8080'
 alias dd='dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias bell='printf \a'
+
+prune_prerun () {
+    local shell_procs="$(pgrep -u "$(id -u)" "$(basename $SHELL)")"
+    for file in $HOME/.prerun.*
+    do
+        echo "file" | grep -qv "$shell_procs" || rm "$file"
+    done
+}
 
 bold () {
     printf '\e[1m'
