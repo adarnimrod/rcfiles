@@ -226,14 +226,11 @@ __prerun () {
 __prompt () {
     local exitstatus="$?"
     local runduration prompt
-    #nocolor="\033[0m"
-    #red="\033[31;1m"
-    #yellow="\033[33;1m"
     prompt=""
     [ ! -f "$HOME/.prerun.$$" ] || runduration="$(__run_duration)"
-    [ "${runduration:-0}" -lt "10" ] || prompt="[Run duration: $runduration] $prompt"
+    [ "${runduration:-0}" -lt "10" ] || prompt="$(cyan -n "[Run duration: $runduration]") $prompt"
     [ -n "${runduration:-}" ] || exitstatus='0'
-    [ "$exitstatus" = "0" ] || prompt="[Exit status: $exitstatus] $prompt"
+    [ "$exitstatus" = "0" ] || prompt="$(red -n "[Exit status: $exitstatus]") $prompt"
     echo "$prompt"
 }
 
