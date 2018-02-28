@@ -30,6 +30,17 @@ export ANSIBLE_CALLBACK_WHITELIST=profile_tasks
 export LYNX_SAVE_SPACE="$HOME/Downloads"
 export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
+# Blinking
+export LESS_TERMCAP_mb=$'\E[01;31m'
+# Double bright
+export LESS_TERMCAP_md=$'\E[01;35m'
+export LESS_TERMCAP_me=$'\E[0m'
+# Standout
+export LESS_TERMCAP_so=$'\E[01;33m'
+export LESS_TERMCAP_se=$'\E[0m'
+# Underline
+export LESS_TERMCAP_us=$'\E[01;32m'
+export LESS_TERMCAP_ue=$'\E[0m'
 
 alias ll='ls -lha'
 alias la='ls -A'
