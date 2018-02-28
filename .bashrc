@@ -211,12 +211,16 @@ match_ssl_pair () {
 }
 
 __run_duration () {
-    # Assumes that $HOME/.prerun.$$ exists.
-    local endtime starttime
-    endtime="$(date +%s)"
-    starttime="$(cat "$HOME/.prerun.$$")"
-    rm "$HOME/.prerun.$$"
-    echo "$(( endtime - starttime ))"
+    if [ -f "$HOME/.prerun.$$" ]
+    then
+        local endtime starttime
+        endtime="$(date +%s)"
+        starttime="$(cat "$HOME/.prerun.$$")"
+        rm "$HOME/.prerun.$$"
+        echo "$(( endtime - starttime ))"
+    else
+        echo 0
+    fi
 }
 
 __prerun () {
