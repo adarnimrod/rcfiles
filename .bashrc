@@ -79,6 +79,49 @@ alias jt='json-tool'
 alias http-server='python3 -m http.server 8080'
 alias dd='dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
+alias bell='printf \a'
+
+bold () {
+    printf '\e[1m'
+    echo "$@"
+    printf '\e[0m'
+}
+
+red () {
+    printf '\e[1;91m'
+    echo "$@"
+    printf '\e[0m'
+}
+
+green () {
+    printf '\e[1;92m'
+    echo "$@"
+    printf '\e[0m'
+}
+
+yellow () {
+    printf '\e[1;93m'
+    echo "$@"
+    printf '\e[0m'
+}
+
+blue () {
+    printf '\e[1;94m'
+    echo "$@"
+    printf '\e[0m'
+}
+
+magenta () {
+    printf '\e[1;95m'
+    echo "$@"
+    printf '\e[0m'
+}
+
+cyan () {
+    printf '\e[1;96m'
+    echo "$@"
+    printf '\e[0m'
+}
 
 deduce_aws_region () {
     AWS_DEFAULT_REGION="$(python << EOF
