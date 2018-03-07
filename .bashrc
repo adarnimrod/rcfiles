@@ -43,6 +43,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export PS0="\$(__prerun)"
 export PS1="\$(__prompt)\u@\h:\w\$ "
+export CDPATH="$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Bullguard"
 
 alias ll='ls -lha'
 alias la='ls -A'
@@ -62,14 +63,18 @@ alias deconcat="perl -pe 's/\\\n/\n/g'"
 alias ecr-login='eval $(aws ecr get-login --no-include-email)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
-alias apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
-alias flatpak-daily='flatpak --user update --no-deploy'
+alias __apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
+alias apt-daily="monitor __apt-daily"
+alias __flatpak-daily='flatpak --user update --no-deploy && notify-send "flatpak-daily has finished."'
+alias flatpak-daily="monitor __flatpak-daily"
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias httpbin='gunicorn httpbin:app'
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias restart-kodi='ssh xbmc.shore.co.il "sudo systemctl kill --kill-who all xorg.service"'
-alias sync-podcasts='(cd && unison podcasts)'
+alias __sync-podcasts='(cd && unison podcasts)'
+alias sync-podcasts='monitor __sync-podcasts'
+alias sync-comics='monitor __sync_comics'
 # shellcheck disable=SC2142
 alias tolower='awk "{print tolower(\$0)}"'
 # shellcheck disable=SC2142
@@ -86,12 +91,24 @@ alias todo="vim \$HOME/Documents/TODO.yml"
 alias sudo="sudo "
 alias presentation='docker dev adarnimrod/presentation'
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata'
-alias json-tool='python3 -m json.tool'
-alias jt='json-tool'
+alias jt='json_tool'
 alias http-server='python3 -m http.server 8080'
-alias dd='dd status=progress'
+alias dd='monitor dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias bell='printf \a'
+
+monitor () {
+    eval "$@" && notify-send "${1#__} has finished." || notify-send --urgency=critical "${1#__} has failed."
+}
+
+json_tool () {
+    if [ -t 0 ]
+    then
+        python3 -m json.tool <<< "$*" | pygmentize -l javascript
+    else
+        python3 -m json.tool | pygmentize -l javascript
+    fi
+}
 
 prune_prerun () {
     local shell_procs="$(pgrep -u "$(id -u)" "$(basename $SHELL)")"
@@ -167,7 +184,7 @@ gen_csr () {
     openssl req -new -newkey rsa:4096 -nodes -out "$1.csr" -keyout "$1.key"
 }
 
-sync_comics () {
+__sync_comics () {
     local this_month last_month format
     format='+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*'
     this_month="$( date "$format" )"
