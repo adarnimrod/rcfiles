@@ -1,3 +1,5 @@
+[apply]
+    whitespace = fix
 [alias]
     amend = commit --amend
     autorebase = -c 'core.editor=true' rebase -i --autosquash --autostash
@@ -27,7 +29,11 @@
     trigger = !git commit --allow-empty --no-edit --amend && git pushes --force-with-lease
 [color]
     grep = true
+    ui = auto
+[core]
+    whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 [diff]
+    renames = copies
 	tool = meld
 [difftool]
 	prompt = false
