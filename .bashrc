@@ -96,6 +96,7 @@ alias http-server='python3 -m http.server 8080'
 alias dd='monitor dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias bell='printf \a'
+command -v notify-send > /dev/null || alias notify-send='bell'
 
 monitor () {
     eval "$@" && notify-send "${1#__} has finished." || notify-send --urgency=critical "${1#__} has failed."
