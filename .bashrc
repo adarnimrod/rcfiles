@@ -99,20 +99,26 @@ alias bell='printf \a'
 command -v notify-send > /dev/null || alias notify-send='bell'
 
 monitor () {
-    eval "$@" && notify-send "${1#__} has finished." || notify-send --urgency=critical "${1#__} has failed."
+    if eval "$@"
+    then
+        notify-send "${1#__} has finished."
+    else
+        notify-send --urgency=critical "${1#__} has failed."
+    fi
 }
 
 json_tool () {
     if [ -t 0 ]
     then
-        python3 -m json.tool <<< "$*" | pygmentize -l javascript
+        echo "$@" | python3 -m json.tool | pygmentize -l javascript
     else
         python3 -m json.tool | pygmentize -l javascript
     fi
 }
 
 prune_prerun () {
-    local shell_procs="$(pgrep -u "$(id -u)" "$(basename $SHELL)")"
+    local shell_procs
+    shell_procs="$(pgrep -u "$(id -u)" "$(basename "$SHELL")")"
     for file in $HOME/.prerun.*
     do
         echo "file" | grep -qv "$shell_procs" || rm "$file"
@@ -250,6 +256,7 @@ __prerun () {
 __prompt () {
     local exitstatus="$?"
     local runduration prompt
+    ! command -v history > /dev/null || history -a
     prompt=""
     [ ! -f "$HOME/.prerun.$$" ] || runduration="$(__run_duration)"
     [ "${runduration:-0}" -lt "10" ] || prompt="$(cyan -n "[Run duration: $runduration]") $prompt"
@@ -266,7 +273,6 @@ then
     shopt -s histappend
     shopt -s checkwinsize
     shopt -s cmdhist
-    export PROMPT_COMMAND="history -a"
     [ -f /etc/bash_completion ] && . /etc/bash_completion
 
     # shellcheck disable=SC1090
@@ -274,7 +280,7 @@ then
     do
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
-    ! command -v direnv > /dev/null || eval $(direnv hook bash)
+    ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
 fi
 
 
