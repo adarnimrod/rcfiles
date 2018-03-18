@@ -14,13 +14,13 @@
     forget = reset HEAD^
     merg = merge --no-edit
     posh = push --set-upstream origin HEAD
-    pul = pull --progress
+    Pull = pull --progress --ff --tags
     pull-force = !git fetch && git reset --hard "$(git tracking)"
-    push-force = push --force-with-lease
     pushes = !git remote | xargs -n1 git push
     root = rev-parse --show-toplevel
     serve-git = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
     serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
+    shove = push --force-with-lease
     squash = !cd "${GIT_PREFIX:-}" && git commit --squash $(git last-commit)
     staash = stash --all
     stat = status --short --branch
