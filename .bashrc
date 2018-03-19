@@ -80,8 +80,6 @@ alias tolower='awk "{print tolower(\$0)}"'
 # shellcheck disable=SC2142
 alias toupper='awk "{print toupper(\$0)}"'
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
-alias urlencode='perl -MURI::Escape -ne "chomp;print uri_escape(\$_), \"\n\""'
-alias urldecode='perl -MURI::Escape -ne "chomp;print uri_unescape(\$_), \"\n\""'
 alias transmission-remote='ssh -fNo ExitOnForwardFailure=yes xbmc.shore.co.il && transmission-remote'
 alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
 alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
@@ -98,6 +96,34 @@ alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -d
 alias bell='printf \a'
 command -v notify-send > /dev/null || alias notify-send='bell'
 
+urlencode () {
+    if [ -t 0 ]
+    then
+        echo "$@" | urlencode
+    else
+        python3 -c '
+from sys import stdin
+from urllib.parse import quote_plus
+for line in stdin.readlines():
+    print(quote_plus(line.strip()))
+'
+    fi
+}
+
+urldecode () {
+    if [ -t 0 ]
+    then
+        echo "$@" | urldecode
+    else
+        python3 -c '
+from sys import stdin
+from urllib.parse import unquote_plus
+for line in stdin.readlines():
+    print(unquote_plus(line.strip()))
+'
+    fi
+}
+
 monitor () {
     if eval "$@"
     then
@@ -110,7 +136,7 @@ monitor () {
 json_tool () {
     if [ -t 0 ]
     then
-        echo "$@" | python3 -m json.tool | pygmentize -l javascript
+        echo "$@" | json_tool
     else
         python3 -m json.tool | pygmentize -l javascript
     fi
@@ -168,12 +194,8 @@ cyan () {
 }
 
 deduce_aws_region () {
-    AWS_DEFAULT_REGION="$(python << EOF
-from __future__ import print_function
-try:
-    from urllib import urlopen
-except ImportError:
-    from urllib.request import urlopen
+    AWS_DEFAULT_REGION="$(python3 << EOF
+from urllib.request import urlopen
 import json
 print(json.load(urlopen('http://169.254.169.254/latest/dynamic/instance-identity/document'))['region'])
 EOF
