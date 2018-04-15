@@ -88,6 +88,7 @@ alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking 
 alias todo="vim \$HOME/Documents/TODO.yml"
 alias sudo="sudo "
 alias presentation='docker dev adarnimrod/presentation'
+alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun\.[0-9]*" | grep -v "$(pgrep -u "$(id -u)" "$(basename "$SHELL" )" )" | xargs -r rm'
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata'
 alias jt='json_tool'
 alias http-server='python3 -m http.server 8080'
@@ -110,9 +111,11 @@ for line in stdin.readlines():
     fi
 }
 
+# shellcheck disable=SC2120
 urldecode () {
     if [ -t 0 ]
     then
+        # shellcheck disable=SC2119
         echo "$@" | urldecode
     else
         python3 -c '
@@ -133,22 +136,15 @@ monitor () {
     fi
 }
 
+# shellcheck disable=SC2120
 json_tool () {
     if [ -t 0 ]
     then
+        # shellcheck disable=SC2119
         echo "$@" | json_tool
     else
         python3 -m json.tool | pygmentize -l javascript
     fi
-}
-
-prune_prerun () {
-    local shell_procs
-    shell_procs="$(pgrep -u "$(id -u)" "$(basename "$SHELL")")"
-    for file in $HOME/.prerun.*
-    do
-        echo "file" | grep -qv "$shell_procs" || rm "$file"
-    done
 }
 
 bold () {
@@ -228,7 +224,7 @@ bfg () {
 }
 
 ddg () {
-    lynx "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
+    lynx "https://duckduckgo.com/lite/?q=$(urlencode "$@")"
 }
 
 bump () {
