@@ -8,7 +8,7 @@
     cleaaan = clean -fdx
     dif = diff --color-words
     empty-commit = commit --allow-empty
-	exec = "!exec "
+	exec = "!${SHELL:-/bin/sh} -ic "
     ff = merge --no-edit --ff-only master
     fixup = !cd "${GIT_PREFIX:-$PWD}" && git commit --fixup $(git last-commit)
     forget = reset HEAD^
