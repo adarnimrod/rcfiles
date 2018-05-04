@@ -90,6 +90,7 @@ alias sudo="sudo "
 alias presentation='docker dev adarnimrod/presentation'
 alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun\.[0-9]*" | grep -v "$(pgrep -u "$(id -u)" "$(basename "$SHELL" )" )" | xargs -r rm'
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata'
+alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
 alias jt='json_tool'
 alias http-server='python3 -m http.server 8080'
 alias dd='monitor dd status=progress'
