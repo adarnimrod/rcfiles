@@ -194,7 +194,8 @@ deduce_aws_region () {
     AWS_DEFAULT_REGION="$(python3 << EOF
 from urllib.request import urlopen
 import json
-print(json.load(urlopen('http://169.254.169.254/latest/dynamic/instance-identity/document'))['region'])
+response = urlopen('http://169.254.169.254/latest/dynamic/instance-identity/document')
+print(json.loads(response.read().decode('utf-8'))['region'])
 EOF
     )"
     export AWS_DEFAULT_REGION
