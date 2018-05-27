@@ -86,7 +86,7 @@ alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
 alias clean-swp="find \$HOME/ -name '*.swp' -delete"
 alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias todo="vim \$HOME/Documents/TODO.yml"
-alias sudo="sudo --preserve-env=PATH"
+alias sudo="sudo "
 alias git="git "
 alias xargs="xargs "
 alias presentation='docker dev adarnimrod/presentation'
@@ -95,7 +95,7 @@ alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume 
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
 alias jt='json_tool'
 alias http-server='python3 -m http.server 8080'
-alias dd='monitor dd status=progress'
+alias dd='dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias bell="printf '\a'"
 command -v notify-send > /dev/null || alias notify-send='bell'
@@ -127,6 +127,15 @@ from urllib.parse import unquote_plus
 for line in stdin.readlines():
     print(unquote_plus(line.strip()))
 '
+    fi
+}
+
+monitor () {
+    if eval "$@"
+    then
+        notify-send "$(basename ${1#__}) has finished."
+    else
+        notify-send --urgency=critical "$(basename ${1#__}) has failed."
     fi
 }
 
