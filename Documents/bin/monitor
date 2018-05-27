@@ -1,9 +1,11 @@
 #!/bin/sh
 set -eu
-[ "$#" -eq "0" ] || exit 0
+
+[ "$#" -gt "0" ] || exit 0
+
 if eval "$@"
 then
-    notify-send "${1#__} has finished."
+    notify-send "$(basename "${1#__}") has finished."
 else
-    notify-send --urgency=critical "${1#__} has failed."
+    notify-send --urgency=critical "$(basename "${1#__}") has failed."
 fi
