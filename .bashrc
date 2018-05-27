@@ -86,7 +86,7 @@ alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
 alias clean-swp="find \$HOME/ -name '*.swp' -delete"
 alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias todo="vim \$HOME/Documents/TODO.yml"
-alias sudo="sudo "
+alias sudo="sudo --preserve-env=PATH"
 alias git="git "
 alias xargs="xargs "
 alias presentation='docker dev adarnimrod/presentation'
@@ -127,15 +127,6 @@ from urllib.parse import unquote_plus
 for line in stdin.readlines():
     print(unquote_plus(line.strip()))
 '
-    fi
-}
-
-monitor () {
-    if eval "$@"
-    then
-        notify-send "${1#__} has finished."
-    else
-        notify-send --urgency=critical "${1#__} has failed."
     fi
 }
 
