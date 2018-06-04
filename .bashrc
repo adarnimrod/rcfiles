@@ -93,7 +93,6 @@ alias presentation='docker dev adarnimrod/presentation'
 alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun\.[0-9]*" | grep -v "$(pgrep -u "$(id -u)" "$(basename "$SHELL" )" )" | xargs -r rm'
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata:alpine'
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
-alias jt='json_tool'
 alias http-server='python3 -m http.server 8080'
 alias dd='dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
@@ -109,14 +108,12 @@ monitor () {
     fi
 }
 
-# shellcheck disable=SC2120
-json_tool () {
-    if [ -t 0 ]
+jt () {
+    if command -v pygmentize > /dev/null
     then
-        # shellcheck disable=SC2119
-        echo "$@" | json_tool
+        python3 -m json.tool "$@" | pygmentize -l javascript
     else
-        python3 -m json.tool | pygmentize -l javascript
+        python3 -m json.tool "$@"
     fi
 }
 
