@@ -100,36 +100,6 @@ alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -d
 alias bell="printf '\a'"
 command -v notify-send > /dev/null || alias notify-send='bell'
 
-urlencode () {
-    if [ -t 0 ]
-    then
-        echo "$@" | urlencode
-    else
-        python3 -c '
-from sys import stdin
-from urllib.parse import quote_plus
-for line in stdin.readlines():
-    print(quote_plus(line.strip()))
-'
-    fi
-}
-
-# shellcheck disable=SC2120
-urldecode () {
-    if [ -t 0 ]
-    then
-        # shellcheck disable=SC2119
-        echo "$@" | urldecode
-    else
-        python3 -c '
-from sys import stdin
-from urllib.parse import unquote_plus
-for line in stdin.readlines():
-    print(unquote_plus(line.strip()))
-'
-    fi
-}
-
 monitor () {
     if eval "$@"
     then
