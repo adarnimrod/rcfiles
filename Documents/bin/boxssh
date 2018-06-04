@@ -9,7 +9,11 @@ die () {
 command -v ip > /dev/null || die "Can't find ip."
 alias ssh='ssh -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i "$HOME/.ssh/bullguard-box_rsa" -l root -p 64222'
 
-
-gateway="$(ip neigh show | awk '$5 ~ /^38:b8:eb:5/ {print $1}')"
-[ -n "$gateway" ] || die "Can't find Dojo box IP."
+if [ -n "${1:-}" ]
+then
+    gateway="$1"
+else
+    gateway="$(ip neigh show | awk '$5 ~ /^38:b8:eb:5/ {print $1}')"
+    [ -n "$gateway" ] || die "Can't find Dojo box IP."
+fi
 ssh "$gateway"
