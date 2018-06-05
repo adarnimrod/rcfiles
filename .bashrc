@@ -260,7 +260,6 @@ __prompt () {
 
 if [ -n "${BASH:-}" ]
 then
-    shopt -s histappend
     shopt -s checkwinsize
     shopt -s cmdhist
     # shellcheck disable=SC1091
