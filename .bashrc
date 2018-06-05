@@ -119,45 +119,45 @@ jt () {
 }
 
 bold () {
-    printf '\e[1m'
+    printf '\e[1m' || true
     echo "$@"
-    printf '\e[0m'
+    printf '\e[0m' || true
 }
 
 red () {
-    printf '\e[1;91m'
+    printf '\e[1;91m' || true
     echo "$@"
-    printf '\e[0m'
+    printf '\e[0m' || true
 }
 
 green () {
-    printf '\e[1;92m'
+    printf '\e[1;92m' || true
     echo "$@"
-    printf '\e[0m'
+    printf '\e[0m' || true
 }
 
 yellow () {
-    printf '\e[1;93m'
+    printf '\e[1;93m' || true
     echo "$@"
-    printf '\e[0m'
+    printf '\e[0m' || true
 }
 
 blue () {
-    printf '\e[1;94m'
+    printf '\e[1;94m' || true
     echo "$@"
-    printf '\e[0m'
+    printf '\e[0m' || true
 }
 
 magenta () {
-    printf '\e[1;95m'
+    printf '\e[1;95m' || true
     echo "$@"
-    printf '\e[0m'
+    printf '\e[0m' || true
 }
 
 cyan () {
-    printf '\e[1;96m'
+    printf '\e[1;96m' || true
     echo "$@"
-    printf '\e[0m'
+    printf '\e[0m' || true
 }
 
 deduce_aws_region () {
