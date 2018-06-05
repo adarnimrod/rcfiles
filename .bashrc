@@ -86,7 +86,7 @@ alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
 alias clean-swp="find \$HOME/ -name '*.swp' -delete"
 alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias todo="vim \$HOME/Documents/TODO.yml"
-alias sudo="sudo "
+[ -n "${SHELL:-}" ] && alias sudo="sudo -E $SHELL -c" || alias sudo="sudo "
 alias git="git "
 alias xargs="xargs "
 alias presentation='docker dev adarnimrod/presentation'
@@ -270,6 +270,7 @@ then
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
     ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
+    eval "$(declare -F | sed 's/declare/export/g')"
 fi
 
 
