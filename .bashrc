@@ -64,7 +64,7 @@ alias deconcat="perl -pe 's/\\\\n/\\n/g'"
 alias ecr-login='eval $(aws ecr get-login --no-include-email)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
-alias __apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
+alias __apt-daily="command sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
 alias apt-daily="monitor __apt-daily"
 alias __flatpak-daily='flatpak --user update --no-deploy'
 alias flatpak-daily="monitor __flatpak-daily"
