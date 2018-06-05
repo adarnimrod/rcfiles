@@ -271,8 +271,10 @@ then
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
     ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
-    alias sudo="sudo -E bash -c"
     eval "$(declare -F | sed 's/declare/export/g')"
+    sudo () {
+        command sudo -E bash -c "$*"
+    }
 fi
 
 
