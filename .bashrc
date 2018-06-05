@@ -1,4 +1,4 @@
-# shellcheck disable=SC2148,SC1091
+# shellcheck disable=SC2148
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -42,6 +42,7 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export PS0="\$(__prerun)"
+# shellcheck disable=SC1117
 export PS1="\$(__prompt)\u@\h:\w\$ "
 export CDPATH="$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Bullguard"
 
@@ -49,7 +50,7 @@ alias ll='ls -lha'
 alias la='ls -A'
 alias l='ls -CF'
 alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
-alias dpkglog="grep -v 'status\|trigproc\|configure' /var/log/dpkg.log"
+alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
 alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
@@ -58,8 +59,8 @@ alias missing-recommends="aptitude search '~RBrecommends:~i'"
 alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
-alias concat="perl -pe 's/\n/\\\n/g'"
-alias deconcat="perl -pe 's/\\\n/\n/g'"
+alias concat="perl -pe 's/\\n/\\\\n/g'"
+alias deconcat="perl -pe 's/\\\\n/\\n/g'"
 alias ecr-login='eval $(aws ecr get-login --no-include-email)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
@@ -96,15 +97,15 @@ alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t po
 alias http-server='python3 -m http.server 8080'
 alias dd='dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
-alias bell="printf '\a'"
+alias bell="printf '\\a'"
 command -v notify-send > /dev/null || alias notify-send='bell'
 
 monitor () {
     if eval "$@"
     then
-        notify-send "$(basename ${1#__}) has finished."
+        notify-send "$(basename "${1#__}") has finished."
     else
-        notify-send --urgency=critical "$(basename ${1#__}) has failed."
+        notify-send --urgency=critical "$(basename "${1#__}") has failed."
     fi
 }
 
@@ -262,6 +263,7 @@ then
     shopt -s histappend
     shopt -s checkwinsize
     shopt -s cmdhist
+    # shellcheck disable=SC1091
     [ -f /etc/bash_completion ] && . /etc/bash_completion
 
     # shellcheck disable=SC1090
