@@ -64,7 +64,7 @@ alias deconcat="perl -pe 's/\\\\n/\\n/g'"
 alias ecr-login='eval $(aws ecr get-login --no-include-email)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
-alias __apt-daily="command sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
+alias __apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
 alias apt-daily="monitor __apt-daily"
 alias __flatpak-daily='flatpak --user update'
 alias flatpak-daily="monitor __flatpak-daily"
@@ -95,7 +95,7 @@ alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun\.[0-9]*" | grep -v "
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata:alpine'
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
 alias http-server='python3 -m http.server 8080'
-alias dd='dd status=progress'
+alias dd='monitor sudo dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias bell="printf '\\a'"
 command -v notify-send > /dev/null || alias notify-send='bell'
@@ -246,7 +246,7 @@ __prerun () {
 __prompt () {
     local exitstatus="$?"
     local runduration prompt
-    ! command -v history > /dev/null || history -a
+    ! type history > /dev/null  2> /dev/null || history -a
     prompt=""
     [ ! -f "$HOME/.prerun.$$" ] || runduration="$(__run_duration)"
     [ "${runduration:-0}" -lt "10" ] || prompt="$(cyan -n "[Run duration: $runduration]") $prompt"
@@ -271,10 +271,6 @@ then
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
     ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
-    eval "$(declare -F | sed 's/declare/export/g')"
-    sudo () {
-        command sudo -E bash -c "$*"
-    }
 fi
 
 
