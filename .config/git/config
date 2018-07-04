@@ -13,6 +13,7 @@
     fixup = !cd "${GIT_PREFIX:-$PWD}" && git commit --fixup $(git last-commit)
     forget = reset HEAD^
     merg = merge --no-edit
+    pop = stash pop
     posh = push --set-upstream origin HEAD
     Pull = pull --progress --ff --tags
     pull-force = !git fetch && git reset --hard "$(git tracking)"
