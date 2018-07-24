@@ -97,6 +97,7 @@ alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t po
 alias http-server='python3 -m http.server 8080'
 alias dd='monitor sudo dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
+alias black='black --line-length 79'
 alias bell="printf '\\a'"
 command -v notify-send > /dev/null || alias notify-send='bell'
 
