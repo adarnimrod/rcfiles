@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+
+semver-bump "$1-release"
+git commit VERSION -m "Bumped $1 version."
+git tag-version
+git pushes --tags
