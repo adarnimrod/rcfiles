@@ -200,12 +200,6 @@ ddg () {
     lynx "https://duckduckgo.com/lite/?q=$(urlencode "$@")"
 }
 
-bump () {
-    semver-bump "$1-release" && \
-    git commit VERSION -m"- Bumped $1 version." && \
-    git tag-version
-}
-
 toux () {
     touch "$@"
     chmod +x "$@"
