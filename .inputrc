@@ -7,7 +7,6 @@ set colored-stats on
 set colored-completion-prefix on
 set blink-matching-paren on
 set expand-tilde on
-set history-size -1
 set history-preserve-point on
 set mark-directories on
 "\e[A": history-search-backward
