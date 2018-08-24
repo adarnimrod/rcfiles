@@ -43,7 +43,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export PS0="\$(__prerun)"
 # shellcheck disable=SC1117
-export PS1="\$(__prompt)\u@\h:\w\$ "
+export PS1="\[\$(__prompt)\]\u@\h:\w\$ "
 export CDPATH="$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Bullguard"
 
 alias ll='ls -lha'
