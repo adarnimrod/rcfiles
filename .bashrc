@@ -241,7 +241,7 @@ __prerun () {
 __prompt () {
     local exitstatus="$?"
     local runduration prompt
-    ! type history > /dev/null  2> /dev/null || history -a
+    ! [ "$(type history 2> /dev/null)" = "history is a shell builtin" ] || history -a
     prompt=""
     [ ! -f "$HOME/.prerun.$$" ] || runduration="$(__run_duration)"
     [ "${runduration:-0}" -lt "10" ] || prompt="$(cyan -n "[Run duration: $runduration]") $prompt"
