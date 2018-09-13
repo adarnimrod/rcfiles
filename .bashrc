@@ -191,11 +191,6 @@ __sync_comics () {
     find "$HOME/Downloads/Comics/" -name "$(date --date '2 month ago' +'0-Day\ Week\ of\ %Y.%m.*')" -exec rm -r {} +
 }
 
-bfg () {
-    [ -f "$HOME/Downloads/bfg.jar" ] || curl 'https://search.maven.org/remote_content?g=com.madgag&a=bfg&v=LATEST' -sLo "$HOME/Downloads/bfg.jar"
-    java -jar "$HOME/Downloads/bfg.jar" "$@"
-}
-
 ddg () {
     lynx "https://duckduckgo.com/lite/?q=$(urlencode "$@")"
 }
