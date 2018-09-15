@@ -98,6 +98,8 @@ alias http-server='python3 -m http.server 8080'
 alias dd='monitor sudo dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias black='black --line-length 79'
+alias torrent_off='ssh xbmc.shore.co.il sudo systemctl stop transmission-{rss,daemon}.service'
+alias torrent_on='ssh xbmc.shore.co.il sudo systemctl start transmission-{daemon,rss}.service'
 alias bell="printf '\\a'"
 command -v notify-send > /dev/null || alias notify-send='bell'
 
