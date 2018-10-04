@@ -1,7 +1,7 @@
 ---
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    sha: v1.3.0
+    rev: v1.4.0-1
     hooks:
     -   id: check-added-large-files
     -   id: check-executables-have-shebangs
@@ -11,7 +11,7 @@ repos:
     -   id: flake8
         exclude: pythonrc.py
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
-    sha: v0.6.0
+    rev: v0.6.0
     hooks:
     -   id: shell-lint
         exclude: &excluded_shellscripts \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)|\.travis/travis\.sh
