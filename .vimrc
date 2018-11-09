@@ -10,3 +10,4 @@ setlocal smarttab
 setlocal expandtab
 setlocal incsearch
 syntax on
+setlocal modeline
