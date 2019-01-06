@@ -197,7 +197,7 @@ __sync_comics () {
 }
 
 ddg () {
-    lynx "https://duckduckgo.com/lite/?q=$(urlencode "$@")"
+    lynx "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
 }
 
 toux () {
