@@ -55,6 +55,7 @@ alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
+alias missing-suggests="aptitude search '~RBsuggests:~i'"
 # shellcheck disable=SC2142
 alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
