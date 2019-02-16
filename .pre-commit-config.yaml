@@ -1,14 +1,20 @@
--   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: v0.8.0
+---
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.4.0-1
     hooks:
     -   id: check-added-large-files
+    -   id: check-executables-have-shebangs
     -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: detect-private-key
     -   id: flake8
-        files: \.pythonstartup|Documents/Shore/cleanup/vagrant-.*
+        exclude: pythonrc.py
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
-    sha: v0.5.4
+    rev: v0.6.0
     hooks:
     -   id: shell-lint
-        files: &shellscripts 'bashrc|post-merge|profile|docker-|wifi-login|renew-certs|dma-clean|gen-ssh-config|dconf-load|install-git-hooks|pocketchip-battery|update-voltage'
+        exclude: &excluded_shellscripts \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)|\.travis/travis\.sh
     -   id: shellcheck
-        files: *shellscripts
+        exclude: *excluded_shellscripts
+        include: .bashrc

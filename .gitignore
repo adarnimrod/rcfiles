@@ -1,1 +1,4 @@
 *
+.bash_completion.d/.pipenv
+.pre-commit/
+.ssh/config
