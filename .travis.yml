@@ -7,21 +7,9 @@ group: beta
 cache:
   - pip
   - directories:
-      - $HOME/.pre-commit
-      - $HOME/.cabal
-      - $HOME/.ghc
-
-addons:
-  apt:
-    packages:
-      - cabal-install
-      - ghc
-
-env:
-    PATH: $PATH:$HOME/.cabal/bin
+      - $HOME/.cache/
 
 install:
-  - cabal update && cabal install shellcheck
   - pip install pre_commit | cat
 
 script:

@@ -1,39 +1,48 @@
+[apply]
+    whitespace = fix
 [alias]
     amend = commit --amend
-    autosquash = !GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash
+    autorebase = -c 'core.editor=true' rebase -i --autosquash --autostash
     bull = submodule update --remote --init
-    clear = clean -fdx
+    cleaan = clean -fdX
+    cleaaan = clean -fdx
     dif = diff --color-words
     empty-commit = commit --allow-empty
-	exec = "!exec "
+	exec = "!${SHELL:-/bin/sh} -ic "
     ff = merge --no-edit --ff-only master
-    fixup = commit --fixup
+    fixup = !cd "${GIT_PREFIX:-$PWD}" && git commit --fixup $(git last-commit)
     forget = reset HEAD^
     merg = merge --no-edit
+    pop = stash pop
     posh = push --set-upstream origin HEAD
-    pul = pull --progress
+    Pull = pull --progress --ff --tags
     pull-force = !git fetch && git reset --hard "$(git tracking)"
-    push-force = push --force-with-lease
+    pushes = !git remote | xargs -n1 git push
     root = rev-parse --show-toplevel
     serve-git = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
-    serve-http = !git update-server-info && cd .git && python -m SimpleHTTPServer
+    serve-http = !git update-server-info && cd .git && python -m http.server 8080
+    shove = push --force-with-lease
+    squash = !cd "${GIT_PREFIX:-$PWD}" && git commit --squash $(git last-commit)
     staash = stash --all
     stat = status --short --branch
-    tag-version = !git tag -af "v$(cat VERSION)"
+    tag-version = !git tag --annotate --force --message "v$(cat VERSION)" "v$(cat VERSION)"
     tracking = rev-parse --abbrev-ref --symbolic-full-name @{upstream}
-    trigger = !git commit --allow-empty --no-edit --amend && git push --force-with-lease
-    update-requirements = !git stash save -a -u -q && ( git ls-files '*requirements*.txt' | xargs -n1 pur -r ) && ( git commit -a -m '- Updated requirements.' || echo 'No requirements updated.' ) && git stash pop
+    trigger = !git commit --allow-empty --no-edit --amend && git pushes --force-with-lease
 [color]
     grep = true
+    ui = auto
 [core]
-    excludesfile = ~/.gitignore_global
+    whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 [diff]
+    renames = copies
 	tool = meld
 [difftool]
 	prompt = false
 [fetch]
     fsckobjects = true
     prune = true
+[grep]
+    linenumber = true
 [merge]
     tool = meld
     ff = false

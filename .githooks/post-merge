@@ -1,9 +1,15 @@
 #!/bin/sh
 set -eu
 cd "$(git rev-parse --show-toplevel)"
-echo Installing Git hooks
+echo Installing Git hooks >> /dev/stderr
 Documents/bin/install-git-hooks
-echo Generating SSH config
+echo Generating SSH config >> /dev/stderr
 Documents/bin/gen-ssh-config
-echo Loading dconf config
+echo Loading dconf config >> /dev/stderr
 Documents/bin/dconf-load
+echo Configuring Git repo >> /dev/stderr
+git config --local status.showUntrackedFiles no
+echo Creating Bash completion scripts >> /dev/stderr
+Documents/bin/gen-bash-completion
+echo Adding Cron job >> /dev/stderr
+Documents/bin/cron-jobs

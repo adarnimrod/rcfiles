@@ -1,4 +1,4 @@
-personal_ws-1.1 en 154 
+personal_ws-1.1 en 158 
 cfg
 runtime
 Nginx
@@ -15,6 +15,7 @@ crackable
 cd
 Ansible's
 arn
+uuencode
 SHA
 pytest
 submodule
@@ -107,6 +108,7 @@ pdf
 ECDSA
 localhost
 linters
+wget
 SimpleHTTPServer
 scrypt
 PyPI
@@ -126,6 +128,7 @@ usr
 PolicyKit
 txt
 Bitbucket
+uudecode
 entrypoint
 html
 Jinja
@@ -135,6 +138,7 @@ Rackspace
 AES
 GPG
 PHP
+cgit
 filenames
 sudo
 POSIX
