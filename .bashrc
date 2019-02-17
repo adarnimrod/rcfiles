@@ -44,7 +44,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export PS0="\$(__prerun)"
 # shellcheck disable=SC1117
 export PS1="\[\$(__prompt)\]\u@\h:\w\$ "
-export CDPATH="$HOME/Documents:$HOME/Documents/Shore"
+export CDPATH="$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Endless"
 
 alias ll='ls -lha'
 alias la='ls -A'
@@ -105,6 +105,7 @@ command -v notify-send > /dev/null || alias notify-send='bell'
 alias __gcloud='docker run --rm -it -v "$HOME/.config/gcloud:/tmp/.config/gcloud" -e "HOME=/tmp" -u "$(id -u):$(id -g)" google/cloud-sdk:alpine'
 alias gcloud='__gcloud gcloud'
 alias gsutil='__gcloud gsutil'
+alias detectproxy='lynx http://detectportal.firefox.com/success.txt'
 
 monitor () {
     if eval "$@"
