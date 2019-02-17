@@ -105,6 +105,7 @@ command -v notify-send > /dev/null || alias notify-send='bell'
 alias __gcloud='docker run --rm -it -v "$HOME/.config/gcloud:/tmp/.config/gcloud" -e "HOME=/tmp" -u "$(id -u):$(id -g)" google/cloud-sdk:alpine'
 alias gcloud='__gcloud gcloud'
 alias gsutil='__gcloud gsutil'
+alias detectproxy='lynx http://detectportal.firefox.com/success.txt'
 
 monitor () {
     if eval "$@"
