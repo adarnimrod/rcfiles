@@ -3,7 +3,7 @@ set -eu
 
 gen_completion () {
     executable="$1"
-    ! command -v "$executable" > /dev/null || "$@" > "$HOME/.bash_completion.d/$executable"
+    ! command -v "$executable" > /dev/null || "$@" > "$HOME/.bash_completion.d/$executable" || true
 }
 
 gen_completion pandoc --bash-completion
