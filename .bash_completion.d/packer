@@ -1,0 +1,1 @@
+! command -v packer >/dev/null || complete -C packer packer
