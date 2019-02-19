@@ -106,6 +106,7 @@ alias __gcloud='docker run --rm -it -v "$HOME/.config/gcloud:/tmp/.config/gcloud
 alias gcloud='__gcloud gcloud'
 alias gsutil='__gcloud gsutil'
 alias detectproxy='lynx http://detectportal.firefox.com/success.txt'
+alias color='less --raw-control-chars -p'
 
 monitor () {
     if eval "$@"
