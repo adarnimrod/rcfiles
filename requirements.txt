@@ -1,0 +1,12 @@
+httpie
+awscli
+aws-shell
+pre-commit
+pipenv
+docker-compose
+Glances
+httpbin
+pgcli
+mycli
+gunicorn
+ansible

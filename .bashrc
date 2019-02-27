@@ -15,6 +15,7 @@ export PATH="$HOME/Documents/Shore/ssh-ca:$PATH"
 export PATH="$HOME/Documents/Shore/ssl-ca:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/Documents/bin:$PATH"
 export PYTHONSTARTUP=~/.config/pythonrc/pythonrc.py
 export AWS_DEFAULT_PROFILE='shore'
