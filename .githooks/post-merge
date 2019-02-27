@@ -13,3 +13,5 @@ echo Creating Bash completion scripts >> /dev/stderr
 Documents/bin/gen-bash-completion
 echo Adding Cron job >> /dev/stderr
 Documents/bin/cron-jobs
+echo Installing Python apps >> /dev/stderr
+python3 -m pip install --user --requirement requirements.txt
