@@ -109,12 +109,15 @@ alias detectproxy='lynx http://detectportal.firefox.com/success.txt'
 alias color='less --raw-control-chars -p'
 
 monitor () {
-    if eval "$@"
+    eval "$@"
+    code="$?"
+    if [ "$code" -eq 0 ]
     then
         notify-send "$(basename "${1#__}") has finished."
     else
         notify-send --urgency=critical "$(basename "${1#__}") has failed."
     fi
+    return "$code"
 }
 
 jt () {
