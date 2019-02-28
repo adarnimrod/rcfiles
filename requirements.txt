@@ -10,3 +10,4 @@ pgcli
 mycli
 gunicorn
 ansible
+tox
