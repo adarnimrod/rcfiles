@@ -1,6 +1,8 @@
 httpie
 awscli
-aws-shell
+#aws-shell
+awslogs
+parse
 pre-commit
 pipenv
 docker-compose
@@ -11,3 +13,5 @@ mycli
 gunicorn
 ansible
 tox
+sh
+template
