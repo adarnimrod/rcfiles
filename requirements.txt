@@ -7,6 +7,8 @@ Glances
 gunicorn
 httpbin
 httpie
+khal
+khard
 mycli
 parse
 pgcli
@@ -14,4 +16,5 @@ pipenv
 pre-commit
 sh
 template
+todoman
 tox
