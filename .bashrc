@@ -108,6 +108,8 @@ alias gcloud='__gcloud gcloud'
 alias gsutil='__gcloud gsutil'
 alias detectproxy='lynx http://detectportal.firefox.com/success.txt'
 alias color='less --raw-control-chars -p'
+alias pip2='python2 -m pip'
+alias pip3='python3 -m pip'
 
 monitor () {
     eval "$@"
