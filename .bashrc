@@ -111,6 +111,11 @@ alias color='less --raw-control-chars -p'
 alias pip2='python2 -m pip'
 alias pip3='python3 -m pip'
 
+sudome () (
+    eval "$(declare -F | sed 's/^declare/export/g')"
+    sudo -E "$SHELL" -c "$@"
+)
+
 monitor () {
     eval "$@"
     code="$?"
