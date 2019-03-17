@@ -202,7 +202,8 @@ ssh_keyscan_add () {
 }
 
 gen_csr () {
-    openssl req -new -newkey rsa:4096 -nodes -out "$1.csr" -keyout "$1.key"
+    name="${1:-site}"
+    openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
 }
 
 __sync_comics () {
