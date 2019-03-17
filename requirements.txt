@@ -14,6 +14,7 @@ parse
 pgcli
 pipenv
 pre-commit
+pygmentize
 sh
 template
 todoman
