@@ -111,6 +111,11 @@ alias color='less --raw-control-chars -p'
 alias pip2='python2 -m pip'
 alias pip3='python3 -m pip'
 
+genpass () {
+    bytes="${1:-32}"
+    head --bytes="$bytes" /dev/urandom | base64 --wrap=0
+}
+
 sudome () (
     eval "$(declare -F | sed 's/^declare/export/g')"
     sudo -E "$SHELL" -c "$@"
