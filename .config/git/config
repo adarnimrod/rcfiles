@@ -41,6 +41,9 @@
 [fetch]
     fsckobjects = true
     prune = true
+[filter "ansible-vault"]
+    clean = ANSIBLE_VERBOSITY=0 ansible-vault encrypt
+    smudge = ANSIBLE_VERBOSITY=0 ansible-vault decrypt
 [grep]
     linenumber = true
 [merge]
