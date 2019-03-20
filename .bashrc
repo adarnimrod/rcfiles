@@ -65,10 +65,8 @@ alias deconcat="perl -pe 's/\\\\n/\\n/g'"
 alias ecr-login='eval $(aws ecr get-login --no-include-email)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
-alias __apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
 alias apt-daily="monitor __apt-daily"
-alias __flatpak-daily='sudo flatpak update --assumeyes'
-alias flatpak-daily="monitor __flatpak-daily"
+alias flatpak-daily="sudo --preserve-env $(command -v monitor) flatpak update --assumeyes"
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias httpbin='gunicorn httpbin:app'
@@ -91,12 +89,14 @@ alias todo="vim \$HOME/Documents/TODO.yml"
 alias sudo="sudo "
 alias git="git "
 alias xargs="xargs "
+alias monitor="monitor "
+alias sudome="sudome "
 alias presentation='docker dev adarnimrod/presentation'
 alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun\.[0-9]*" | grep -v "$(pgrep -u "$(id -u)" "$(basename "$SHELL" )" )" | xargs -r rm'
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata:alpine'
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
 alias http-server='python3 -m http.server 8080'
-alias dd='monitor sudo dd status=progress'
+alias dd='monitor dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias black='black --line-length 79'
 alias torrent_off='ssh xbmc.shore.co.il sudo systemctl stop transmission-{rss,daemon}.service'
@@ -114,23 +114,6 @@ alias pip3='python3 -m pip'
 genpass () {
     bytes="${1:-32}"
     head --bytes="$bytes" /dev/urandom | base64 --wrap=0
-}
-
-sudome () (
-    eval "$(declare -F | sed 's/^declare/export/g')"
-    sudo -E "$SHELL" -c "$@"
-)
-
-monitor () {
-    eval "$@"
-    code="$?"
-    if [ "$code" -eq 0 ]
-    then
-        notify-send "$(basename "${1#__}") has finished."
-    else
-        notify-send --urgency=critical "$(basename "${1#__}") has failed."
-    fi
-    return "$code"
 }
 
 jt () {
