@@ -4,6 +4,7 @@
     amend = commit --amend
     autorebase = -c 'core.editor=true' rebase -i --autosquash --autostash
     bull = submodule update --remote --init
+    cdiff = diff --cached
     cleaan = clean -fdX
     cleaaan = clean -fdx
     dif = diff --color-words
