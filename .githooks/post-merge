@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eu
 cd "$(git rev-parse --show-toplevel)"
+echo Installing Golang apps >> /dev/stderr
+go get github.com/giantswarm/semver-bump || true
+go get github.com/nishanths/license || true
 echo Installing Python apps >> /dev/stderr
 python3 -m pip install --user --requirement requirements.txt
 echo Installing Git hooks >> /dev/stderr
