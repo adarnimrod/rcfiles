@@ -1,0 +1,1 @@
+command -v minikube >/dev/null && eval $(minikube completion bash)

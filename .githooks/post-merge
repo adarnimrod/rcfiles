@@ -11,7 +11,5 @@ echo Loading dconf config >> /dev/stderr
 Documents/bin/dconf-load
 echo Configuring Git repo >> /dev/stderr
 git config --local status.showUntrackedFiles no
-echo Creating Bash completion scripts >> /dev/stderr
-Documents/bin/gen-bash-completion
 echo Adding Cron job >> /dev/stderr
 Documents/bin/cron-jobs
