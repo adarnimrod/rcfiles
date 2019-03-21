@@ -56,6 +56,7 @@ alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
+alias missing-suggests="aptitude search '~RBsuggests:~i'"
 # shellcheck disable=SC2142
 alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
@@ -110,6 +111,7 @@ alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
 alias color='less --raw-control-chars -p'
 alias pip2='python2 -m pip'
 alias pip3='python3 -m pip'
+alias renew-certs='monitor renew-certs'
 
 genpass () {
     bytes="${1:-32}"
