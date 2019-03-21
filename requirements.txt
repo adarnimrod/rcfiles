@@ -2,6 +2,9 @@ ansible
 awscli
 awslogs
 #aws-shell
+bcrypt
+boto
+boto3
 docker-compose
 Glances
 gunicorn
@@ -10,7 +13,9 @@ httpie
 khal
 khard
 mycli
+netaddr
 parse
+passlib
 pgcli
 pipenv
 piprot
