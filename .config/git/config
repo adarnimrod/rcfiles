@@ -4,6 +4,7 @@
     amend = commit --amend
     autorebase = -c 'core.editor=true' rebase -i --autosquash --autostash
     bull = submodule update --remote --init
+    cdiff = diff --cached
     cleaan = clean -fdX
     cleaaan = clean -fdx
     dif = diff --color-words
@@ -41,6 +42,9 @@
 [fetch]
     fsckobjects = true
     prune = true
+[filter "ansible-vault"]
+    clean = ANSIBLE_VERBOSITY=0 ansible-vault encrypt
+    smudge = ANSIBLE_VERBOSITY=0 ansible-vault decrypt
 [grep]
     linenumber = true
 [merge]
