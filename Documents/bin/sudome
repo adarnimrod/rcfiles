@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+if command -v "$1" >/dev/null
+then
+    executable="$(command -v "$1")"
+    shift
+    exec sudo --preserve-env --set-home "$executable" "$@"
+else
+    exec sudo --preserve-env --set-home "$@"
+fi

@@ -55,7 +55,6 @@ alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
-alias missing-suggests="aptitude search '~RBsuggests:~i'"
 # shellcheck disable=SC2142
 alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
@@ -67,7 +66,7 @@ alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
 alias __apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
 alias apt-daily="monitor __apt-daily"
-alias __flatpak-daily="sudo /bin/sh -c 'flatpak update --assumeyes && flatpak uninstall --unused --assumeyes'"
+alias __flatpak-daily='sudo flatpak update --assumeyes'
 alias flatpak-daily="monitor __flatpak-daily"
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
