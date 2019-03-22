@@ -15,36 +15,40 @@ export PATH="$HOME/Documents/Shore/ssh-ca:$PATH"
 export PATH="$HOME/Documents/Shore/ssl-ca:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/Documents/bin:$PATH"
 export PYTHONSTARTUP=~/.config/pythonrc/pythonrc.py
 export AWS_DEFAULT_PROFILE='shore'
 export ANSIBLE_VERBOSITY=2
 export ANSIBLE_COMMAND_WARNINGS=True
 export ANSIBLE_DEPRECATION_WARNINGS=True
+export ANSIBLE_SYSTEM_WARNINGS=True
 export ANSIBLE_RETRY_FILES_SAVE_PATH=/tmp/
-export ANSIBLE_SSH_PIPELINING=True
+export ANSIBLE_PIPELINING=True
 export ANSIBLE_GATHERING=smart
 export ANSIBLE_CACHE_PLUGIN=jsonfile
 export ANSIBLE_CACHE_PLUGIN_CONNECTION="$HOME/.ansible/facts"
-export ANSIBLE_CALLBACK_WHITELIST=profile_tasks
+export ANSIBLE_CALLBACK_WHITELIST="profile_tasks, timer"
+export ANSIBLE_SSH_CONTROL_PATH="/tmp/ssh-%%h"
+export ANSIBLE_INVENTORY_ANY_UNPARSED_IS_FAILED=True
 export LYNX_SAVE_SPACE="$HOME/Downloads"
 export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
-# Blinking
+# Blinking (red).
 export LESS_TERMCAP_mb=$'\E[01;31m'
-# Double bright
+# Double bright (purple).
 export LESS_TERMCAP_md=$'\E[01;35m'
 export LESS_TERMCAP_me=$'\E[0m'
-# Standout
+# Standout (grey).
 export LESS_TERMCAP_so=$'\E[01;33m'
 export LESS_TERMCAP_se=$'\E[0m'
-# Underline
+# Underline (dark grey).
 export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export PS0="\$(__prerun)"
 # shellcheck disable=SC1117
 export PS1="\[\$(__prompt)\]\u@\h:\w\$ "
-export CDPATH="$HOME/Documents:$HOME/Documents/Shore"
+export CDPATH="$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Endless"
 
 alias ll='ls -lha'
 alias la='ls -A'
@@ -55,6 +59,7 @@ alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias aptitude='aptitude --display-format %p --quiet'
 alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
+alias missing-suggests="aptitude search '~RBsuggests:~i'"
 # shellcheck disable=SC2142
 alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
@@ -64,10 +69,8 @@ alias deconcat="perl -pe 's/\\\\n/\\n/g'"
 alias ecr-login='eval $(aws ecr get-login --no-include-email)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
-alias __apt-daily="sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'"
 alias apt-daily="monitor __apt-daily"
-alias __flatpak-daily='sudo flatpak update --assumeyes'
-alias flatpak-daily="monitor __flatpak-daily"
+alias flatpak-daily="sudo --preserve-env $(command -v monitor) flatpak update --assumeyes"
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias httpbin='gunicorn httpbin:app'
@@ -90,12 +93,14 @@ alias todo="vim \$HOME/Documents/TODO.yml"
 alias sudo="sudo "
 alias git="git "
 alias xargs="xargs "
+alias monitor="monitor "
+alias sudome="sudome "
 alias presentation='docker dev adarnimrod/presentation'
 alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun\.[0-9]*" | grep -v "$(pgrep -u "$(id -u)" "$(basename "$SHELL" )" )" | xargs -r rm'
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata:alpine'
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
 alias http-server='python3 -m http.server 8080'
-alias dd='monitor sudo dd status=progress'
+alias dd='monitor dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias black='black --line-length 79'
 alias torrent_off='ssh xbmc.shore.co.il sudo systemctl stop transmission-{rss,daemon}.service'
@@ -105,14 +110,15 @@ command -v notify-send > /dev/null || alias notify-send='bell'
 alias __gcloud='docker run --rm -it -v "$HOME/.config/gcloud:/tmp/.config/gcloud" -e "HOME=/tmp" -u "$(id -u):$(id -g)" google/cloud-sdk:alpine'
 alias gcloud='__gcloud gcloud'
 alias gsutil='__gcloud gsutil'
+alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
+alias color='less --raw-control-chars -p'
+alias pip2='python2 -m pip'
+alias pip3='python3 -m pip'
+alias renew-certs='monitor renew-certs'
 
-monitor () {
-    if eval "$@"
-    then
-        notify-send "$(basename "${1#__}") has finished."
-    else
-        notify-send --urgency=critical "$(basename "${1#__}") has failed."
-    fi
+genpass () {
+    bytes="${1:-32}"
+    head --bytes="$bytes" /dev/urandom | base64 --wrap=0
 }
 
 jt () {
@@ -184,7 +190,8 @@ ssh_keyscan_add () {
 }
 
 gen_csr () {
-    openssl req -new -newkey rsa:4096 -nodes -out "$1.csr" -keyout "$1.key"
+    name="${1:-site}"
+    openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
 }
 
 __sync_comics () {
@@ -197,7 +204,7 @@ __sync_comics () {
 }
 
 ddg () {
-    lynx "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
+    w3m "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
 }
 
 toux () {
@@ -219,21 +226,6 @@ match_ssl_pair () {
     exitcode="$?"
     rm "$tempkey" "$tempcert"
     return "$exitcode"
-}
-
-flatpak-kill () {
-    if [ "$#" -lt 1 ]
-    then
-        echo "You must specify application name." >> /dev/stderr
-        false
-    else
-        name="$1"
-        shift
-        for pid in $(flatpak ps --columns=application,pid | awk "tolower(\$2) ~ /$name/ {print \$3}")
-        do
-            pkill "$@" "$pid"
-        done
-    fi
 }
 
 __run_duration () {
