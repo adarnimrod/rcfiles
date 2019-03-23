@@ -17,7 +17,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/Documents/bin:$PATH"
-export PYTHONSTARTUP=~/.config/pythonrc/pythonrc.py
+export PYTHONSTARTUP=~/.config/pythonrc.py
 export AWS_DEFAULT_PROFILE='shore'
 export ANSIBLE_VERBOSITY=2
 export ANSIBLE_COMMAND_WARNINGS=True
@@ -114,7 +114,8 @@ alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
 alias color='less --raw-control-chars -p'
 alias pip2='python2 -m pip'
 alias pip3='python3 -m pip'
-alias renew-certs='monitor renew-certs'
+alias rc_update="make --directory $HOME --always-make all"
+alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
 
 genpass () {
     bytes="${1:-32}"

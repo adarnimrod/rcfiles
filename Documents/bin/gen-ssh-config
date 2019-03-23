@@ -1,3 +1,0 @@
-#!/bin/sh
-set -eu
-find "$HOME/.ssh/config.d/" -type f \! -name '.*' -print0 | sort --zero | xargs -0 cat > "$HOME/.ssh/config"
