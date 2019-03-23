@@ -8,6 +8,7 @@ repos:
     -   id: check-merge-conflict
     -   id: check-symlinks
     -   id: detect-private-key
+    -   id: trailing-whitespace
     -   id: flake8
         exclude: pythonrc.py
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
