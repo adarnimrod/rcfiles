@@ -1,1 +1,1 @@
-command -v pipenv > /dev/null && eval $(pipenv --completion)
+command -v pipenv > /dev/null && eval "$(pipenv --completion)"
