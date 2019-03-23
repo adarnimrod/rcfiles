@@ -79,3 +79,7 @@ binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .loc
 .local/bin/docker-machine-driver-kvm2:
 	$(download) https://storage.googleapis.com/minikube/releases/latest/docker-machine-driver-kvm2
 	chmod +x $@
+
+.local/bin/helm:
+	$(curl) https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-$(os)-$(arch).tar.gz | tar -C .local/bin --wildcards --strip-components=1 -zx */helm
+	chmod +x $@
