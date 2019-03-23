@@ -114,7 +114,8 @@ alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
 alias color='less --raw-control-chars -p'
 alias pip2='python2 -m pip'
 alias pip3='python3 -m pip'
-alias rc_update="make --directory $HOME --always-make all"
+alias rc_update="make --directory $HOME --always-make"
+alias gen-ssh-config="rc_update .ssh/config"
 alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
 
 genpass () {

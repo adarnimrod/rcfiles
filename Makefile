@@ -1,14 +1,19 @@
-.PHONY: all binaries
+.PHONY: all binaries generated vendored
 
-ssh_configs := $(wildcard .ssh/config.d/*)
-download = curl --silent --location --fail --output $@
+tempdir != mktemp -d
+os != uname -s | awk '{print tolower($$0)}'
+arch := amd64
+ssh_configs != find ".ssh/config.d/" -type f \! -name '.*'
+curl = curl --location --silent --fail
+download = $(curl) --output $@
 
-all: .config/pythonrc.py .ssh/config .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh binaries
-
-binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .local/bin/packer .local/bin/terraform .local/bin/vault .local/bin/kubectl .local/bin/kops .local/bin/kompose .local/bin/minikube
+all: vendored generated binaries
+vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh
+generated: .ssh/config
+binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .local/bin/packer .local/bin/terraform .local/bin/vault .local/bin/kubectl .local/bin/kops .local/bin/kompose .local/bin/minikube .local/bin/docker-machine-driver-kvm2
 
 .ssh/config: $(ssh_configs)
-	find ".ssh/config.d/" -type f \! -name '.*' -print0 | sort --zero | xargs -0 cat > ".ssh/config"
+	cat $(ssh_configs) > $@
 
 .bash_completion.d/docker-compose:
 	$(download) https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose
@@ -30,39 +35,45 @@ binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .loc
 	$(download) 'https://search.maven.org/remote_content?g=com.madgag&a=bfg&v=LATEST'
 
 .local/bin/rke:
-	$(download) https://github.com/rancher/rke/releases/download/v0.2.0/rke_darwin-amd64
+	$(download) https://github.com/rancher/rke/releases/download/v0.2.0/rke_$(os)-$(arch)
 	chmod +x $@
 
 .local/bin/docker-machine:
-	$(download) "https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-$$(uname -s)-$$(uname -m)"
+	$(download) "https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-$(os)-$$(uname -m)"
 	chmod +x $@
 
 .local/bin/packer:
-	$(download) https://releases.hashicorp.com/packer/1.3.5/packer_1.3.5_linux_amd64.zip
-	chmod +x $@
+	$(curl) https://releases.hashicorp.com/packer/1.3.5/packer_1.3.5_$(os)_$(arch).zip --output $(tempdir)/packer.zip
+	unzip -d $(tempdir) $(tempdir)/packer.zip
+	install -m 755 $(tempdir)/packer $@
+	rm $(tempdir)/packer*
 
 .local/bin/terraform:
-	$(download) https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
-	chmod +x $@
+	$(curl) https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_$(os)_$(arch).zip --output $(tempdir)/terraform.zip
+	unzip -d $(tempdir) $(tempdir)/terraform.zip
+	install -m 755 $(tempdir)/terraform $@
+	rm $(tempdir)/terraform*
 
 .local/bin/vault:
-	$(download) https://releases.hashicorp.com/vault/1.1.0/vault_1.1.0_linux_amd64.zip
-	chmod +x $@
+	$(curl) https://releases.hashicorp.com/vault/1.1.0/vault_1.1.0_$(os)_$(arch).zip --output $(tempdir)/vault.zip
+	unzip -d $(tempdir) $(tempdir)/vault.zip
+	install -m 755 $(tempdir)/vault $@
+	rm $(tempdir)/vault*
 
 .local/bin/kubectl:
-	$(download) "https://storage.googleapis.com/kubernetes-release/release/$$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+	$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/$(os)/$(arch)/kubectl"
 	chmod +x $@
 
 .local/bin/kops:
-	$(download) "https://github.com/kubernetes/kops/releases/download/$$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64"
+	$(download) "https://github.com/kubernetes/kops/releases/download/1.11.1/kops-$(os)-$(arch)"
 	chmod +x $@
 
 .local/bin/kompose:
-	$(download) https://github.com/kubernetes/kompose/releases/download/v1.17.0/kompose-linux-amd64
+	$(download) https://github.com/kubernetes/kompose/releases/download/v1.17.0/kompose-$(os)-$(arch)
 	chmod +x $@
 
 .local/bin/minikube:
-	$(download) https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+	$(download) https://storage.googleapis.com/minikube/releases/latest/minikube-$(os)-$(arch)
 	chmod +x $@
 
 .local/bin/docker-machine-driver-kvm2:
