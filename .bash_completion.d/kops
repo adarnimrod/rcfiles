@@ -1,1 +1,1 @@
-command -v kops >/dev/null && eval $(kops completion bash)
+command -v kops >/dev/null && eval "$(kops completion bash)"
