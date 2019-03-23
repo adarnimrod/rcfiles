@@ -1,9 +1,28 @@
 #!/bin/sh
 set -eu
 cd "$(git rev-parse --show-toplevel)"
+echo Installing docker-machine >> /dev/stderr
+true
+echo Installing Packer >> /dev/stderr
+true
+echo Installing Terraform >> /dev/stderr
+true
+echo Installing Vault >> /dev/stderr
+true
+echo Installing kubectl >> /dev/stderr
+true
+echo Installing minikube >> /dev/stderr
+true
+echo Installing kompose >> /dev/stderr
+true
+echo Installing kops >> /dev/stderr
+true
+echo Installing rke >> /dev/stderr
+true
 echo Installing Golang apps >> /dev/stderr
 go get github.com/giantswarm/semver-bump || true
 go get github.com/nishanths/license || true
+go get -u sigs.k8s.io/kind || true
 echo Installing Python apps >> /dev/stderr
 python3 -m pip install --user --requirement requirements.txt
 echo Installing Git hooks >> /dev/stderr
