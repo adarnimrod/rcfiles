@@ -5,13 +5,13 @@ download = curl --silent --location --fail --output $@
 
 all: .config/pythonrc.py .ssh/config .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh binaries
 
-binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .local/bin/packer .local/bin/terraform .local/bin/vault .local/bin/kubectl .local/bin/kops .local/bin/kompose .local/bin/minikube 
+binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .local/bin/packer .local/bin/terraform .local/bin/vault .local/bin/kubectl .local/bin/kops .local/bin/kompose .local/bin/minikube
 
 .ssh/config: $(ssh_configs)
 	find ".ssh/config.d/" -type f \! -name '.*' -print0 | sort --zero | xargs -0 cat > ".ssh/config"
 
 .bash_completion.d/docker-compose:
-	$(download) https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose 
+	$(download) https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose
 
 .bash_completion.d/docker-machine.bash:
 	$(download) https://raw.githubusercontent.com/docker/machine/v0.16.0/contrib/completion/bash/docker-machine.bash
