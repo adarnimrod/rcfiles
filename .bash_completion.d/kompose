@@ -1,0 +1,1 @@
+command -v kompose >/dev/null && eval "$(kompose completion bash)"

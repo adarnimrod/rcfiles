@@ -1,6 +1,0 @@
-#!/bin/sh
-set -eu
-
-__BFG_JAR="$HOME/Documents/bin/bfg.jar"
-[ -f "$__BFG_JAR" ] || curl 'https://search.maven.org/remote_content?g=com.madgag&a=bfg&v=LATEST' -sLO "$__BFG_JAR"
-exec java -jar "$__BFG_JAR" "$@"

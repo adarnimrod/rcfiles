@@ -21,6 +21,3 @@
 [submodule "Documents/Shore/poquita"]
     path = Documents/Shore/poquita
     url = https://www.shore.co.il/git/poquita
-[submodule ".config/pythonrc"]
-	path = .config/pythonrc
-	url = https://github.com/lonetwin/pythonrc.git
