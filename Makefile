@@ -8,8 +8,8 @@ curl = curl --location --silent --fail
 download = $(curl) --output $@
 
 all: vendored generated binaries
-vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh
-generated: .ssh/config
+vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule
+generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc
 binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .local/bin/packer .local/bin/terraform .local/bin/vault .local/bin/kubectl .local/bin/kops .local/bin/kompose .local/bin/minikube .local/bin/docker-machine-driver-kvm2
 
 .ssh/config: $(ssh_configs)
@@ -83,3 +83,27 @@ binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .loc
 .local/bin/helm:
 	$(curl) https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-$(os)-$(arch).tar.gz | tar -C .local/bin --wildcards --strip-components=1 -zx */helm
 	chmod +x $@
+
+.bash_completion.d/helm: .local/bin/helm
+	-$$(basename $@) completion bash > $@
+
+.bash_completion.d/kompose: .local/bin/kompose
+	-$$(basename $@) completion bash > $@
+
+.bash_completion.d/kops: .local/bin/kops
+	-$$(basename $@) completion bash > $@
+
+.bash_completion.d/kubectl: .local/bin/kubectl
+	-$$(basename $@) completion bash > $@
+
+.bash_completion.d/minikube: .local/bin/minikube
+	-$$(basename $@) completion bash > $@
+
+.bash_completion.d/molecule:
+	$(download) https://raw.githubusercontent.com/ansible/molecule/1.25.1/asset/bash_completion/molecule.bash-completion.sh
+
+.bash_completion.d/pipenv:
+	-bash -c 'pipenv --completion > $@'
+
+.bash_completion.d/pandoc:
+	-pandoc --bash-completion > $@

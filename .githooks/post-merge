@@ -1,14 +1,15 @@
 #!/bin/sh
 set -eu
 cd "$(git rev-parse --show-toplevel)"
-echo Downloading binary and vendored files >> /dev/stderr
-make
 echo Installing Golang apps >> /dev/stderr
 go get github.com/giantswarm/semver-bump || true
 go get github.com/nishanths/license || true
 go get sigs.k8s.io/kind || true
 echo Installing Python apps >> /dev/stderr
 python3 -m pip install --user --requirement requirements.txt
+echo Downloading binary and vendored files, creating generated files >> /dev/stderr
+git clean -fX .bash_completion.d/
+make all
 echo Installing Git hooks >> /dev/stderr
 Documents/bin/install-git-hooks
 echo Loading dconf config >> /dev/stderr
