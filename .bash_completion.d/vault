@@ -1,1 +1,1 @@
-! command -v vault >/dev/null || complete -C vault vault
+complete -C vault vault
