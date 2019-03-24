@@ -70,7 +70,7 @@ alias ecr-login='eval $(aws ecr get-login --no-include-email)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
 alias apt-daily="monitor __apt-daily"
-alias flatpak-daily="sudo --preserve-env $(command -v monitor) flatpak update --assumeyes"
+alias flatpak-daily="monitor __flatpak-daily"
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias httpbin='gunicorn httpbin:app'
