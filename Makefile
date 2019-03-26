@@ -11,7 +11,7 @@ download = $(curl) --output $@
 all: binaries vendored generated
 vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule
 generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc
-binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .local/bin/packer .local/bin/terraform .local/bin/vault .local/bin/kubectl .local/bin/kops .local/bin/kompose .local/bin/minikube .local/bin/docker-machine-driver-kvm2
+binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .local/bin/packer .local/bin/terraform .local/bin/vault .local/bin/kubectl .local/bin/kops .local/bin/kompose .local/bin/minikube .local/bin/docker-machine-driver-kvm2 .local/bin/kustomize
 
 .ssh/config: $(ssh_configs)
 	cat $(ssh_configs) > $@
@@ -75,6 +75,10 @@ binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .loc
 
 .local/bin/minikube:
 	-$(download) https://storage.googleapis.com/minikube/releases/latest/minikube-$(os)-$(goarch)
+	-chmod +x $@
+
+.local/bin/kustomize:
+	-$(download) https://github.com/kubernetes-sigs/kustomize/releases/download/v2.0.3/kustomize_2.0.3_$(os)_$(goarch)
 	-chmod +x $@
 
 .local/bin/docker-machine-driver-kvm2:
