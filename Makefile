@@ -62,7 +62,7 @@ binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .loc
 	rm $(tempdir)/vault*
 
 .local/bin/kubectl:
-	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/$(os)/$(goarch)/kubectl"
+	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/$(os)/$(goarch)/kubectl"
 	-chmod +x $@
 
 .local/bin/kops:
