@@ -1,5 +1,5 @@
 .PHONY: all binaries generated vendored
-
+DESTDIR ?= .local
 tempdir != mktemp -d
 os != uname -s | awk '{print tolower($$0)}'
 arch != uname -m
@@ -11,106 +11,132 @@ download = $(curl) --output $@
 all: binaries vendored generated
 vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule
 generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc
-binaries: .local/share/bfg/bfg.jar .local/bin/rke .local/bin/docker-machine .local/bin/packer .local/bin/terraform .local/bin/vault .local/bin/kubectl .local/bin/kops .local/bin/kompose .local/bin/minikube .local/bin/docker-machine-driver-kvm2 .local/bin/kustomize
+binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize
 
 .ssh/config: $(ssh_configs)
+	mkdir -p $$(dirname $@)
 	cat $(ssh_configs) > $@
 
 .bash_completion.d/docker-compose:
+	mkdir -p $$(dirname $@)
 	$(download) https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose
 
 .bash_completion.d/docker-machine.bash:
+	mkdir -p $$(dirname $@)
 	$(download) https://raw.githubusercontent.com/docker/machine/v0.16.0/contrib/completion/bash/docker-machine.bash
 
 .bash_completion.d/fabric-completion.bash:
+	mkdir -p $$(dirname $@)
 	$(download) https://raw.githubusercontent.com/kbakulin/fabric-completion/master/fabric-completion.bash
 
 .config/pythonrc.py:
+	mkdir -p $$(dirname $@)
 	$(download) https://raw.githubusercontent.com/lonetwin/pythonrc/master/pythonrc.py
 
 .travis/travis.sh:
-	mkdir -p .travis
+	mkdir -p $$(dirname $@)
 	$(download) https://raw.githubusercontent.com/travis-ci/travis.rb/master/assets/travis.sh
 
-.local/share/bfg/bfg.jar:
+$(DESTDIR)/share/bfg/bfg.jar:
+	mkdir -p $$(dirname $@)
 	$(download) 'https://search.maven.org/remote_content?g=com.madgag&a=bfg&v=LATEST'
 
-.local/bin/rke:
+$(DESTDIR)/bin/rke:
+	mkdir -p $$(dirname $@)
 	-$(download) https://github.com/rancher/rke/releases/download/v0.2.0/rke_$(os)-$(goarch)
 	-chmod +x $@
 
-.local/bin/docker-machine:
+$(DESTDIR)/bin/docker-machine:
+	mkdir -p $$(dirname $@)
 	-$(download) "https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-$(os)-$(arch)"
 	-chmod +x $@
 
-.local/bin/packer:
+$(DESTDIR)/bin/packer:
+	mkdir -p $$(dirname $@)
 	$(curl) https://releases.hashicorp.com/packer/1.3.5/packer_1.3.5_$(os)_$(goarch).zip --output $(tempdir)/packer.zip
 	unzip -d $(tempdir) $(tempdir)/packer.zip
 	install -m 755 $(tempdir)/packer $@
 	rm $(tempdir)/packer*
 
-.local/bin/terraform:
+$(DESTDIR)/bin/terraform:
+	mkdir -p $$(dirname $@)
 	$(curl) https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_$(os)_$(goarch).zip --output $(tempdir)/terraform.zip
 	unzip -d $(tempdir) $(tempdir)/terraform.zip
 	install -m 755 $(tempdir)/terraform $@
 	rm $(tempdir)/terraform*
 
-.local/bin/vault:
+$(DESTDIR)/bin/vault:
+	mkdir -p $$(dirname $@)
 	$(curl) https://releases.hashicorp.com/vault/1.1.0/vault_1.1.0_$(os)_$(goarch).zip --output $(tempdir)/vault.zip
 	unzip -d $(tempdir) $(tempdir)/vault.zip
 	install -m 755 $(tempdir)/vault $@
 	rm $(tempdir)/vault*
 
-.local/bin/kubectl:
+$(DESTDIR)/bin/kubectl:
+	mkdir -p $$(dirname $@)
 	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/$(os)/$(goarch)/kubectl"
 	-chmod +x $@
 
-.local/bin/kops:
+$(DESTDIR)/bin/kops:
+	mkdir -p $$(dirname $@)
 	-$(download) "https://github.com/kubernetes/kops/releases/download/1.11.1/kops-$(os)-$(goarch)"
 	-chmod +x $@
 
-.local/bin/kompose:
+$(DESTDIR)/bin/kompose:
+	mkdir -p $$(dirname $@)
 	-$(download) https://github.com/kubernetes/kompose/releases/download/v1.17.0/kompose-$(os)-$(goarch)
 	-chmod +x $@
 
-.local/bin/minikube:
+$(DESTDIR)/bin/minikube:
+	mkdir -p $$(dirname $@)
 	-$(download) https://storage.googleapis.com/minikube/releases/latest/minikube-$(os)-$(goarch)
 	-chmod +x $@
 
-.local/bin/kustomize:
+$(DESTDIR)/bin/kustomize:
+	mkdir -p $$(dirname $@)
 	-$(download) https://github.com/kubernetes-sigs/kustomize/releases/download/v2.0.3/kustomize_2.0.3_$(os)_$(goarch)
 	-chmod +x $@
 
-.local/bin/docker-machine-driver-kvm2:
+$(DESTDIR)/bin/docker-machine-driver-kvm2:
+	mkdir -p $$(dirname $@)
 	-$(download) https://storage.googleapis.com/minikube/releases/latest/docker-machine-driver-kvm2
 	-chmod +x $@
 
-.local/bin/helm:
+$(DESTDIR)/bin/helm:
+	mkdir -p $$(dirname $@)
 	mkdir -p $(tempdir)/helm
 	-$(curl) https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-$(os)-$(goarch).tar.gz | tar -zxf - -C $(tempdir)/helm/
 	-install -m 755 $(tempdir)/helm/$(os)-$(goarch)/helm $@
 	rm -r $(tempdir)/helm
 
-.bash_completion.d/helm: .local/bin/helm
+.bash_completion.d/helm: $(DESTDIR)/bin/helm
+	mkdir -p $$(dirname $@)
 	-$$(basename $@) completion bash > $@
 
-.bash_completion.d/kompose: .local/bin/kompose
+.bash_completion.d/kompose: $(DESTDIR)/bin/kompose
+	mkdir -p $$(dirname $@)
 	-$$(basename $@) completion bash > $@
 
-.bash_completion.d/kops: .local/bin/kops
+.bash_completion.d/kops: $(DESTDIR)/bin/kops
+	mkdir -p $$(dirname $@)
 	-$$(basename $@) completion bash > $@
 
-.bash_completion.d/kubectl: .local/bin/kubectl
+.bash_completion.d/kubectl: $(DESTDIR)/bin/kubectl
+	mkdir -p $$(dirname $@)
 	-$$(basename $@) completion bash > $@
 
-.bash_completion.d/minikube: .local/bin/minikube
+.bash_completion.d/minikube: $(DESTDIR)/bin/minikube
+	mkdir -p $$(dirname $@)
 	-$$(basename $@) completion bash > $@
 
 .bash_completion.d/molecule:
+	mkdir -p $$(dirname $@)
 	$(download) https://raw.githubusercontent.com/ansible/molecule/1.25.1/asset/bash_completion/molecule.bash-completion.sh
 
 .bash_completion.d/pipenv:
+	mkdir -p $$(dirname $@)
 	-bash -c 'pipenv --completion > $@'
 
 .bash_completion.d/pandoc:
+	mkdir -p $$(dirname $@)
 	-pandoc --bash-completion > $@
