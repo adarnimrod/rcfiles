@@ -13,29 +13,8 @@ vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-c
 generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc
 binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize
 
-.ssh/config: $(ssh_configs)
-	mkdir -p $$(dirname $@)
-	cat $(ssh_configs) > $@
 
-.bash_completion.d/docker-compose:
-	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose
-
-.bash_completion.d/docker-machine.bash:
-	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/docker/machine/v0.16.0/contrib/completion/bash/docker-machine.bash
-
-.bash_completion.d/fabric-completion.bash:
-	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/kbakulin/fabric-completion/master/fabric-completion.bash
-
-.config/pythonrc.py:
-	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/lonetwin/pythonrc/master/pythonrc.py
-
-.travis/travis.sh:
-	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/travis-ci/travis.rb/master/assets/travis.sh
+## Binary files
 
 $(DESTDIR)/share/bfg/bfg.jar:
 	mkdir -p $$(dirname $@)
@@ -109,6 +88,40 @@ $(DESTDIR)/bin/helm:
 	-install -m 755 $(tempdir)/helm/$(os)-$(goarch)/helm $@
 	rm -r $(tempdir)/helm
 
+
+## Vendored files
+
+.bash_completion.d/docker-compose:
+	mkdir -p $$(dirname $@)
+	$(download) https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose
+
+.bash_completion.d/docker-machine.bash:
+	mkdir -p $$(dirname $@)
+	$(download) https://raw.githubusercontent.com/docker/machine/v0.16.0/contrib/completion/bash/docker-machine.bash
+
+.bash_completion.d/fabric-completion.bash:
+	mkdir -p $$(dirname $@)
+	$(download) https://raw.githubusercontent.com/kbakulin/fabric-completion/master/fabric-completion.bash
+
+.config/pythonrc.py:
+	mkdir -p $$(dirname $@)
+	$(download) https://raw.githubusercontent.com/lonetwin/pythonrc/master/pythonrc.py
+
+.travis/travis.sh:
+	mkdir -p $$(dirname $@)
+	$(download) https://raw.githubusercontent.com/travis-ci/travis.rb/master/assets/travis.sh
+
+.bash_completion.d/molecule:
+	mkdir -p $$(dirname $@)
+	$(download) https://raw.githubusercontent.com/ansible/molecule/1.25.1/asset/bash_completion/molecule.bash-completion.sh
+
+
+## Generated files
+
+.ssh/config: $(ssh_configs)
+	mkdir -p $$(dirname $@)
+	cat $(ssh_configs) > $@
+
 .bash_completion.d/helm: $(DESTDIR)/bin/helm
 	mkdir -p $$(dirname $@)
 	-$$(basename $@) completion bash > $@
@@ -128,10 +141,6 @@ $(DESTDIR)/bin/helm:
 .bash_completion.d/minikube: $(DESTDIR)/bin/minikube
 	mkdir -p $$(dirname $@)
 	-$$(basename $@) completion bash > $@
-
-.bash_completion.d/molecule:
-	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/ansible/molecule/1.25.1/asset/bash_completion/molecule.bash-completion.sh
 
 .bash_completion.d/pipenv:
 	mkdir -p $$(dirname $@)
