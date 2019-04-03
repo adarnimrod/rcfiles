@@ -12,7 +12,7 @@ download = $(curl) --output $@
 all: binaries vendored generated
 vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule
 generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc
-binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize
+binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack
 
 
 ## Binary files
@@ -88,6 +88,10 @@ $(DESTDIR)/bin/helm:
 	-$(curl) https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-$(os)-$(goarch).tar.gz | tar -zxf - -C $(tempdir)/helm/
 	-install -m 755 $(tempdir)/helm/$(os)-$(goarch)/helm $@
 	rm -r $(tempdir)/helm
+
+$(DESTDIR)/bin/pack:
+	mkdir -p $$(dirname $@)
+	-$(curl) https://github.com/buildpack/pack/releases/download/v0.1.0/pack-v0.1.0-$(os).tgz | tar -xzC $(DESTDIR)/bin/
 
 
 ## Vendored files
