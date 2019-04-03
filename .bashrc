@@ -48,7 +48,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export PS0="\$(__prerun)"
 # shellcheck disable=SC1117
 export PS1="\[\$(__prompt)\]\u@\h:\w\$ "
-export CDPATH="$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Endless"
+export CDPATH="$HOME:$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Endless"
 
 alias ll='ls -lha'
 alias la='ls -A'
