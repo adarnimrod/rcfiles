@@ -4,6 +4,7 @@ cd "$(git rev-parse --show-toplevel)"
 echo Installing Golang apps >> /dev/stderr
 go get github.com/giantswarm/semver-bump || true
 go get github.com/nishanths/license || true
+go get github.com/jmespath/jp || true
 go get sigs.k8s.io/kind || true
 echo Installing Python apps >> /dev/stderr
 python3 -m pip install --user --requirement requirements.txt
