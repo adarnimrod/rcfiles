@@ -11,8 +11,8 @@ download = $(curl) --output $@
 
 all: binaries vendored generated
 vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule
-generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc
-binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack
+generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold
+binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack $(DESTDIR)/bin/skaffold
 
 
 ## Binary files
@@ -93,6 +93,11 @@ $(DESTDIR)/bin/pack:
 	mkdir -p $$(dirname $@)
 	-$(curl) https://github.com/buildpack/pack/releases/download/v0.1.0/pack-v0.1.0-$(os).tgz | tar -xzC $(DESTDIR)/bin/
 
+$(DESTDIR)/bin/skaffold:
+	mkdir -p $$(dirname $@)
+	-$(download) https://storage.googleapis.com/skaffold/releases/v0.26.0/skaffold-$(os)-$(goarch)
+	-chmod +x $@
+
 
 ## Vendored files
 
@@ -144,6 +149,10 @@ $(DESTDIR)/bin/pack:
 	-$$(basename $@) completion bash > $@
 
 .bash_completion.d/minikube: $(DESTDIR)/bin/minikube
+	mkdir -p $$(dirname $@)
+	-$$(basename $@) completion bash > $@
+
+.bash_completion.d/skaffold: $(DESTDIR)/bin/skaffold
 	mkdir -p $$(dirname $@)
 	-$$(basename $@) completion bash > $@
 
