@@ -34,6 +34,7 @@ export ANSIBLE_INVENTORY_ANY_UNPARSED_IS_FAILED=True
 export LYNX_SAVE_SPACE="$HOME/Downloads"
 export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
+export PIPENV_MAX_DEPTH=5
 # Blinking (red).
 export LESS_TERMCAP_mb=$'\E[01;31m'
 # Double bright (purple).
