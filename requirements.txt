@@ -6,7 +6,10 @@ aws-shell
 bcrypt
 boto
 boto3
+cryptography
+dnspython
 docker-compose
+docker-py
 Glances
 gunicorn
 httpbin
@@ -21,8 +24,13 @@ pgcli
 pipenv
 piprot
 pre-commit
+psycopg2
 pur
 pygments
+pymongo
+PyMySQL
+pyopenssl
+requests
 sh
 template
 todoman
