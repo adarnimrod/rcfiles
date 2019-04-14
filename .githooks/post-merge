@@ -5,9 +5,13 @@ echo Installing Golang apps >> /dev/stderr
 go get github.com/giantswarm/semver-bump || true
 go get github.com/nishanths/license || true
 go get github.com/jmespath/jp || true
+go get github.com/spelufo/on-change || true
+go get github.com/kaorimatz/mysqldump-loader || true
+go get github.com/lucagrulla/cw || true
 go get sigs.k8s.io/kind || true
 echo Installing Python apps >> /dev/stderr
 python3 -m pip install --user --requirement requirements.txt
+python2 -m pip install --user gsutil
 echo Downloading binary and vendored files, creating generated files >> /dev/stderr
 git clean -fX .bash_completion.d/
 make all

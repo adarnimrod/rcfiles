@@ -11,9 +11,11 @@ dnspython
 docker-compose
 docker-py
 Glances
+gsutil
 gunicorn
 httpbin
 httpie
+importlab
 khal
 khard
 mycli
@@ -30,6 +32,7 @@ pygments
 pymongo
 PyMySQL
 pyopenssl
+remarshal
 requests
 sh
 template

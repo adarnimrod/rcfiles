@@ -10,7 +10,7 @@ repos:
     -   id: detect-private-key
     -   id: trailing-whitespace
     -   id: flake8
-        exclude: pythonrc.py
+        exclude: pythonrc.py|rabbitmqadmin
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
     rev: v0.6.0
     hooks:
