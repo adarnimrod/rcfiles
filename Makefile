@@ -10,8 +10,8 @@ curl = curl --location --silent --fail
 download = $(curl) --output $@
 
 all: binaries vendored generated
-vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule
-generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold
+vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule Documents/bin/rabbitmqadmin .bash_completion.d/google-cloud-sdk
+generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold .bash_completion.d/rabbitmqadmin
 binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack $(DESTDIR)/bin/skaffold
 
 
@@ -125,6 +125,15 @@ $(DESTDIR)/bin/skaffold:
 	mkdir -p $$(dirname $@)
 	$(download) https://raw.githubusercontent.com/ansible/molecule/1.25.1/asset/bash_completion/molecule.bash-completion.sh
 
+Documents/bin/rabbitmqadmin:
+	mkdir -p $$(dirname $@)
+	$(download) https://raw.githubusercontent.com/rabbitmq/rabbitmq-management/master/bin/rabbitmqadmin
+	chmod +x $@
+
+.bash_completion.d/google-cloud-sdk:
+	mkdir -p $$(dirname $@)
+	$(download) https://raw.githubusercontent.com/google-cloud-sdk/google-cloud-sdk/master/completion.bash.inc
+
 
 ## Generated files
 
@@ -163,3 +172,7 @@ $(DESTDIR)/bin/skaffold:
 .bash_completion.d/pandoc:
 	mkdir -p $$(dirname $@)
 	-pandoc --bash-completion > $@
+
+.bash_completion.d/rabbitmqadmin: Documents/bin/rabbitmqadmin
+	mkdir -p $$(dirname $@)
+	Documents/bin/rabbitmqadmin --bash-completion > $@

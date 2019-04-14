@@ -108,9 +108,6 @@ alias torrent_off='ssh xbmc.shore.co.il sudo systemctl stop transmission-{rss,da
 alias torrent_on='ssh xbmc.shore.co.il sudo systemctl start transmission-{daemon,rss}.service'
 alias bell="printf '\\a'"
 command -v notify-send > /dev/null || alias notify-send='bell'
-alias __gcloud='docker run --rm -it -v "$HOME/.config/gcloud:/tmp/.config/gcloud" -e "HOME=/tmp" -u "$(id -u):$(id -g)" google/cloud-sdk:alpine'
-alias gcloud='__gcloud gcloud'
-alias gsutil='__gcloud gsutil'
 alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
 alias color='less --raw-control-chars -p'
 alias pip2='python2 -m pip'
