@@ -62,7 +62,7 @@ alias obsolete='aptitude search ?obsolete'
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
 alias missing-suggests="aptitude search '~RBsuggests:~i'"
 # shellcheck disable=SC2142
-alias deinstalled="dpkg --get-selections | awk '\$2==\"deinstall\" {print \$1}'"
+alias deinstalled="dpkg --get-selections | awk 'BEGIN {exitcode=1}; \$2==\"deinstall\" {print \$1; exitcode=0}; END {exit exitcode}'"
 alias ansible-local='ansible localhost -c local -i localhost,'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
 alias concat="perl -pe 's/\\n/\\\\n/g'"
