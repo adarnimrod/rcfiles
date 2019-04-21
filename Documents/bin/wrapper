@@ -7,6 +7,10 @@ if alias="$(command -v "$basename-${1:-}")"
 then
     shift
     "$alias" "$@"
+elif alias="$(command -v "_$basename-${1:-}")"
+then
+    shift
+    "$alias" "$@"
 else
     "$command" "$@"
 fi
