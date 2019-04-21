@@ -18,4 +18,11 @@ repos:
         exclude: &excluded_shellscripts \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)|\.travis/travis\.sh
     -   id: shellcheck
         exclude: *excluded_shellscripts
-        include: .bashrc
+    -   id: shell-lint
+        alias: shell-lint .bashrc
+        files: \.bashrc
+        types: [text]
+    -   id: shellcheck
+        alias: Shellcheck .bashrc
+        files: \.bashrc
+        types: [text]
