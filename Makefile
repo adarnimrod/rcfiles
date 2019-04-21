@@ -23,17 +23,17 @@ $(DESTDIR)/share/bfg/bfg.jar:
 
 $(DESTDIR)/bin/rke:
 	mkdir -p $$(dirname $@)
-	-$(download) https://github.com/rancher/rke/releases/download/v0.2.0/rke_$(os)-$(goarch)
+	-$(download) https://github.com/rancher/rke/releases/download/v0.2.2/rke_$(os)-$(goarch)
 	-chmod +x $@
 
 $(DESTDIR)/bin/docker-machine:
 	mkdir -p $$(dirname $@)
-	-$(download) "https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-$(os)-$(arch)"
+	-$(download) "https://github.com/docker/machine/releases/download/v0.16.1/docker-machine-$(os)-$(arch)"
 	-chmod +x $@
 
 $(DESTDIR)/bin/packer:
 	mkdir -p $$(dirname $@)
-	$(curl) https://releases.hashicorp.com/packer/1.3.5/packer_1.3.5_$(os)_$(goarch).zip --output $(tempdir)/packer.zip
+	$(curl) https://releases.hashicorp.com/packer/1.4.0/packer_1.4.0_$(os)_$(goarch).zip --output $(tempdir)/packer.zip
 	unzip -d $(tempdir) $(tempdir)/packer.zip
 	install -m 755 $(tempdir)/packer $@
 	rm $(tempdir)/packer*
@@ -47,14 +47,14 @@ $(DESTDIR)/bin/terraform:
 
 $(DESTDIR)/bin/vault:
 	mkdir -p $$(dirname $@)
-	$(curl) https://releases.hashicorp.com/vault/1.1.0/vault_1.1.0_$(os)_$(goarch).zip --output $(tempdir)/vault.zip
+	$(curl) https://releases.hashicorp.com/vault/1.1.1/vault_1.1.1_$(os)_$(goarch).zip --output $(tempdir)/vault.zip
 	unzip -d $(tempdir) $(tempdir)/vault.zip
 	install -m 755 $(tempdir)/vault $@
 	rm $(tempdir)/vault*
 
 $(DESTDIR)/bin/kubectl:
 	mkdir -p $$(dirname $@)
-	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/$(os)/$(goarch)/kubectl"
+	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.14.1/bin/$(os)/$(goarch)/kubectl"
 	-chmod +x $@
 
 $(DESTDIR)/bin/kops:
@@ -64,7 +64,7 @@ $(DESTDIR)/bin/kops:
 
 $(DESTDIR)/bin/kompose:
 	mkdir -p $$(dirname $@)
-	-$(download) https://github.com/kubernetes/kompose/releases/download/v1.17.0/kompose-$(os)-$(goarch)
+	-$(download) https://github.com/kubernetes/kompose/releases/download/v1.18.0/kompose-$(os)-$(goarch)
 	-chmod +x $@
 
 $(DESTDIR)/bin/minikube:
@@ -95,7 +95,7 @@ $(DESTDIR)/bin/pack:
 
 $(DESTDIR)/bin/skaffold:
 	mkdir -p $$(dirname $@)
-	-$(download) https://storage.googleapis.com/skaffold/releases/v0.26.0/skaffold-$(os)-$(goarch)
+	-$(download) https://storage.googleapis.com/skaffold/releases/v0.27.0/skaffold-$(os)-$(goarch)
 	-chmod +x $@
 
 
@@ -103,11 +103,11 @@ $(DESTDIR)/bin/skaffold:
 
 .bash_completion.d/docker-compose:
 	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose
+	$(download) https://raw.githubusercontent.com/docker/compose/1.24.0/contrib/completion/bash/docker-compose
 
 .bash_completion.d/docker-machine.bash:
 	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/docker/machine/v0.16.0/contrib/completion/bash/docker-machine.bash
+	$(download) https://raw.githubusercontent.com/docker/machine/v0.16.1/contrib/completion/bash/docker-machine.bash
 
 .bash_completion.d/fabric-completion.bash:
 	mkdir -p $$(dirname $@)
