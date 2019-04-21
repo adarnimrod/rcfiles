@@ -11,6 +11,7 @@ repos:
     -   id: trailing-whitespace
     -   id: flake8
         exclude: pythonrc.py|rabbitmqadmin
+    -   id: requirements-txt-fixer
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
     rev: v0.6.0
     hooks:
