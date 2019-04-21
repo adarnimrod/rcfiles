@@ -67,7 +67,6 @@ alias ansible-local='ansible localhost -c local -i localhost,'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
 alias concat="perl -pe 's/\\n/\\\\n/g'"
 alias deconcat="perl -pe 's/\\\\n/\\n/g'"
-alias ecr-login='eval $(aws ecr get-login --no-include-email)'
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
 alias apt-daily="monitor __apt-daily"
@@ -171,18 +170,6 @@ cyan () {
     printf '\e[1;96m' || true
     echo "$@"
     printf '\e[0m' || true
-}
-
-deduce_aws_region () {
-    AWS_DEFAULT_REGION="$(python3 << EOF
-from urllib.request import urlopen
-import json
-response = urlopen('http://169.254.169.254/latest/dynamic/instance-identity/document')
-print(json.loads(response.read().decode('utf-8'))['region'])
-EOF
-    )"
-    export AWS_DEFAULT_REGION
-    echo "$AWS_DEFAULT_REGION"
 }
 
 ssh_keyscan_add () {
