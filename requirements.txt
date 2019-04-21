@@ -14,6 +14,7 @@ Glances
 gunicorn
 httpbin
 httpie
+identify
 importlab
 khal
 khard
