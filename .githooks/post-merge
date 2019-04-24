@@ -10,8 +10,8 @@ go get github.com/kaorimatz/mysqldump-loader || true
 go get github.com/lucagrulla/cw || true
 go get sigs.k8s.io/kind || true
 echo Installing Python apps >> /dev/stderr
-python3 -m pip install --user --requirement requirements.txt
 python2 -m pip install --user gsutil
+python3 -m pip install --user --requirement requirements.txt
 echo Downloading binary and vendored files, creating generated files >> /dev/stderr
 git clean -fX .bash_completion.d/
 make all
