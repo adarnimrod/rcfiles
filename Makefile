@@ -11,7 +11,7 @@ download = $(curl) --output $@
 
 all: binaries vendored generated
 vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule Documents/bin/rabbitmqadmin .bash_completion.d/google-cloud-sdk
-generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold .bash_completion.d/rabbitmqadmin
+generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold .bash_completion.d/rabbitmqadmin .ssh/localhost .ssh/localhost.pub .ssh/authorized_keys
 binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack $(DESTDIR)/bin/skaffold
 
 
@@ -176,3 +176,12 @@ Documents/bin/rabbitmqadmin:
 .bash_completion.d/rabbitmqadmin: Documents/bin/rabbitmqadmin
 	mkdir -p $$(dirname $@)
 	Documents/bin/rabbitmqadmin --bash-completion > $@
+
+.ssh/localhost:
+	ssh-keygen -t ecdsa -N '' -C localhost -f $@
+
+.ssh/localhost.pub: .ssh/localhost
+	ssh-keygen -y -f $< > $@
+
+.ssh/authorized_keys: .ssh/localhost.pub
+	ansible localhost -c local -i localhost, -m authorized_key -a "user=$$(whoami) key='$$(cat $<)' key_options='from=\"127.0.0.1/8\"'"
