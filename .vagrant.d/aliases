@@ -1,0 +1,3 @@
+fu = !vagrant destroy -f && vagrant up
+update = !_vagrant-update
+clean = !_vagrant-clean
