@@ -11,8 +11,8 @@ download = $(curl) --output $@
 
 all: binaries vendored generated
 vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule Documents/bin/rabbitmqadmin .bash_completion.d/google-cloud-sdk
-generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold .bash_completion.d/rabbitmqadmin .ssh/localhost .ssh/localhost.pub .ssh/authorized_keys
-binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack $(DESTDIR)/bin/skaffold
+generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold .bash_completion.d/rabbitmqadmin .ssh/localhost .ssh/localhost.pub .ssh/authorized_keys .bash_completion.d/minishift .bash_completion.d/oc
+binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack $(DESTDIR)/bin/skaffold $(DESTDIR)/bin/minishift $(DESTDIR)/bin/oc $(DESTDIR)/bin/docker-machine-driver-kvm
 
 
 ## Binary files
@@ -96,6 +96,23 @@ $(DESTDIR)/bin/pack:
 $(DESTDIR)/bin/skaffold:
 	mkdir -p $$(dirname $@)
 	-$(download) https://storage.googleapis.com/skaffold/releases/v0.27.0/skaffold-$(os)-$(goarch)
+	-chmod +x $@
+
+$(DESTDIR)/bin/minishift:
+	mkdir -p $$(dirname $@)
+	-$(curl) https://github.com/minishift/minishift/releases/download/v1.33.0/minishift-1.33.0-$(goos)-$(goarch).tgz | tar -xzC $(tempdir)
+	-install -m 755 $(tempdir)/minishift-*/minishift $@
+	-rm -r $(tempdir)/minishift-*
+
+$(DESTDIR)/bin/oc:
+	mkdir -p $$(dirname $@)
+	-$(curl) https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-$(os)-64bit.tar.gz | tar -xzC $(tempdir)
+	-install -m 755 $(tempdir)/openshift-*/oc $@
+	-rm -r $(tempdir)/openshift-*
+
+$(DESTDIR)/bin/docker-machine-driver-kvm:
+	mkdir -p $$(dirname $@)
+	-$(download) https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-ubuntu16.04
 	-chmod +x $@
 
 
@@ -185,3 +202,11 @@ Documents/bin/rabbitmqadmin:
 
 .ssh/authorized_keys: .ssh/localhost.pub
 	ansible localhost -c local -i localhost, -m authorized_key -a "user=$$(whoami) key='$$(cat $<)' key_options='from=\"127.0.0.1/8\"'"
+
+.bash_completion.d/minishift: $(DESTDIR)/bin/minishift
+	mkdir -p $$(dirname $@)
+	-$$(basename $@) completion bash > $@
+
+.bash_completion.d/oc: $(DESTDIR)/bin/oc
+	mkdir -p $$(dirname $@)
+	-$$(basename $@) completion bash > $@
