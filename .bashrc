@@ -132,6 +132,8 @@ alias pip3='monitor python3 -m pip'
 alias rc_update="make --directory $HOME --always-make"
 alias gen-ssh-config="rc_update .ssh/config"
 alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
+alias prune_docker_remote='find ~/.ssh -maxdepth 1 -type s -name "docker_*" -delete'
+alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
 
 genpass () {
     bytes="${1:-32}"
@@ -294,4 +296,5 @@ if [ -x /usr/bin/dircolors ]; then
     alias less='less --raw-control-chars'
 fi
 
+prune_docker_remote
 prune_prerun
