@@ -241,10 +241,7 @@ __prompt () {
     [ "${runduration:-0}" -lt "10" ] || prompt="$(cyan -n "[Run duration: $runduration]") $prompt"
     [ -n "${runduration:-}" ] || exitstatus='0'
     [ "$exitstatus" = "0" ] || prompt="$(red -n "[Exit status: $exitstatus]") $prompt"
-    echo "$prompt"
-}
-
-__prompt_command () {
+    echo -n "$prompt"
     trap __command_notifier debug
 }
 
@@ -252,7 +249,7 @@ __command_notifier () {
     local exitstatus="$?"
     local now runduration
     now="$(date +%s)"
-    if [ -n "${last_finish:-}" ] && [ "$last_command" != "__prompt_command" ]
+    if [ -n "${last_finish:-}" ] && [ "$last_command" != "__prompt" ]
     then
         runduration="$(( now - last_finish ))"
         if [ "$runduration" -gt "10" ]
@@ -292,8 +289,7 @@ then
     export CDPATH="$HOME:$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Endless"
     # shellcheck disable=SC2016
     export PS0='$(__prerun)'
-    export PS1='\[$(__prompt)\]\u@\h:\w\$ '
-    export PROMPT_COMMAND='__prompt_command'
+    export PROMPT_COMMAND='__prompt'
     shopt -s checkwinsize
     shopt -s cmdhist
     # shellcheck disable=SC1091
