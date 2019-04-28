@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+usage () {
+    echo "Usage: $0 host forward"
+}
+
+host="$1" || { usage >> /dev/stderr; exit 1; }
+forward="$2" || { usage >> /dev/stderr; exit 1; }
+alias ssh='ssh -fnNTS ~/.ssh/%C.sock'
+
+if ! ssh -O check -L "$forward" "$host"
+then
+    ssh -o ControlMaster=auto -o ControlPersist=0 -o ExitOnForwardFailure=no -o ControlPersist=0 "$host"
+    ssh -O forward -L "$forward" "$host"
+fi
