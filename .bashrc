@@ -240,7 +240,8 @@ __run_duration () {
     then
         local endtime starttime
         endtime="$(date +%s)"
-        starttime="$(cat "$HOME/.prerun.$$")"
+        # shellcheck disable=SC1090
+        . "$HOME/.prerun.$$"
         rm "$HOME/.prerun.$$"
         echo "$(( endtime - starttime ))"
     else
@@ -249,7 +250,7 @@ __run_duration () {
 }
 
 __prerun () {
-    date +%s > "$HOME/.prerun.$$"
+    echo "starttime=$(date +%s)" > "$HOME/.prerun.$$"
 }
 
 __prompt () {
