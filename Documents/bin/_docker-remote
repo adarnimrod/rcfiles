@@ -1,24 +1,13 @@
 #!/bin/sh
 set -eu
 
+
 [ -n "$1" ] || { echo "You must specify host." >> /dev/stderr; exit 1; }
 host="$1"
 localsocket="$HOME/.ssh/docker_$host.sock"
-ssh="ssh -fnNTS ~/.ssh/%C.sock"
 
-# Check for exiting forward
-if ! $ssh -O check -L "$localsocket:/var/run/docker.sock" "$host" 2> /dev/null
-then
-
-    # Delete socket if it exists
-    [ ! -S "$localsocket" ] || rm "$localsocket"
-
-    # Open SSH ControlMaster
-    $ssh -o ExitOnForwardFailure=no -o ControlMaster=auto -o ControlPersist=0 "$host"
-
-    # Forward socket
-    $ssh -O forward -L "$localsocket:/var/run/docker.sock" "$host"
-fi
+lsof -t "$localsocket" > /dev/null || rm "$localsocket"
+forward "$host" "$localsocket:/var/run/docker.sock"
 
 # Echo the DOCKER_HOST export command, for eval'ing.
 echo "export DOCKER_HOST=unix://$localsocket"
