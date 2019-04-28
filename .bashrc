@@ -46,10 +46,6 @@ export LESS_TERMCAP_se=$'\E[0m'
 # Underline (dark grey).
 export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
-export PS0="\$(__prerun)"
-# shellcheck disable=SC1117
-export PS1="\[\$(__prompt)\]\u@\h:\w\$ "
-export CDPATH="$HOME:$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Endless"
 
 alias make='monitor make '
 alias packer='monitor packer '
@@ -265,24 +261,34 @@ __prompt () {
     echo "$prompt"
 }
 
+__prompt_command () {
+    trap __command_notifier debug
+}
+
+__command_notifier () {
+    local exitstatus="$?"
+    local now runduration
+    now="$(date +%s)"
+    if [ -n "${last_finish:-}" ] && [ "$last_command" != "__prompt_command" ]
+    then
+        runduration="$(( now - last_finish ))"
+        if [ "$runduration" -gt "10" ]
+        then
+            if [ "$exitstatus" -eq "0" ]
+            then
+                notify-send "$last_command has finished."
+            else
+                notify-send "$last_command has failed."
+            fi
+        fi
+    fi
+    last_command="$BASH_COMMAND"
+    last_finish="$(date +%s)"
+    trap - debug
+}
+
 # shellcheck disable=SC1090
 . "$HOME/Documents/Shore/bundle_certs/bundle_certs"
-
-if [ -n "${BASH:-}" ]
-then
-    shopt -s checkwinsize
-    shopt -s cmdhist
-    # shellcheck disable=SC1091
-    [ -f /etc/bash_completion ] && . /etc/bash_completion
-
-    # shellcheck disable=SC1090
-    for sourcefile in "$HOME"/.bash_completion.d/*
-    do
-        [ ! -f "$sourcefile" ] || . "$sourcefile"
-    done
-    ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
-    trap prune_prerun EXIT
-fi
 
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -298,5 +304,26 @@ if [ -x /usr/bin/dircolors ]; then
     alias less='less --raw-control-chars'
 fi
 
+if [ -n "${BASH:-}" ]
+then
+    export CDPATH="$HOME:$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Endless"
+    # shellcheck disable=SC2016
+    export PS0='$(__prerun)'
+    export PS1='\[$(__prompt)\]\u@\h:\w\$ '
+    export PROMPT_COMMAND='__prompt_command'
+    shopt -s checkwinsize
+    shopt -s cmdhist
+    # shellcheck disable=SC1091
+    [ -f /etc/bash_completion ] && . /etc/bash_completion
+
+    # shellcheck disable=SC1090
+    for sourcefile in "$HOME"/.bash_completion.d/*
+    do
+        [ ! -f "$sourcefile" ] || . "$sourcefile"
+    done
+    ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
+    prune_prerun
+    trap prune_prerun EXIT
+fi
+
 prune_docker_remote
-prune_prerun
