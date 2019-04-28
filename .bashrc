@@ -281,6 +281,7 @@ then
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
     ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
+    trap prune_prerun EXIT
 fi
 
 
