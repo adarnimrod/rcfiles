@@ -92,7 +92,6 @@ alias xargs="xargs "
 alias monitor="monitor "
 alias sudome="sudome "
 alias presentation='docker dev adarnimrod/presentation'
-alias prune_prerun='find "$HOME" -maxdepth 1 -name ".prerun\.[0-9]*" | grep -v "$(pgrep -u "$(id -u)" "$(basename "$SHELL" )" )" | xargs -r rm'
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata:alpine'
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
 alias http-server='python3 -m http.server 8080'
@@ -214,47 +213,36 @@ match_ssl_pair () {
     return "$exitcode"
 }
 
-__run_duration () {
-    if [ -f "$HOME/.prerun.$$" ]
-    then
-        local endtime starttime
-        endtime="$(date +%s)"
-        # shellcheck disable=SC1090
-        . "$HOME/.prerun.$$"
-        rm "$HOME/.prerun.$$"
-        echo "$(( endtime - starttime ))"
-    else
-        echo 0
-    fi
-}
-
-__prerun () {
-    echo "starttime=$(date +%s)" > "$HOME/.prerun.$$"
-}
-
 __prompt () {
     local exitstatus="$?"
-    local runduration prompt
-    ! [ "$(type history 2> /dev/null)" = "history is a shell builtin" ] || history -a
-    prompt=""
-    [ ! -f "$HOME/.prerun.$$" ] || runduration="$(__run_duration)"
-    [ "${runduration:-0}" -lt "10" ] || prompt="$(cyan -n "[Run duration: $runduration]") $prompt"
-    [ -n "${runduration:-}" ] || exitstatus='0'
-    [ "$exitstatus" = "0" ] || prompt="$(red -n "[Exit status: $exitstatus]") $prompt"
-    echo -n "$prompt"
+    local runduration endtime
+    ! [ "$(type history 2> /dev/null)" = 'history is a shell builtin' ] || history -a
+    PS1='\u@\h:\w\$ '
+    if [ -n "${starttime:-}" ]
+    then
+        endtime="$(date +%s)"
+        runduration="$(( endtime - starttime))"
+        [ "$runduration" -lt '10' ] || PS1="\\[\\e[1;96m[Run duration: $runduration]\\e[0m\\] $PS1"
+        [ "$exitstatus" -eq '0' ] || PS1="\\[\\e[1;91m[Exit status: $exitstatus]\\e[0m\\] $PS1"
+    fi
+    last_command='__prompt'
+    unset starttime
     trap __command_notifier debug
 }
 
 __command_notifier () {
     local exitstatus="$?"
-    local now runduration
-    now="$(date +%s)"
-    if [ -n "${last_finish:-}" ] && [ "$last_command" != "__prompt" ]
+    local runduration endtime
+    endtime="$(date +%s)"
+    if [ "${last_command:-}" = '__prompt' ]
     then
-        runduration="$(( now - last_finish ))"
-        if [ "$runduration" -gt "10" ]
+        starttime="$(date +%s)"
+    elif [ -n "${last_finish:-}" ]
+    then
+        runduration="$(( endtime - last_finish ))"
+        if [ "$runduration" -gt '10' ]
         then
-            if [ "$exitstatus" -eq "0" ]
+            if [ "$exitstatus" -eq '0' ]
             then
                 notify-send "$last_command has finished."
             else
@@ -288,7 +276,6 @@ if [ -n "${BASH:-}" ]
 then
     export CDPATH="$HOME:$HOME/Documents:$HOME/Documents/Shore:$HOME/Documents/Endless"
     # shellcheck disable=SC2016
-    export PS0='$(__prerun)'
     export PROMPT_COMMAND='__prompt'
     shopt -s checkwinsize
     shopt -s cmdhist
@@ -301,8 +288,6 @@ then
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
     ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
-    prune_prerun
-    trap prune_prerun EXIT
 fi
 
 prune_docker_remote
