@@ -223,7 +223,8 @@ __prompt () {
         endtime="$(date +%s)"
         runduration="$(( endtime - starttime))"
         [ "$runduration" -lt '10' ] || PS1="\\[\\e[1;96m[Run duration: $runduration]\\e[0m\\] $PS1"
-        [ "$exitstatus" -eq '0' ] || PS1="\\[\\e[1;91m[Exit status: $exitstatus]\\e[0m\\] $PS1"
+        [ "$exitstatus" -eq '0' ] || [ -z "${run_command:-}" ] || PS1="\\[\\e[1;91m[Exit status: $exitstatus]\\e[0m\\] $PS1"
+        unset run_command
     fi
     last_command='__prompt'
     unset starttime
@@ -239,6 +240,10 @@ __command_notifier () {
         starttime="$(date +%s)"
     elif [ -n "${last_finish:-}" ]
     then
+        if [ "${last_command:-}" != '_direnv_hook' ]
+        then
+            run_command='1'
+        fi
         runduration="$(( endtime - last_finish ))"
         if [ "$runduration" -gt '10' ]
         then
