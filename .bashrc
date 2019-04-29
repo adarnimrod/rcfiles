@@ -65,16 +65,11 @@ alias concat="perl -pe 's/\\n/\\\\n/g'"
 alias deconcat="perl -pe 's/\\\\n/\\n/g'"
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
-alias apt-daily="monitor __apt-daily"
-alias flatpak-daily="monitor __flatpak-daily"
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias httpbin='gunicorn httpbin:app'
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias restart-kodi='ssh xbmc.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
-alias __sync-podcasts='(cd && unison podcasts)'
-alias sync-podcasts='monitor __sync-podcasts'
-alias sync-comics='monitor __sync_comics'
 # shellcheck disable=SC2142
 alias tolower='awk "{print tolower(\$0)}"'
 # shellcheck disable=SC2142
@@ -95,7 +90,7 @@ alias presentation='docker dev adarnimrod/presentation'
 alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata:alpine'
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
 alias http-server='python3 -m http.server 8080'
-alias dd='monitor dd status=progress'
+alias dd='dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias black='black --line-length 79'
 alias torrent_off='ssh xbmc.shore.co.il sudo systemctl stop transmission-{rss,daemon}.service'
@@ -179,7 +174,7 @@ gen_csr () {
     openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
 }
 
-__sync_comics () {
+sync_comics () {
     local this_month last_month format
     format='+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*'
     this_month="$( date "$format" )"
@@ -187,6 +182,11 @@ __sync_comics () {
     rsync --prune-empty-dirs --ignore-missing-args --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
     find "$HOME/Downloads/Comics/" -name "$(date --date '2 month ago' +'0-Day\ Week\ of\ %Y.%m.*')" -exec rm -r {} +
 }
+
+sync_podcasts () (
+    cd || exit 1
+    unison podcasts
+)
 
 ddg () {
     w3m "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
