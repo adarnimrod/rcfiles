@@ -253,7 +253,7 @@ __command_notifier () {
             then
                 notify-send "$last_command has finished."
             else
-                notify-send "$last_command has failed."
+                notify-send --urgency=critical "$last_command has failed."
             fi
         fi
     fi
