@@ -5,7 +5,7 @@ os != uname -s | awk '{print tolower($$0)}'
 arch != uname -m
 goos != go env GOOS
 goarch != go env GOARCH
-ssh_configs != find ".ssh/config.d/" -type f \! -name '.*'
+ssh_configs != find ".ssh/config.d/" -type f \! -name '.*' | sort
 curl = curl --location --silent --fail
 download = $(curl) --output $@
 
