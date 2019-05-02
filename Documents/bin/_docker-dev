@@ -1,3 +1,8 @@
 #!/bin/sh
 set -eu
-exec docker run --rm -Pitv "$PWD:/volume" "$@"
+if [ "$#" -eq '0' ]
+then
+    exec docker run --rm -Pitv "$PWD:/volume" "$(basename "$PWD" | awk "{print tolower(\$0)}" )"
+else
+    exec docker run --rm -Pitv "$PWD:/volume" "$@"
+fi
