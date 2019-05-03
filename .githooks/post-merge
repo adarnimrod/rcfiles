@@ -1,5 +1,7 @@
 #!/bin/sh
 set -eu
+# shellcheck disable=SC1090
+. ~/.bashrc
 cd "$(git rev-parse --show-toplevel)"
 echo Installing Golang apps >> /dev/stderr
 go get github.com/giantswarm/semver-bump || true
