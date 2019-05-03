@@ -48,6 +48,7 @@ export LESS_TERMCAP_se=$'\E[0m'
 # Underline (dark grey).
 export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
+export HELM_HOME="$HOME/.helm"
 
 alias ll='ls -lha'
 alias la='ls -A'
