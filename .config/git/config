@@ -24,7 +24,8 @@
     serve-http = !git update-server-info && cd .git && python -m http.server 8080
     shove = push --force-with-lease
     squash = !cd "${GIT_PREFIX:-$PWD}" && git commit --squash $(git last-commit)
-    staash = stash --all
+    staash = stash push --all
+    staassh = stash push --all --include-untracked
     stat = status --short --branch
     tag-version = !git tag --annotate --force --message "v$(cat VERSION)" "v$(cat VERSION)"
     tracking = rev-parse --abbrev-ref --symbolic-full-name @{upstream}
