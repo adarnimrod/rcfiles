@@ -9,5 +9,7 @@ host="$1" || { usage >> /dev/stderr; exit 1; }
 forward="$2" || { usage >> /dev/stderr; exit 1; }
 alias ssh='ssh -fnNTS ~/.ssh/%C.sock'
 
+# shellcheck disable=SC2029
 ssh -o ControlMaster=auto -o ControlPersist=0 -o ExitOnForwardFailure=no -o ControlPersist=0 "$host"
+# shellcheck disable=SC2029
 ssh -O forward -L "$forward" "$host"
