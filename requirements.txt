@@ -16,6 +16,7 @@ httpbin
 httpie
 identify
 importlab
+invoke
 khal
 khard
 mycli
