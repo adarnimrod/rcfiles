@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+[ "$#" -gt '0' ] || { echo "Output not specified." >> /dev/stderr; return 1; }
+while [ "$#" -gt '1' ]
+do
+    args="${args:-} $1"
+    shift
+done
+tempfile="$(mktemp -p .)"
+# shellcheck disable=SC2086
+tee ${args:-} "$tempfile" && mv "$tempfile" "$1"
