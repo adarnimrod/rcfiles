@@ -19,6 +19,8 @@
     Pull = pull --progress --ff --tags
     pull-force = !git fetch && git reset --hard "$(git tracking)"
     pushes = !git remote | xargs -n1 git push
+    remaster = !git fetch --all && git autorebase origin/master
+    rerebase = !git autorebase "$(git tracking)"
     root = rev-parse --show-toplevel
     serve-git = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
     serve-http = !git update-server-info && cd .git && python -m http.server 8080
@@ -28,6 +30,7 @@
     staaash = stash push --all --include-untracked
     stat = status --short --branch
     tag-version = !git tag --annotate --force --message "v$(cat VERSION)" "v$(cat VERSION)"
+    temptree = !git worktree add "$(mktemp -d)"
     tracking = rev-parse --abbrev-ref --symbolic-full-name @{upstream}
     trigger = !git commit --allow-empty --no-edit --amend && git pushes --force-with-lease
 [color]
