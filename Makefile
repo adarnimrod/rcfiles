@@ -33,14 +33,14 @@ $(DESTDIR)/bin/docker-machine:
 
 $(DESTDIR)/bin/packer:
 	mkdir -p $$(dirname $@)
-	$(curl) https://releases.hashicorp.com/packer/1.4.0/packer_1.4.0_$(os)_$(goarch).zip --output $(tempdir)/packer.zip
+	$(curl) https://releases.hashicorp.com/packer/1.4.1/packer_1.4.1_$(os)_$(goarch).zip --output $(tempdir)/packer.zip
 	unzip -d $(tempdir) $(tempdir)/packer.zip
 	install -m 755 $(tempdir)/packer $@
 	rm $(tempdir)/packer*
 
 $(DESTDIR)/bin/terraform:
 	mkdir -p $$(dirname $@)
-	$(curl) https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_$(os)_$(goarch).zip --output $(tempdir)/terraform.zip
+	$(curl) https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_$(os)_$(goarch).zip --output $(tempdir)/terraform.zip
 	unzip -d $(tempdir) $(tempdir)/terraform.zip
 	install -m 755 $(tempdir)/terraform $@
 	rm $(tempdir)/terraform*
@@ -54,12 +54,12 @@ $(DESTDIR)/bin/vault:
 
 $(DESTDIR)/bin/kubectl:
 	mkdir -p $$(dirname $@)
-	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.14.1/bin/$(os)/$(goarch)/kubectl"
+	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.14.2/bin/$(os)/$(goarch)/kubectl"
 	-chmod +x $@
 
 $(DESTDIR)/bin/kops:
 	mkdir -p $$(dirname $@)
-	-$(download) "https://github.com/kubernetes/kops/releases/download/1.11.1/kops-$(os)-$(goarch)"
+	-$(download) "https://github.com/kubernetes/kops/releases/download/1.12.1/kops-$(os)-$(goarch)"
 	-chmod +x $@
 
 $(DESTDIR)/bin/kompose:
@@ -85,17 +85,17 @@ $(DESTDIR)/bin/docker-machine-driver-kvm2:
 $(DESTDIR)/bin/helm:
 	mkdir -p $$(dirname $@)
 	mkdir -p $(tempdir)/helm
-	-$(curl) https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-$(os)-$(goarch).tar.gz | tar -zxf - -C $(tempdir)/helm/
+	-$(curl) https://storage.googleapis.com/kubernetes-helm/helm-v2.14.0-$(os)-$(goarch).tar.gz | tar -zxf - -C $(tempdir)/helm/
 	-install -m 755 $(tempdir)/helm/$(os)-$(goarch)/helm $@
 	rm -r $(tempdir)/helm
 
 $(DESTDIR)/bin/pack:
 	mkdir -p $$(dirname $@)
-	-$(curl) https://github.com/buildpack/pack/releases/download/v0.1.0/pack-v0.1.0-$(os).tgz | tar -xzC $(DESTDIR)/bin/
+	-$(curl) https://github.com/buildpack/pack/releases/download/v0.2.0/pack-v0.s.0-$(os).tgz | tar -xzC $(DESTDIR)/bin/
 
 $(DESTDIR)/bin/skaffold:
 	mkdir -p $$(dirname $@)
-	-$(download) https://storage.googleapis.com/skaffold/releases/v0.27.0/skaffold-$(os)-$(goarch)
+	-$(download) https://storage.googleapis.com/skaffold/releases/v0.29.0/skaffold-$(os)-$(goarch)
 	-chmod +x $@
 
 $(DESTDIR)/bin/minishift:
@@ -121,7 +121,7 @@ $(HELM_HOME)/plugins/helm-diff/bin/diff: $(DESTDIR)/bin/helm
 
 $(DESTDIR)/bin/gomplate:
 	mkdir -p $$(dirname $@)
-	-$(download) https://github.com/hairyhenderson/gomplate/releases/download/v3.4.0/gomplate_$(goos)-$(goarch)
+	-$(download) https://github.com/hairyhenderson/gomplate/releases/download/v3.4.1/gomplate_$(goos)-$(goarch)
 	-chmod +x $@
 
 
