@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+
+git worktree list | awk '/^\/tmp\/tmp\./ {print $1}' | xargs -rn1 git worktree remove
