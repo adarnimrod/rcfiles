@@ -10,6 +10,7 @@ cryptography
 dnspython
 docker-compose
 docker-py
+flit
 Glances
 gunicorn
 httpbin
@@ -26,6 +27,7 @@ passlib
 pgcli
 pipenv
 piprot
+poetry
 pre-commit
 psycopg2
 pur
