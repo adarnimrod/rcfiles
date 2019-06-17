@@ -117,6 +117,7 @@ $(DESTDIR)/bin/docker-machine-driver-kvm:
 
 $(HELM_HOME)/plugins/helm-diff/bin/diff: $(DESTDIR)/bin/helm
 	mkdir -p $(HELM_HOME)/plugins
+	-helm plugin remove diff
 	$(DESTDIR)/bin/helm plugin install https://github.com/databus23/helm-diff --version master
 
 $(DESTDIR)/bin/gomplate:
