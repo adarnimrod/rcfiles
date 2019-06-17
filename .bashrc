@@ -111,6 +111,7 @@ alias gen-ssh-config="rc_make .ssh/config"
 alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
 alias prune_docker_remote='find ~/.ssh -maxdepth 1 -type s -name "docker_*" -delete'
 alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
+alias jjb='jenkins-jobs'
 
 genpass () {
     bytes="${1:-32}"
