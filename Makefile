@@ -11,7 +11,7 @@ download = $(curl) --output $@
 
 all: binaries vendored generated
 vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule Documents/bin/rabbitmqadmin .bash_completion.d/google-cloud-sdk
-generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold .bash_completion.d/rabbitmqadmin .ssh/localhost .ssh/localhost.pub .ssh/authorized_keys .bash_completion.d/minishift .bash_completion.d/oc
+generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold .bash_completion.d/rabbitmqadmin .ssh/localhost .ssh/localhost.pub .ssh/authorized_keys .bash_completion.d/minishift .bash_completion.d/oc .bash_completion.d/poetry
 binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack $(DESTDIR)/bin/skaffold $(DESTDIR)/bin/minishift $(DESTDIR)/bin/oc $(DESTDIR)/bin/docker-machine-driver-kvm $(HELM_HOME)/plugins/helm-diff/bin/diff $(DESTDIR)/bin/gomplate
 
 
@@ -124,6 +124,9 @@ $(DESTDIR)/bin/gomplate:
 	mkdir -p $$(dirname $@)
 	-$(download) https://github.com/hairyhenderson/gomplate/releases/download/v3.4.1/gomplate_$(goos)-$(goarch)
 	-chmod +x $@
+
+.bash_completion.d/poetry:
+	poetry completions bash > $@
 
 
 ## Vendored files
