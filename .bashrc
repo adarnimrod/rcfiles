@@ -112,6 +112,7 @@ alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
 alias prune_docker_remote='find ~/.ssh -maxdepth 1 -type s -name "docker_*" -delete'
 alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
 alias jjb='jenkins-jobs'
+alias diff='diff --unified'
 
 genpass () {
     bytes="${1:-32}"
@@ -277,7 +278,7 @@ if [ -x /usr/bin/dircolors ]; then
     eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias grep='grep --color=auto'
-    alias diff='diff --color=auto'
+    alias diff='diff --color=auto --unified'
     alias ip='ip -color'
     alias less='less --raw-control-chars'
 fi
