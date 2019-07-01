@@ -7,13 +7,15 @@ bcrypt
 black
 boto
 boto3
+cookiecutter
 cryptography
 dnspython
+docker
 docker-compose
-docker-py
 flit
 Glances
 gunicorn
+hashin
 httpbin
 httpie
 identify
