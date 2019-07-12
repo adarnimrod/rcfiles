@@ -23,6 +23,7 @@ importlab
 invoke
 khal
 khard
+magic-wormhole
 mycli
 netaddr
 parse
