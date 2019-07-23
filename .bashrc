@@ -219,6 +219,21 @@ match_ssl_pair () {
     return "$exitcode"
 }
 
+flatpak-kill () {
+    if [ "$#" -lt 1 ]
+    then
+        echo "You must specify application name." >> /dev/stderr
+        false
+    else
+        name="$1"
+        shift
+        for pid in $(flatpak ps --columns=application,pid | awk "tolower(\$2) ~ /$name/ {print \$3}")
+        do
+            pkill "$@" "$pid"
+        done
+    fi
+}
+
 __prompt () {
     local exitstatus="$?"
     local runduration endtime
