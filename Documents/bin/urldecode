@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-from fileinput import input
+"""Decode url-encoded input."""
+import fileinput
 from urllib.parse import unquote_plus as unquote
 
 
 if __name__ == "__main__":
-    for line in input():
+    for line in fileinput.input():
         print(unquote(line.strip()))

@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
+# pylint: disable=invalid-name
 
+"""Update local Vagrant base boxes."""
+# pylint: disable=import-error
 from sh import vagrant
+
+# pylint: disable=no-name-in-module
 from parse import parse
 
 
