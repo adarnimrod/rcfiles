@@ -2,12 +2,12 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+export PS1='\u@\h:\w\$ '
 export LANG=en_US.UTF8
 export HISTFILE="$HOME/.history"
 export HISTCONTROL=ignoreboth:erasedups
 export HISTSIZE=100000
 export HISTFILESIZE=100000
-export REPREPRO_BASE_DIR="$HOME/Documents/Shore/debian-repository"
 export EDITOR=vim
 export GOPATH="$HOME/Documents/Golang"
 export PATH="$GOPATH/bin:/usr/lib/go/bin/:$PATH"
@@ -33,6 +33,7 @@ export ANSIBLE_CACHE_PLUGIN_CONNECTION="$HOME/.ansible/facts"
 export ANSIBLE_CALLBACK_WHITELIST="profile_tasks, timer"
 export ANSIBLE_SSH_CONTROL_PATH="/tmp/ssh-%%h"
 export ANSIBLE_INVENTORY_ANY_UNPARSED_IS_FAILED=True
+export ANSIBLE_PYTHON_INTERPRETER=auto
 export LYNX_SAVE_SPACE="$HOME/Downloads"
 export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
@@ -49,10 +50,11 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export HELM_HOME="$HOME/.helm"
+export DOCKER_BUILDKIT=1
 
 alias ll='ls -lha'
-alias la='ls -A'
-alias l='ls -CF'
+alias la='ls -AF'
+alias l='ls -F'
 alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
 alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
 alias deborphan='deborphan -a --no-show-section --ignore-suggests'
@@ -78,7 +80,7 @@ alias tolower='awk "{print tolower(\$0)}"'
 # shellcheck disable=SC2142
 alias toupper='awk "{print toupper(\$0)}"'
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
-alias transmission-remote='ssh -fNo ExitOnForwardFailure=yes xbmc.shore.co.il && transmission-remote'
+alias transmission-remote='forward xbmc.shore.co.il 9091:localhost:9091 && transmission-remote'
 alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
 alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
 alias clean-swp="find \$HOME/ -name '*.swp' -delete"
@@ -113,6 +115,51 @@ alias prune_docker_remote='find ~/.ssh -maxdepth 1 -type s -name "docker_*" -del
 alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
 alias jjb='jenkins-jobs'
 alias diff='diff --unified'
+alias check_tcp='nc -vzw1'
+alias check_unix='nc -Uvzw1'
+alias listen_tcp='nc -vlk 0.0.0.0'
+alias listen_udp='nc -uvlk 0.0.0.0'
+alias listen_unix='nc -Uvlk'
+alias ta='terraform apply tfplan'
+
+if ! command -v notify-send > /dev/null
+then
+    alias notify-send='bell'
+elif [ -n "$GIO_LAUNCHED_DESKTOP_FILE" ]
+then
+    # shellcheck disable=SC2139
+    alias notify-send="notify-send --hint \"string:desktop-entry:$(basename "$GIO_LAUNCHED_DESKTOP_FILE")\""
+fi
+
+tp () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ]
+    then
+        terraform plan -out tfplan "$@"
+    else
+        terraform plan -out tfplan -var-file "$workspace.tfvars" "$@"
+    fi
+}
+
+taa () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ]
+    then
+        terraform apply -auto-approve "$@"
+    else
+        terraform apply -auto-approve -var-file "$workspace.tfvars" "$@"
+    fi
+}
+
+tr () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ]
+    then
+        terraform refresh "$@"
+    else
+        terraform refresh -var-file "$workspace.tfvars" "$@"
+    fi
+}
 
 genpass () {
     bytes="${1:-32}"
@@ -219,7 +266,7 @@ match_ssl_pair () {
     return "$exitcode"
 }
 
-flatpak-kill () {
+flatpak_kill () {
     if [ "$#" -lt 1 ]
     then
         echo "You must specify application name." >> /dev/stderr
@@ -236,15 +283,16 @@ flatpak-kill () {
 
 __prompt () {
     local exitstatus="$?"
-    local runduration endtime
+    local runduration endtime pre_prompt
     ! [ "$(type history 2> /dev/null)" = 'history is a shell builtin' ] || history -a
-    PS1='\u@\h:\w\$ '
     if [ -n "${starttime:-}" ]
     then
         endtime="$(date +%s)"
         runduration="$(( endtime - starttime))"
-        [ "$runduration" -lt '10' ] || PS1="\\[\\e[1;96m[Run duration: $runduration]\\e[0m\\] $PS1"
-        [ "$exitstatus" -eq '0' ] || [ -z "${run_command:-}" ] || PS1="\\[\\e[1;91m[Exit status: $exitstatus]\\e[0m\\] $PS1"
+        pre_prompt=''
+        [ "$exitstatus" -eq '0' ] || [ -z "${run_command:-}" ] || pre_prompt="$pre_prompt\\e[1;91m[Exit status: $exitstatus]\\e[0m "
+        [ "$runduration" -lt '5' ] || pre_prompt="$pre_prompt\\e[1;96m[Run duration: $runduration]\\e[0m "
+        [ -z "$pre_prompt" ] || echo -e "$pre_prompt"
         unset run_command
     fi
     last_command='__prompt'
