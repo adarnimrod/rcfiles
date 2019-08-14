@@ -1,29 +1,85 @@
+# vim:ff=unix ts=2 sw=2 ai expandtab
 ---
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.2.1
     hooks:
-    -   id: check-added-large-files
-    -   id: check-executables-have-shebangs
-    -   id: check-merge-conflict
-    -   id: check-symlinks
-    -   id: detect-private-key
-    -   id: trailing-whitespace
-    -   id: flake8
-        exclude: pythonrc.py|rabbitmqadmin
-    -   id: requirements-txt-fixer
--   repo: https://www.shore.co.il/git/shell-pre-commit/
+      - id: check-added-large-files
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: trailing-whitespace
+      - id: requirements-txt-fixer
+  - repo: https://www.shore.co.il/git/shell-pre-commit/
     rev: v0.6.0
     hooks:
-    -   id: shell-lint
-        exclude: &excluded_shellscripts \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)|\.travis/travis\.sh
-    -   id: shellcheck
+      - id: shell-lint
+        exclude: &excluded_shellscripts |-
+          \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)|\.travis/travis\.sh
+      - id: shellcheck
         exclude: *excluded_shellscripts
-    -   id: shell-lint
-        alias: shell-lint .bashrc
+      - id: shell-lint
+        name: shell-lint .bashrc
         files: \.bashrc
         types: [text]
-    -   id: shellcheck
-        alias: Shellcheck .bashrc
+      - id: shellcheck
+        name: Shellcheck .bashrc
         files: \.bashrc
         types: [text]
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.17.0
+    hooks:
+      - id: yamllint
+  - repo: https://github.com/amperser/proselint/
+    rev: 0.10.1
+    hooks:
+      - id: proselint
+        types: [plain-text]
+        exclude: LICENSE
+  - repo: https://github.com/ambv/black
+    rev: 18.9b0
+    hooks:
+      - id: black
+        exclude: &excluded_pythonscripts pythonrc.py|rabbitmqadmin
+        args:
+          - |
+              --line-length=79
+  - repo: https://github.com/PyCQA/prospector
+    rev: 1.1.6.4
+    hooks:
+      - id: prospector
+        exclude: *excluded_pythonscripts
+        args:
+          - |-
+              --max-line-length=79
+          - |-
+              --tool=pyroma
+          - |-
+              --tool=dodgy
+        additional_dependencies:
+          - pyroma
+          - dodgy
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.7.7
+    hooks:
+      - id: flake8
+        exclude: *excluded_pythonscripts
+        args:
+          - |-
+            --max-line-length=79
+        additional_dependencies:
+          - flake8-bugbear
+  - repo: https://github.com/pre-commit/mirrors-pylint
+    rev: v2.3.1
+    hooks:
+      - id: pylint
+        exclude: *excluded_pythonscripts
+        args:
+          - |-
+            --disable=R0801
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.6.1
+    hooks:
+      - id: bandit
+        exclude: *excluded_pythonscripts
