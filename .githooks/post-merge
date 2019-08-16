@@ -23,3 +23,9 @@ echo Configuring Git repo >> /dev/stderr
 git config --local status.showUntrackedFiles no
 echo Adding Cron job >> /dev/stderr
 Documents/bin/cron-jobs
+if command -v vagrant > /dev/null
+then
+	echo Installing Vagrant plugins >> /dev/stderr
+	vagrant plugin install landrush || true
+	vagrant plugin install vagrant-gatling-rsync || true
+fi
