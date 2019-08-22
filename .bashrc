@@ -161,6 +161,16 @@ tr () {
     fi
 }
 
+ti () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ]
+    then
+        terraform import "$@"
+    else
+        terraform import -var-file "$workspace.tfvars" "$@"
+    fi
+}
+
 genpass () {
     bytes="${1:-32}"
     head --bytes="$bytes" /dev/urandom | base64 --wrap=0
