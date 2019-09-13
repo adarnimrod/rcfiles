@@ -1,4 +1,5 @@
 ansible
+ansible-runner
 aws-sam-cli
 aws-shell
 awscli
