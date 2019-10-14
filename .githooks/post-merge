@@ -2,7 +2,7 @@
 set -eux
 eval "$(grep 'export HELM_HOME' .bashrc)"
 cd "$(git rev-parse --show-toplevel)"
-echo Installing Golang apps >> /dev/stderr
+echo Installing Golang apps >&2
 go get github.com/giantswarm/semver-bump || true
 go get github.com/nishanths/license || true
 go get github.com/jmespath/jp || true
@@ -10,22 +10,22 @@ go get github.com/spelufo/on-change || true
 go get github.com/kaorimatz/mysqldump-loader || true
 go get github.com/lucagrulla/cw || true
 go get sigs.k8s.io/kind || true
-echo Installing Python apps >> /dev/stderr
+echo Installing Python apps >&2
 python3 -m pip install --user --requirement requirements.txt
-echo Downloading binary and vendored files, creating generated files >> /dev/stderr
+echo Downloading binary and vendored files, creating generated files >&2
 git clean -fX .bash_completion.d/
 make all
-echo Installing Git hooks >> /dev/stderr
+echo Installing Git hooks >&2
 Documents/bin/install-git-hooks
-echo Loading dconf config >> /dev/stderr
+echo Loading dconf config >&2
 Documents/bin/dconf-load
-echo Configuring Git repo >> /dev/stderr
+echo Configuring Git repo >&2
 git config --local status.showUntrackedFiles no
-echo Adding Cron job >> /dev/stderr
+echo Adding Cron job >&2
 Documents/bin/cron-jobs
 if command -v vagrant > /dev/null
 then
-	echo Installing Vagrant plugins >> /dev/stderr
+	echo Installing Vagrant plugins >&2
     for plugin in landrush vagrant-gatling-rsync
     do
         vagrant plugin list | grep -qw "$plugin" || vagrant plugin install "$plugin" || true
