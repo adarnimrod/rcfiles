@@ -19,7 +19,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/Documents/bin:$PATH"
 export PYTHONSTARTUP=~/.config/pythonrc.py
 PIPENV_DEFAULT_PYTHON_VERSION="$(python3 --version | grep -i '3\.[0-9]*')" > /dev/null 2>&1
-export PIPENV_DEFAULT_PYTHON_VERSION=
+export PIPENV_DEFAULT_PYTHON_VERSION
 export AWS_DEFAULT_PROFILE='shore'
 export ANSIBLE_VERBOSITY=2
 export ANSIBLE_COMMAND_WARNINGS=True
