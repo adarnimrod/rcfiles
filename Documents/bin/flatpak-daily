@@ -1,2 +1,2 @@
 #!/bin/sh
-exec sudo --set-home /bin/sh -c 'flatpak update --assumeyes && flatpak uninstall --unused --assumeyes'
+flatpak update --assumeyes && flatpak uninstall --unused --assumeyes
