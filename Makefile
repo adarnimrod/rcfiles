@@ -118,7 +118,7 @@ $(DESTDIR)/bin/docker-machine-driver-kvm:
 $(HELM_HOME)/plugins/helm-diff/bin/diff: $(DESTDIR)/bin/helm
 	mkdir -p $(HELM_HOME)/plugins
 	-helm plugin remove diff
-	$(DESTDIR)/bin/helm plugin install https://github.com/databus23/helm-diff --version master
+	-$(DESTDIR)/bin/helm plugin install https://github.com/databus23/helm-diff --version master
 
 $(DESTDIR)/bin/gomplate:
 	mkdir -p $$(dirname $@)
@@ -127,7 +127,7 @@ $(DESTDIR)/bin/gomplate:
 
 $(DESTDIR)/bin/envconsul:
 	mkdir -p $$(dirname $@)
-	$(curl) https://releases.hashicorp.com/envconsul/0.8.0/envconsul_0.8.0_$(goos)_$(goarch).tgz | tar -xzC $$(dirname $@)
+	-$(curl) https://releases.hashicorp.com/envconsul/0.8.0/envconsul_0.8.0_$(goos)_$(goarch).tgz | tar -xzC $$(dirname $@) -f -
 
 
 ## Vendored files
@@ -218,7 +218,7 @@ Documents/bin/rabbitmqadmin:
 	ssh-keygen -y -f $< > $@
 
 .ssh/authorized_keys: .ssh/localhost.pub
-	ansible localhost -c local -i localhost, -m authorized_key -a "user=$$(whoami) key='$$(cat $<)' key_options='from=\"127.0.0.1/8\"'"
+	ansible localhost -c local -i localhost, -m authorized_key -a "user=$$(whoami) key='$$(cat .ssh/localhost.pub)' key_options='from=\"127.0.0.1/8\"'"
 
 .bash_completion.d/minishift: $(DESTDIR)/bin/minishift
 	mkdir -p $$(dirname $@)
