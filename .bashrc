@@ -279,7 +279,7 @@ match_ssl_pair () {
 flatpak_kill () {
     if [ "$#" -lt 1 ]
     then
-        echo "You must specify application name." >> /dev/stderr
+        echo "You must specify application name." >&2
         false
     else
         name="$1"

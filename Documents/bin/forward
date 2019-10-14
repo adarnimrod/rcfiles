@@ -5,8 +5,8 @@ usage () {
     echo "Usage: $0 host forward"
 }
 
-host="$1" || { usage >> /dev/stderr; exit 1; }
-forward="$2" || { usage >> /dev/stderr; exit 1; }
+host="$1" || { usage >&2; exit 1; }
+forward="$2" || { usage >&2; exit 1; }
 alias ssh='ssh -fnNTS ~/.ssh/%C.sock'
 
 # shellcheck disable=SC2029

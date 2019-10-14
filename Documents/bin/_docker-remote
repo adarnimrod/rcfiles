@@ -2,7 +2,7 @@
 set -eu
 
 
-[ -n "$1" ] || { echo "You must specify host." >> /dev/stderr; exit 1; }
+[ -n "$1" ] || { echo "You must specify host." >&2; exit 1; }
 host="$1"
 localsocket="$HOME/.ssh/docker_$host.sock"
 
