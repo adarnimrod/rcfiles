@@ -1,0 +1,29 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+protobuf = "==3.5.2.post1"
+
+[packages]
+ansible = "*"
+bcrypt = "*"
+boto = "*"
+boto3 = "*"
+netaddr = "*"
+passlib = "*"
+packet-python = "==1.37.1"
+python-hpilo = "*"
+python-ldap = "*"
+pysnmp = "*"
+docker-compose = "*"
+fabric = "*"
+jenkins-job-builder = "*"
+hvac = "*"
+
+[requires]
+python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

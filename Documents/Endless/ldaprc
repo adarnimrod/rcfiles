@@ -1,0 +1,2 @@
+URI         ldaps://ldap.endlessm-sf.com/
+BASE        dc=endlessm-sf,dc=com
