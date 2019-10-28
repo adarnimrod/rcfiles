@@ -122,6 +122,7 @@ alias listen_tcp='nc -vlk 0.0.0.0'
 alias listen_udp='nc -uvlk 0.0.0.0'
 alias listen_unix='nc -Uvlk'
 alias tfa='terraform apply tfplan'
+alias tfvf='terraform validate && terraform fmt'
 
 if ! command -v notify-send > /dev/null
 then
