@@ -121,7 +121,7 @@ alias check_unix='nc -Uvzw3'
 alias listen_tcp='nc -vlk 0.0.0.0'
 alias listen_udp='nc -uvlk 0.0.0.0'
 alias listen_unix='nc -Uvlk'
-alias ta='terraform apply tfplan'
+alias tfa='terraform apply tfplan'
 
 if ! command -v notify-send > /dev/null
 then
@@ -132,9 +132,9 @@ then
     alias notify-send="notify-send --hint \"string:desktop-entry:$(basename "$GIO_LAUNCHED_DESKTOP_FILE")\""
 fi
 
-tp () {
+tfp () {
     workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ]
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
     then
         terraform plan -out tfplan "$@"
     else
@@ -142,9 +142,9 @@ tp () {
     fi
 }
 
-taa () {
+tfaa () {
     workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ]
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
     then
         terraform apply -auto-approve "$@"
     else
@@ -152,9 +152,9 @@ taa () {
     fi
 }
 
-tr () {
+tfr () {
     workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ]
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
     then
         terraform refresh "$@"
     else
@@ -162,9 +162,9 @@ tr () {
     fi
 }
 
-ti () {
+tfi () {
     workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ]
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
     then
         terraform import "$@"
     else
