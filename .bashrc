@@ -34,6 +34,7 @@ export ANSIBLE_CALLBACK_WHITELIST="profile_tasks, timer"
 export ANSIBLE_SSH_CONTROL_PATH="/tmp/ssh-%%h"
 export ANSIBLE_INVENTORY_ANY_UNPARSED_IS_FAILED=True
 export ANSIBLE_PYTHON_INTERPRETER=auto
+export ANSIBLE_FORKS=5
 export LYNX_SAVE_SPACE="$HOME/Downloads"
 export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
@@ -64,8 +65,8 @@ alias missing-recommends="aptitude search '~RBrecommends:~i'"
 alias missing-suggests="aptitude search '~RBsuggests:~i'"
 # shellcheck disable=SC2142
 alias deinstalled="dpkg --get-selections | awk 'BEGIN {exitcode=1}; \$2==\"deinstall\" {print \$1; exitcode=0}; END {exit exitcode}'"
-alias ansible-local='ansible localhost -c local -i localhost,'
-alias ansible-local-playbook='ansible-playbook -i localhost, -c local'
+alias ansible-local='ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$(which python3)"'
+alias ansible-local-playbook='ansible-playbook -i localhost, -c local -e "ansible_python_interpreter=$(which python3)"'
 alias concat="perl -pe 's/\\n/\\\\n/g'"
 alias deconcat="perl -pe 's/\\\\n/\\n/g'"
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
