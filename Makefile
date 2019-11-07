@@ -8,9 +8,10 @@ goarch != go env GOARCH
 ssh_configs != find ".ssh/config.d/" -type f \! -name '.*' | sort
 curl = curl --location --silent --fail
 download = $(curl) --output $@
+ansible-local = ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$$(which python3)"
 
 all: binaries vendored generated
-vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule Documents/bin/rabbitmqadmin .bash_completion.d/google-cloud-sdk
+vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule Documents/bin/rabbitmqadmin Documents/bin/toolbox .bash_completion.d/toolbox
 generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold .bash_completion.d/rabbitmqadmin .ssh/localhost .ssh/localhost.pub .ssh/authorized_keys .bash_completion.d/minishift .bash_completion.d/oc .bash_completion.d/poetry
 binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack $(DESTDIR)/bin/skaffold $(DESTDIR)/bin/minishift $(DESTDIR)/bin/oc $(DESTDIR)/bin/docker-machine-driver-kvm $(HELM_HOME)/plugins/helm-diff/bin/diff $(DESTDIR)/bin/gomplate $(DESTDIR)/bin/envconsul
 
@@ -23,17 +24,17 @@ $(DESTDIR)/share/bfg/bfg.jar:
 
 $(DESTDIR)/bin/rke:
 	mkdir -p $$(dirname $@)
-	-$(download) https://github.com/rancher/rke/releases/download/v0.2.2/rke_$(os)-$(goarch)
+	-$(download) https://github.com/rancher/rke/releases/download/v0.3.2/rke_$(os)-$(goarch)
 	-chmod +x $@
 
 $(DESTDIR)/bin/docker-machine:
 	mkdir -p $$(dirname $@)
-	-$(download) "https://github.com/docker/machine/releases/download/v0.16.1/docker-machine-$(os)-$(arch)"
+	-$(download) "https://github.com/docker/machine/releases/download/v0.16.2/docker-machine-$(os)-$(arch)"
 	-chmod +x $@
 
 $(DESTDIR)/bin/packer:
 	mkdir -p $$(dirname $@)
-	$(curl) https://releases.hashicorp.com/packer/1.4.1/packer_1.4.1_$(os)_$(goarch).zip --output $(tempdir)/packer.zip
+	$(curl) https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_$(os)_$(goarch).zip --output $(tempdir)/packer.zip
 	unzip -d $(tempdir) $(tempdir)/packer.zip
 	install -m 755 $(tempdir)/packer $@
 	rm $(tempdir)/packer*
@@ -47,24 +48,24 @@ $(DESTDIR)/bin/terraform:
 
 $(DESTDIR)/bin/vault:
 	mkdir -p $$(dirname $@)
-	$(curl) https://releases.hashicorp.com/vault/1.1.1/vault_1.1.1_$(os)_$(goarch).zip --output $(tempdir)/vault.zip
+	$(curl) https://releases.hashicorp.com/vault/1.2.3/vault_1.2.3_$(os)_$(goarch).zip --output $(tempdir)/vault.zip
 	unzip -d $(tempdir) $(tempdir)/vault.zip
 	install -m 755 $(tempdir)/vault $@
 	rm $(tempdir)/vault*
 
 $(DESTDIR)/bin/kubectl:
 	mkdir -p $$(dirname $@)
-	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.14.2/bin/$(os)/$(goarch)/kubectl"
+	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.16.2/bin/$(os)/$(goarch)/kubectl"
 	-chmod +x $@
 
 $(DESTDIR)/bin/kops:
 	mkdir -p $$(dirname $@)
-	-$(download) "https://github.com/kubernetes/kops/releases/download/1.12.1/kops-$(os)-$(goarch)"
+	-$(download) "https://github.com/kubernetes/kops/releases/download/1.14.1/kops-$(os)-$(goarch)"
 	-chmod +x $@
 
 $(DESTDIR)/bin/kompose:
 	mkdir -p $$(dirname $@)
-	-$(download) https://github.com/kubernetes/kompose/releases/download/v1.18.0/kompose-$(os)-$(goarch)
+	-$(download) https://github.com/kubernetes/kompose/releases/download/v1.19.0/kompose-$(os)-$(goarch)
 	-chmod +x $@
 
 $(DESTDIR)/bin/minikube:
@@ -74,7 +75,7 @@ $(DESTDIR)/bin/minikube:
 
 $(DESTDIR)/bin/kustomize:
 	mkdir -p $$(dirname $@)
-	-$(download) https://github.com/kubernetes-sigs/kustomize/releases/download/v2.0.3/kustomize_2.0.3_$(os)_$(goarch)
+	-$(download) https://github.com/kubernetes-sigs/kustomize/releases/download/v3.3.0/kustomize_3.3.0_$(os)_$(goarch)
 	-chmod +x $@
 
 $(DESTDIR)/bin/docker-machine-driver-kvm2:
@@ -85,22 +86,22 @@ $(DESTDIR)/bin/docker-machine-driver-kvm2:
 $(DESTDIR)/bin/helm:
 	mkdir -p $$(dirname $@)
 	mkdir -p $(tempdir)/helm
-	-$(curl) https://storage.googleapis.com/kubernetes-helm/helm-v2.14.0-$(os)-$(goarch).tar.gz | tar -zxf - -C $(tempdir)/helm/
+	-$(curl) https://storage.googleapis.com/kubernetes-helm/helm-v2.16.0-$(os)-$(goarch).tar.gz | tar -zxf - -C $(tempdir)/helm/
 	-install -m 755 $(tempdir)/helm/$(os)-$(goarch)/helm $@
 	rm -r $(tempdir)/helm
 
 $(DESTDIR)/bin/pack:
 	mkdir -p $$(dirname $@)
-	-$(curl) https://github.com/buildpack/pack/releases/download/v0.2.0/pack-v0.s.0-$(os).tgz | tar -xzC $(DESTDIR)/bin/
+	-$(curl) https://github.com/buildpack/pack/releases/download/v0.5.0/pack-v0.5.0-$(os).tgz | tar -xzC $(DESTDIR)/bin/
 
 $(DESTDIR)/bin/skaffold:
 	mkdir -p $$(dirname $@)
-	-$(download) https://storage.googleapis.com/skaffold/releases/v0.29.0/skaffold-$(os)-$(goarch)
+	-$(download) https://storage.googleapis.com/skaffold/releases/v0.41.0/skaffold-$(os)-$(goarch)
 	-chmod +x $@
 
 $(DESTDIR)/bin/minishift:
 	mkdir -p $$(dirname $@)
-	-$(curl) https://github.com/minishift/minishift/releases/download/v1.33.0/minishift-1.33.0-$(goos)-$(goarch).tgz | tar -xzC $(tempdir)
+	-$(curl) https://github.com/minishift/minishift/releases/download/v1.34.1/minishift-1.34.1-$(goos)-$(goarch).tgz | tar -xzC $(tempdir)
 	-install -m 755 $(tempdir)/minishift-*/minishift $@
 	-rm -r $(tempdir)/minishift-*
 
@@ -122,23 +123,23 @@ $(HELM_HOME)/plugins/helm-diff/bin/diff: $(DESTDIR)/bin/helm
 
 $(DESTDIR)/bin/gomplate:
 	mkdir -p $$(dirname $@)
-	-$(download) https://github.com/hairyhenderson/gomplate/releases/download/v3.4.1/gomplate_$(goos)-$(goarch)
+	-$(download) https://github.com/hairyhenderson/gomplate/releases/download/v3.5.0/gomplate_$(goos)-$(goarch)
 	-chmod +x $@
 
 $(DESTDIR)/bin/envconsul:
 	mkdir -p $$(dirname $@)
-	-$(curl) https://releases.hashicorp.com/envconsul/0.8.0/envconsul_0.8.0_$(goos)_$(goarch).tgz | tar -xzC $$(dirname $@) -f -
+	-$(curl) https://releases.hashicorp.com/envconsul/0.9.0/envconsul_0.9.0_$(goos)_$(goarch).tgz | tar -xzC $$(dirname $@) -f -
 
 
 ## Vendored files
 
 .bash_completion.d/docker-compose:
 	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/docker/compose/1.24.0/contrib/completion/bash/docker-compose
+	$(download) https://raw.githubusercontent.com/docker/compose/1.24.1/contrib/completion/bash/docker-compose
 
 .bash_completion.d/docker-machine.bash:
 	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/docker/machine/v0.16.1/contrib/completion/bash/docker-machine.bash
+	$(download) https://raw.githubusercontent.com/docker/machine/v0.16.2/contrib/completion/bash/docker-machine.bash
 
 .bash_completion.d/fabric-completion.bash:
 	mkdir -p $$(dirname $@)
@@ -161,12 +162,13 @@ Documents/bin/rabbitmqadmin:
 	$(download) https://raw.githubusercontent.com/rabbitmq/rabbitmq-management/master/bin/rabbitmqadmin
 	chmod +x $@
 
-.bash_completion.d/google-cloud-sdk:
-	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/google-cloud-sdk/google-cloud-sdk/master/completion.bash.inc
+.bash_completion.d/toolbox:
+	$(download) https://raw.githubusercontent.com/containers/toolbox/0.0.16/completion/bash/toolbox
 
-.bash_completion.d/poetry:
-	poetry completions bash > $@
+Documents/bin/toolbox:
+	mkdir -p $$(dirname $@)
+	$(download) https://raw.githubusercontent.com/containers/toolbox/0.0.16/toolbox
+	chmod +x $@
 
 
 ## Generated files
@@ -218,7 +220,7 @@ Documents/bin/rabbitmqadmin:
 	ssh-keygen -y -f $< > $@
 
 .ssh/authorized_keys: .ssh/localhost.pub
-	ansible localhost -c local -i localhost, -m authorized_key -a "user=$$(whoami) key='$$(cat .ssh/localhost.pub)' key_options='from=\"127.0.0.1/8\"'"
+	$(ansible-local) -m authorized_key -a "user=$$(whoami) key='$$(cat .ssh/localhost.pub)' key_options='from=\"127.0.0.1/8\"'"
 
 .bash_completion.d/minishift: $(DESTDIR)/bin/minishift
 	mkdir -p $$(dirname $@)
@@ -227,3 +229,6 @@ Documents/bin/rabbitmqadmin:
 .bash_completion.d/oc: $(DESTDIR)/bin/oc
 	mkdir -p $$(dirname $@)
 	-$$(basename $@) completion bash > $@
+
+.bash_completion.d/poetry:
+	poetry completions bash > $@
