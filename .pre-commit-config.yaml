@@ -2,7 +2,7 @@
 ---
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.2.1
+    rev: v2.4.0
     hooks:
       - id: check-added-large-files
       - id: check-executables-have-shebangs
@@ -28,17 +28,17 @@ repos:
         files: \.bashrc
         types: [text]
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.17.0
+    rev: v1.19.0
     hooks:
       - id: yamllint
   - repo: https://github.com/amperser/proselint/
-    rev: 0.10.1
+    rev: 0.10.2
     hooks:
       - id: proselint
         types: [plain-text]
         exclude: LICENSE
   - repo: https://github.com/ambv/black
-    rev: 18.9b0
+    rev: 19.10b0
     hooks:
       - id: black
         exclude: &excluded_pythonscripts pythonrc.py|rabbitmqadmin
@@ -46,7 +46,7 @@ repos:
           - |
               --line-length=79
   - repo: https://github.com/PyCQA/prospector
-    rev: 1.1.6.4
+    rev: 1.1.7
     hooks:
       - id: prospector
         exclude: *excluded_pythonscripts
@@ -61,7 +61,7 @@ repos:
           - pyroma
           - dodgy
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.7.7
+    rev: 3.7.9
     hooks:
       - id: flake8
         exclude: *excluded_pythonscripts
@@ -71,7 +71,7 @@ repos:
         additional_dependencies:
           - flake8-bugbear
   - repo: https://github.com/pre-commit/mirrors-pylint
-    rev: v2.3.1
+    rev: v2.4.4
     hooks:
       - id: pylint
         exclude: *excluded_pythonscripts
@@ -79,7 +79,7 @@ repos:
           - |-
             --disable=R0801
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.6.1
+    rev: 1.6.2
     hooks:
       - id: bandit
         exclude: *excluded_pythonscripts
