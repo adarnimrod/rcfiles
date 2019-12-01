@@ -26,7 +26,7 @@ Documents/bin/cron-jobs
 if command -v vagrant > /dev/null
 then
 	echo Installing Vagrant plugins >&2
-    for plugin in landrush vagrant-gatling-rsync
+    for plugin in landrush vagrant-gatling-rsync vagrant-disksize
     do
         vagrant plugin list | grep -qw "$plugin" || vagrant plugin install "$plugin" || true
     done
