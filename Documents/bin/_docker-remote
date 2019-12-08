@@ -1,13 +1,12 @@
 #!/bin/sh
 set -eu
 
-
 [ -n "$1" ] || { echo "You must specify host." >&2; exit 1; }
 host="$1"
 localsocket="$HOME/.ssh/docker_$host.sock"
 
-lsof -t "$localsocket" > /dev/null || rm "$localsocket"
-forward "$host" "$localsocket:/var/run/docker.sock"
+lsof -t "$localsocket" > /dev/null 2>&1 || rm -f "$localsocket"
+forward "$host" "$localsocket:/var/run/docker.sock" > /dev/null 2>&1
 
 # Echo the DOCKER_HOST export command, for eval'ing.
 echo "export DOCKER_HOST=unix://$localsocket"
