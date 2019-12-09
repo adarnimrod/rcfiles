@@ -113,7 +113,6 @@ alias rc_make="make --directory $HOME --always-make"
 alias rc_update="rc_make vendored generated"
 alias gen-ssh-config="rc_make .ssh/config"
 alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
-alias prune_docker_remote='find ~/.ssh -maxdepth 1 -type s -name "docker_*" -exec rm {} \;'
 alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
 alias jjb='jenkins-jobs'
 alias diff='diff --unified'
@@ -294,6 +293,13 @@ flatpak_kill () {
     fi
 }
 
+__prune_docker_remote () {
+    for i in ~/.ssh/docker_*
+    do
+        [ ! -e "$i" ] || lsof -t "$i" >/dev/null || rm "$i"
+    done
+}
+
 __prompt () {
     local exitstatus="$?"
     local runduration endtime pre_prompt
@@ -377,4 +383,4 @@ then
     ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
 fi
 
-prune_docker_remote
+__prune_docker_remote
