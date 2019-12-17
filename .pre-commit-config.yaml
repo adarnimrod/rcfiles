@@ -87,4 +87,4 @@ repos:
     rev: v0.13.0
     hooks:
       - id: detect-secrets
-        exclude: rabbitmqadmin
+        exclude: rabbitmqadmin|\.config/git/config|Pipfile\.lock
