@@ -293,11 +293,14 @@ flatpak_kill () {
     fi
 }
 
-__prune_docker_remote () {
-    for i in ~/.ssh/docker_*
-    do
-        [ ! -e "$i" ] || lsof -t "$i" >/dev/null || rm "$i"
-    done
+# shellcheck disable=SC2120
+prune_ssh_sockets () {
+    ( [ "${1:-}" != '-f' ] && [ "${1:-}" != '--force' ] ) || killall -v ssh || true
+    find ~/.ssh/ \
+        -maxdepth 1 \
+        -type s \
+        \! -name 'cm_*.sock' \
+        -execdir sh -c 'lsof -t "$1" >/dev/null || rm "$1"' _ {} \;
 }
 
 __prompt () {
@@ -383,4 +386,5 @@ then
     ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
 fi
 
-__prune_docker_remote
+# shellcheck disable=SC2119
+prune_ssh_sockets

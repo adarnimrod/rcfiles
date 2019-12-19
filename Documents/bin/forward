@@ -7,7 +7,7 @@ usage () {
 
 host="$1" || { usage >&2; exit 1; }
 forward="$2" || { usage >&2; exit 1; }
-alias ssh='ssh -fnNTS ~/.ssh/%C.sock'
+alias ssh='ssh -fnNTS ~/.ssh/cm_%C.sock'
 
 # shellcheck disable=SC2029
 ssh -o ControlMaster=auto \
