@@ -296,7 +296,7 @@ flatpak_kill () {
 
 # shellcheck disable=SC2120
 prune_ssh_sockets () {
-    ( [ "${1:-}" != '-f' ] && [ "${1:-}" != '--force' ] ) || killall -v ssh || true
+    { [ "${1:-}" != '-f' ] && [ "${1:-}" != '--force' ]; } || killall -v ssh || true
     find ~/.ssh/ \
         -maxdepth 1 \
         -type s \
