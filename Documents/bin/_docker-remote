@@ -5,7 +5,7 @@ set -eu
 host="$1"
 localsocket="$HOME/.ssh/docker_$host.sock"
 
-[ ! -e "$localsocket" ] || lsof -f "$localsocket" >/dev/null || rm "$localsocket"
+[ ! -e "$localsocket" ] || lsof -t "$localsocket" >/dev/null || rm "$localsocket"
 
 forward "$host" "$localsocket:/var/run/docker.sock" > /dev/null 2>&1
 
