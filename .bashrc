@@ -123,7 +123,7 @@ alias listen_tcp='nc -vlk 0.0.0.0'
 alias listen_udp='nc -uvlk 0.0.0.0'
 alias listen_unix='nc -Uvlk'
 alias tfa='terraform apply tfplan'
-alias tfvf='terraform validate && terraform fmt'
+alias tfvf='tfv && terraform fmt -diff'
 
 if ! command -v notify-send > /dev/null
 then
@@ -171,6 +171,16 @@ tfi () {
         terraform import "$@"
     else
         terraform import -var-file "$workspace.tfvars" "$@"
+    fi
+}
+
+tfv () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
+    then
+        terraform validate "$@"
+    else
+        terraform validate -var-file "$workspace.tfvars" "$@"
     fi
 }
 
