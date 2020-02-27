@@ -1,4 +1,4 @@
-personal_ws-1.1 en 158
+personal_ws-1.1 en 163
 cfg
 runtime
 Nginx
@@ -99,9 +99,11 @@ sshd
 OpenSSH
 ipaddresses
 LXC
+Dockerfiles
 AESGCM
 openssl
 OpenSSL
+VM
 HostCertificate
 AGPL
 pdf
@@ -112,6 +114,7 @@ wget
 SimpleHTTPServer
 scrypt
 PyPI
+Deliverables
 username
 TODO
 iam
@@ -145,6 +148,7 @@ POSIX
 adarnimrod
 struct
 HSTS
+Redis
 hoc
 aNULL
 backend
@@ -153,6 +157,7 @@ reStructuredText
 Github
 voilà
 kshrc
+RabbitMQ
 makefile
 nslookup
 pre
