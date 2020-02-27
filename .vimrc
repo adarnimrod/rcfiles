@@ -11,3 +11,4 @@ setlocal expandtab
 setlocal incsearch
 syntax on
 setlocal modeline
+set viminfo='20,<9999,s1024,h
