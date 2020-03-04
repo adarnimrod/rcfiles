@@ -1,4 +1,4 @@
-# shellcheck disable=SC2148
+# shellcheck disable=SC2148 shell=bash
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
