@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+
+if pgrep -f com.github.davidmhewitt.clipped
+then
+  killall com.github.davidmhewitt.clipped
+fi
+rm ~/.config/clipped/ClipboardStore.sqlite
+com.github.davidmhewitt.clipped > /dev/null 2>&1 &
