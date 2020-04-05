@@ -1,6 +1,3 @@
-"autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
-"autocmd BufRead *.py set nocindent
-"autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 filetype plugin indent on
 setlocal tabstop=4
 setlocal softtabstop=4
@@ -12,3 +9,4 @@ setlocal incsearch
 syntax on
 setlocal modeline
 set viminfo='20,<9999,s1024,h
+setlocal fileformat=unix
