@@ -6,8 +6,8 @@
     bull = submodule update --remote --init
     cdif = diff --cached --color-words
     cdiff = diff --cached
-    cleaan = clean -ndX
-    cleaaan = clean -ndx
+    cleaan = clean -dX
+    cleaaan = clean -dx
     dif = diff --color-words
     empty-commit = commit --allow-empty
 	exec = "!${SHELL:-/bin/sh} -ic "
