@@ -1,2 +1,6 @@
 #!/bin/sh
-flatpak update --assumeyes --appstream && flatpak uninstall --unused --assumeyes
+set -eu
+
+flatpak update --appstream
+flatpak update --assumeyes
+flatpak uninstall --unused --assumeyes
