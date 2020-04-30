@@ -10,3 +10,4 @@ syntax on
 setlocal modeline
 set viminfo='20,<9999,s1024,h
 setlocal fileformat=unix
+setlocal virtualedit=all
