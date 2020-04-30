@@ -53,6 +53,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export HELM_HOME="$HOME/.helm"
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
+export PGSSLROOTCERT=/etc/ssl/certs/ca-certificates.crt
 
 alias ll='ls -lha'
 alias la='ls -AF'
