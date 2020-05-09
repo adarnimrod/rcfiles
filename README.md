@@ -13,14 +13,15 @@ mass consumption as it is.
 
 *WARNING: This will overwrite your existing files.*
 
-```
-cd
-git clone --bare https://www.shore.co.il/git/rcfiles .git
-sed -i '/bare/d' .git/config
-git reset --hard
-git bull
-Documents/bin/install-git-hooks
-```
+    cd
+    git init
+    git remote add origin https://www.shore.co.il/git/rcfiles
+    git fetch
+    git reset --hard origin/master
+    git branch --set-upstream-to=origin/master
+    git bull
+    Documents/bin/install-git-hooks
+    .githooks/post-merge
 
 ## Dependencies
 
