@@ -54,6 +54,7 @@ export HELM_HOME="$HOME/.helm"
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 export PGSSLROOTCERT=/etc/ssl/certs/ca-certificates.crt
+export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
 
 alias ll='ls -lha'
 alias la='ls -AF'
