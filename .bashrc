@@ -97,7 +97,20 @@ alias xargs="xargs "
 alias monitor="monitor "
 alias sudome="sudome "
 alias presentation='docker dev adarnimrod/presentation'
-alias netdata='docker run --detach --name netdata --cap-add SYS_PTRACE --volume /proc:/host/proc:ro --volume /sys:/host/sys:ro --volume /var/run/docker.sock:/var/run/docker.sock --publish 19999:19999 firehol/netdata:alpine'
+alias netdata='docker run --detach \
+                          --name netdata \
+                          --cap-add SYS_PTRACE \
+                          --volume netdatalib:/var/lib/netdata \
+                          --volume netdatacache:/var/cache/netdata \
+                          --volume /etc/os-release:/host/etc/os-release:ro \
+                          --volume /etc/passwd:/host/etc/passwd:ro \
+                          --volume /etc/group:/host/etc/group:ro \
+                          --volume /proc:/host/proc:ro \
+                          --volume /sys:/host/sys:ro \
+                          --volume /var/run/docker.sock:/var/run/docker.sock \
+                          --publish 19999:19999 \
+                          --security-opt apparmor=unconfined \
+                          netdata/netdata'
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
 alias http-server='python3 -m http.server 8080'
 alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
