@@ -97,6 +97,7 @@ alias xargs="xargs "
 alias monitor="monitor "
 alias sudome="sudome "
 alias presentation='docker dev adarnimrod/presentation'
+# shellcheck disable=SC1004
 alias netdata='docker run --detach \
                           --name netdata \
                           --cap-add SYS_PTRACE \
