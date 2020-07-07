@@ -59,7 +59,7 @@ export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
 alias ll='ls -lha'
 alias la='ls -AF'
 alias l='ls -F'
-alias lsblk='lsblk --output=NAME,RM,RO,SIZE,TYPE,LABEL,UUID,MODEL,TRAN,MOUNTPOINT'
+alias lsblk='lsblk --output=NAME,RM,RO,SIZE,TYPE,FSTYPE,LABEL,UUID,MODEL,TRAN,MOUNTPOINT'
 alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
 alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
 alias deborphan='deborphan -a --no-show-section --ignore-suggests'
