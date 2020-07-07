@@ -204,6 +204,7 @@ tfv () {
 genpass () {
     bytes="${1:-32}"
     head --bytes="$bytes" /dev/urandom | base64 --wrap=0
+    echo
 }
 
 jt () {
