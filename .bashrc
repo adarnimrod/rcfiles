@@ -78,7 +78,7 @@ alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
 alias cdtemp='cd $(mktemp -d)'
 alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
-alias httpbin='gunicorn httpbin:app'
+alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
 # shellcheck disable=SC2142
