@@ -140,6 +140,7 @@ alias check_unix='nc -Uvzw3'
 alias listen_tcp='nc -vlk 0.0.0.0'
 alias listen_udp='nc -uvlk 0.0.0.0'
 alias listen_unix='nc -Uvlk'
+alias rm='rm --dir'
 alias tfa='terraform apply tfplan'
 alias tfvf='tfv && terraform fmt -diff'
 
