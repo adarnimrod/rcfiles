@@ -140,6 +140,7 @@ alias check_unix='nc -Uvzw3'
 alias listen_tcp='nc -vlk 0.0.0.0'
 alias listen_udp='nc -uvlk 0.0.0.0'
 alias listen_unix='nc -Uvlk'
+# shellcheck disable=SC2032
 alias rm='rm --dir'
 alias tfa='terraform apply tfplan'
 alias tfvf='tfv && terraform fmt -diff'
@@ -276,6 +277,7 @@ sync_comics () {
     this_month="$( date "$format" )"
     last_month="$( date --date '1 month ago' "$format" )"
     rsync --prune-empty-dirs --ignore-missing-args --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
+    # shellcheck disable=SC2033
     find "$HOME/Downloads/Comics/" -name "$(date --date '2 month ago' +'0-Day\ Week\ of\ %Y.%m.*')" -exec rm -r {} +
 }
 
