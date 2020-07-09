@@ -77,16 +77,16 @@ alias deconcat="perl -pe 's/\\\\n/\\n/g'"
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
 alias cdtemp='cd $(mktemp -d)'
-alias 0-day-cleanup='ssh xbmc.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
+alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias httpbin='gunicorn httpbin:app'
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
-alias restart-kodi='ssh xbmc.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
+alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
 # shellcheck disable=SC2142
 alias tolower='awk "{print tolower(\$0)}"'
 # shellcheck disable=SC2142
 alias toupper='awk "{print toupper(\$0)}"'
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
-alias transmission-remote='forward xbmc.shore.co.il 9091:localhost:9091 && transmission-remote'
+alias transmission-remote='forward kodi.shore.co.il 9091:localhost:9091 && transmission-remote'
 alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
 alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
 alias clean-swp="find \$HOME/ -name '*.swp' -delete"
@@ -119,8 +119,8 @@ alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
 alias dd='dd status=progress'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
 alias black='black --line-length 79'
-alias torrent_off='ssh xbmc.shore.co.il sudo systemctl stop transmission-{rss,daemon}.service'
-alias torrent_on='ssh xbmc.shore.co.il sudo systemctl start transmission-{daemon,rss}.service'
+alias torrent_off='ssh kodi.shore.co.il sudo systemctl stop transmission-{rss,daemon}.service'
+alias torrent_on='ssh kodi.shore.co.il sudo systemctl start transmission-{daemon,rss}.service'
 alias bell="printf '\\a'"
 command -v notify-send > /dev/null || alias notify-send='bell'
 alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
@@ -271,7 +271,7 @@ gen_csr () {
 
 sync_comics () {
     local this_month last_month format
-    format='+xbmc.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*'
+    format='+kodi.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*'
     this_month="$( date "$format" )"
     last_month="$( date --date '1 month ago' "$format" )"
     rsync --prune-empty-dirs --ignore-missing-args --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
