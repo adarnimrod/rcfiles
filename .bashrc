@@ -142,6 +142,7 @@ alias listen_udp='nc -uvlk 0.0.0.0'
 alias listen_unix='nc -Uvlk'
 # shellcheck disable=SC2032
 alias rm='rm --dir'
+alias nextcloudcmd='flatpak run --command=nextcloudcmd org.nextcloud.Nextcloud'
 alias tfa='terraform apply tfplan'
 alias tfvf='tfv && terraform fmt -diff'
 
