@@ -52,7 +52,6 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export HELM_HOME="$HOME/.helm"
 export DOCKER_BUILDKIT=1
-export COMPOSE_DOCKER_CLI_BUILD=1
 export PGSSLROOTCERT=/etc/ssl/certs/ca-certificates.crt
 export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
 export GNUPGHOME="$HOME/Documents/.gnupg"
