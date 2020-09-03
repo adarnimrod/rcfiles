@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name[en_US]=Custom Command
-Comment[en_US]=flatpak run org.nextcloud.Nextcloud --background
-Exec=flatpak run org.nextcloud.Nextcloud --background
+Name[en_US]=Nextcloud desktop client
+Comment[en_US]=flatpak run com.nextcloud.desktopclient.nextcloud --background
+Exec=flatpak run com.nextcloud.desktopclient.nextcloud --background
 Icon=application-default-icon
 X-GNOME-Autostart-enabled=true
 Type=Application
