@@ -11,8 +11,8 @@ export HISTFILESIZE=100000
 export EDITOR=vim
 export GOPATH="$HOME/.local/golang"
 export PATH="$GOPATH/bin:/usr/lib/go/bin/:$PATH"
-export PATH="$HOME/Documents/Shore/ssh-ca:$PATH"
-export PATH="$HOME/Documents/Shore/ssl-ca:$PATH"
+export PATH="$HOME/Repositories/Shore/ssh-ca:$PATH"
+export PATH="$HOME/Repositories/Shore/ssl-ca:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
@@ -384,7 +384,7 @@ __command_notifier () {
 }
 
 # shellcheck disable=SC1090
-. "$HOME/Documents/Shore/bundle_certs/bundle_certs"
+. "$HOME/Repositories/Shore/bundle_certs/bundle_certs"
 
 
 # make less more friendly for non-text input files, see lesspipe(1)
