@@ -4,7 +4,7 @@
 
 export PS1='\u@\h:\w\$ '
 export LANG=en_US.UTF8
-export HISTFILE="$HOME/.history"
+export HISTFILE="$HOME/Documents/.history"
 export HISTCONTROL=ignoreboth:erasedups
 export HISTSIZE=100000
 export HISTFILESIZE=100000
