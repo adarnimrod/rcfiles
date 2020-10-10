@@ -55,6 +55,7 @@ export DOCKER_BUILDKIT=1
 export PGSSLROOTCERT=/etc/ssl/certs/ca-certificates.crt
 export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
 export GNUPGHOME="$HOME/Documents/.gnupg"
+export REDISCLI_HISTFILE="$HOME/Documents/.rediscli_history"
 
 alias ll='ls -lha'
 alias la='ls -AF'
