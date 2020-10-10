@@ -1,7 +1,7 @@
 # vim:ff=unix ts=2 sw=2 ai expandtab
 ---
 language: python
-python: "3.8"
+python: "3.6"
 dist: bionic
 cache:
   pip: true
