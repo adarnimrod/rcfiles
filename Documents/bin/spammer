@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+
+while true
+do
+    # Backoff in case of an error.
+    if ! notify-send \
+        --urgency low \
+        --hint "string:desktop-entry:spammer" \
+        "$(curl --silent https://patchbay.pub/pubsub/1446c969-9a54-4b5b-83e0-bf88f22f289d)"
+    then
+        sleep 1
+    fi
+done
