@@ -1,13 +1,22 @@
 #!/bin/sh
 set -eu
 
+URL='https://patchbay.pub/pubsub/1446c969-9a54-4b5b-83e0-bf88f22f289d'
+
 while true
 do
-    # Backoff in case of an error.
-    if ! notify-send \
+    message="$(curl --silent "$URL")"
+    exitstatus="$?"
+    if echo "$message" | grep --silent '^message='
+    then
+        message="$(echo "$message" | sed 's/message=//; s/+/ /g')"
+    fi
+    notify-send \
         --urgency low \
         --hint "string:desktop-entry:spammer" \
-        "$(curl --silent https://patchbay.pub/pubsub/1446c969-9a54-4b5b-83e0-bf88f22f289d)"
+        "$message"
+    # Backoff in case of an error.
+    if [ "$exitstatus" -gt '0' ]
     then
         sleep 1
     fi
