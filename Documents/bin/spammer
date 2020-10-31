@@ -11,10 +11,9 @@ do
     then
         message="$(echo "$message" | sed 's/message=//; s/+/ /g')"
     fi
-    notify-send \
+    echo "$message" | notify \
         --urgency low \
-        --hint "string:desktop-entry:spammer" \
-        "$message"
+        --hint "string:desktop-entry:spammer"
     # Backoff in case of an error.
     if [ "$exitstatus" -gt '0' ]
     then

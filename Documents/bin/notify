@@ -1,0 +1,46 @@
+#!/bin/sh
+set -eu
+
+bell () {
+    printf '\\a'
+}
+
+wall () {
+    $(command -v wall) "$(id -g)"
+}
+
+notify_send () {
+    message="$(cat)"
+    $(command -v notify-send) "$@" "$message"
+}
+
+patchbay () {
+    message="$(cat)"
+    curl -d "$message" https://patchbay.pub/pubsub/1446c969-9a54-4b5b-83e0-bf88f22f289d
+}
+
+# Try hostname if present.
+if command -v hostname > /dev/null
+then
+    hostname="$(hostname)"
+# Try using sysfs (Linux only).
+elif [ -f /proc/sys/kernel/hostname ]
+then
+    hostname="$(cat /proc/sys/kernel/hostname)"
+# Fallback to grepping sysctl.
+else
+    hostname="$(sysctl -a 2>/dev/null | awk -F '=' '/^kern[a-z]*\.hostname/ {print $2}')"
+fi
+
+#FIXME: Remove domain, just hostname.
+
+case "$hostname" in
+    ea6350) patchbay;;
+    host01) patchbay;;
+    kodi) patchbay;;
+    ns1) patchbay;;
+    ns4) patchbay;;
+    workbench) patchbay;;
+    YOGA-C930) notify_send "$@";;
+    *) ;;
+esac

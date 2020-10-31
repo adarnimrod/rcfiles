@@ -144,14 +144,7 @@ alias nextcloudcmd='flatpak run --command=nextcloudcmd org.nextcloud.Nextcloud'
 alias tfa='terraform apply tfplan'
 alias tfvf='tfv && terraform fmt -diff'
 
-if ! command -v notify-send > /dev/null
-then
-    alias notify-send='bell'
-elif [ -n "$GIO_LAUNCHED_DESKTOP_FILE" ]
-then
-    # shellcheck disable=SC2139
-    alias notify-send="notify-send --hint \"string:desktop-entry:$(basename "$GIO_LAUNCHED_DESKTOP_FILE")\""
-fi
+alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
 
 tfp () {
     workspace="$(terraform workspace show)"
@@ -372,9 +365,9 @@ __command_notifier () {
         then
             if [ "$exitstatus" -eq '0' ]
             then
-                notify-send "$last_command has finished."
+                echo "$last_command has finished." | notify
             else
-                notify-send --urgency=critical "$last_command has failed."
+                echo "$last_command has failed." | notify --urgency=critical
             fi
         fi
     fi

@@ -1,14 +1,11 @@
 #!/bin/sh
 set -eu
 
-if ! command -v notify-send > /dev/null
+if [ "$(whoami)" = "root" ] && [ -n "${SUDO_USER:-}" ]
 then
-    notify="printf '\\a'"
-elif [ "$(whoami)" = "root" ] && [ -n "${SUDO_USER:-}" ]
-then
-    notify="sudo --preserve-env --set-home --user $SUDO_USER notify-send"
+    notify="sudo --preserve-env --set-home --user $SUDO_USER notify"
 else
-    notify='notify-send'
+    notify='notify'
 fi
 
 eval "$@" || code="$?"
@@ -16,9 +13,9 @@ code="${code:-0}"
 
 if [ "$code" -eq 0 ]
 then
-    $notify "$(basename "${1#__}") has finished."
+    echo "$(basename "${1#__}") has finished." | $notify
 else
-    $notify --urgency=critical "$(basename "${1#__}") has failed."
+    echo "$(basename "${1#__}") has failed." | $notify --urgency=critical
 fi
 
 return "$code"
