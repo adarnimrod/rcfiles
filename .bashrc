@@ -121,7 +121,6 @@ alias black='black --line-length 79'
 alias torrent_off='ssh kodi.shore.co.il sudo systemctl stop transmission-{rss,daemon}.service'
 alias torrent_on='ssh kodi.shore.co.il sudo systemctl start transmission-{daemon,rss}.service'
 alias bell="printf '\\a'"
-command -v notify-send > /dev/null || alias notify-send='bell'
 alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
 alias color='less --raw-control-chars -p'
 alias pip2='python2 -m pip'
