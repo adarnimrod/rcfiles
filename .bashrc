@@ -143,7 +143,7 @@ alias rm='rm --dir'
 alias nextcloudcmd='flatpak run --command=nextcloudcmd org.nextcloud.Nextcloud'
 alias tfa='terraform apply tfplan'
 alias tfvf='tfv && terraform fmt -diff'
-
+# shellcheck disable=SC2139
 alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
 
 tfp () {
