@@ -8,7 +8,8 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-merge-conflict
       - id: check-symlinks
-        exclude: myclirc|netrc|packet-cli|mycli-history|scwrc|gcloud\.json|\.envrc\.private
+        exclude: >-
+          myclirc|netrc|packet-cli|mycli-history|scwrc|gcloud\.json|\.envrc\.private
       - id: detect-private-key
       - id: trailing-whitespace
       - id: requirements-txt-fixer
