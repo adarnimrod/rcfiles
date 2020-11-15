@@ -13,7 +13,7 @@ repos:
       - id: detect-private-key
       - id: trailing-whitespace
       - id: requirements-txt-fixer
-  - repo: https://www.shore.co.il/git/shell-pre-commit/
+  - repo: https://git.shore.co.il/nimrod/shell-pre-commit.git
     rev: v0.6.0
     hooks:
       - id: shell-lint

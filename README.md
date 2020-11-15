@@ -15,7 +15,7 @@ mass consumption as it is.
 
     cd
     git init
-    git remote add origin https://www.shore.co.il/git/rcfiles
+    git remote add origin https://git.shore.co.il/nimrod/rcfiles
     git fetch
     git reset --hard origin/master
     git branch --set-upstream-to=origin/master
@@ -29,7 +29,7 @@ Dependencies that can be installed locally inside the home directory, are
 installed with the Git hook using the supplied `Makefile`. Dependencies that
 can't be installed locally, can be install with the `workstation.yml` Ansible
 playbook from the
-[ansible-desktop-playbook](https://www.shore.co.il/git/ansible-desktop-playbooks)
+[ansible-desktop-playbook](https://git.shore.co.il/ansible/ansible-desktop-playbooks)
 repository, please consult the README from that repository. Care has been given
 to minimizing the dependencies and making the scripts as cross-platform as
 reasonably possible, so most script would run without any installing any tools
@@ -44,4 +44,4 @@ This software is licensed under the MIT license (see `LICENSE.txt`).
 Nimrod Adar, [contact me](mailto:nimrod@shore.co.il) or visit my [website](
 https://www.shore.co.il/). Patches are welcome via [`git send-email`](
 http://git-scm.com/book/en/v2/Git-Commands-Email). The repository is located
-at: <https://www.shore.co.il/git/>.
+at: <https://git.shore.co.il/nimrod/>.

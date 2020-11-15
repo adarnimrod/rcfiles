@@ -1,12 +1,12 @@
 [submodule "Repositories/Shore/ssl-ca"]
 	path = Repositories/Shore/ssl-ca
-	url = https://www.shore.co.il/git/ssl-ca/
+	url = https://git.shore.co.il/nimrod/ssl-ca/
 	branch = master
 [submodule "Repositories/Shore/ssh-ca"]
 	path = Repositories/Shore/ssh-ca
-	url = https://www.shore.co.il/git/ssh-ca/
+	url = https://git.shore.co.il/nimrod/ssh-ca/
 	branch = master
 [submodule "Repositories/Shore/bundle_certs"]
 	path = Repositories/Shore/bundle_certs
-	url = https://www.shore.co.il/git/bundle_certs/
+	url = https://git.shore.co.il/nimrod/bundle_certs/
 	branch = master

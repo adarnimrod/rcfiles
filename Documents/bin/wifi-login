@@ -29,7 +29,7 @@
 #
 # If you don't want to clone the repo but you just want this script, run:
 #
-# curl https://www.shore.co.il/git/rcfiles/plain/Documents/bin/wifi-login | sudo tee /etc/NetworkManager/dispatcher.d/90wifi-login
+# curl https://git.shore.co.il/nimrod/rcfiles/-/raw/master/Documents/bin/wifi-login | sudo tee /etc/NetworkManager/dispatcher.d/90wifi-login
 # sudo chmod +x /etc/NetworkManager/dispatcher.d/90wifi-login
 
 set -eu
