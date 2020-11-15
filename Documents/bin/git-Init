@@ -13,10 +13,8 @@ usage () {
 [ "$#" = "1" ] || usage
 reponame="$1"
 # shellcheck disable=SC2029
-ssh cgit.shore.co.il "git init --bare /srv/git/$reponame"
-git clone "cgit.shore.co.il:/srv/git/$reponame"
+git init "$reponame"
 (
 cd "$reponame"
 git commit --allow-empty --message "Initial empty commit."
-git push
 )
