@@ -53,6 +53,8 @@
     smudge = ANSIBLE_VERBOSITY=0 ansible-vault decrypt
 [grep]
     linenumber = true
+[init]
+    defaultBranch = master
 [merge]
     tool = meld
     ff = false
