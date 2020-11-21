@@ -1,6 +1,6 @@
 # rcfiles
 
-[![image](https://travis-ci.org/adarnimrod/rcfiles.svg?branch=master)](https://travis-ci.org/adarnimrod/rcfiles)
+[![pipeline status](https://git.shore.co.il/nimrod/rcfiles/badges/master/pipeline.svg)](https://git.shore.co.il/nimrod/rcfiles/-/commits/master)
 
 A repository with my rc files. The purpose is for me to have revision
 control of my home directory, maybe send somebody a link to an example
