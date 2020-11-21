@@ -15,7 +15,7 @@ mass consumption as it is.
 
     cd
     git init
-    git remote add origin https://git.shore.co.il/nimrod/rcfiles
+    git remote add origin https://git.shore.co.il/nimrod/rcfiles.git/
     git fetch
     git reset --hard origin/master
     git branch --set-upstream-to=origin/master
