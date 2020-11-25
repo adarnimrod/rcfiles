@@ -165,11 +165,6 @@ Documents/bin/rabbitmqadmin:
 .bash_completion.d/toolbox:
 	$(download) https://raw.githubusercontent.com/containers/toolbox/0.0.16/completion/bash/toolbox
 
-Documents/bin/toolbox:
-	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/containers/toolbox/0.0.16/toolbox
-	chmod +x $@
-
 
 ## Generated files
 
