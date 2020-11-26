@@ -80,7 +80,7 @@ alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
 alias diff='diff --unified'
 alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
 alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
-alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
+alias gen-mac='hexdump -n5 -e '\''"02" 5/1 ":%02X" "\n"'\'' /dev/urandom'
 alias gen-ssh-config="rc_make .ssh/config"
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias http-server='python3 -m http.server 8080'
