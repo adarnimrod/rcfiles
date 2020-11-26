@@ -303,21 +303,6 @@ match_ssl_pair () {
     return "$exitcode"
 }
 
-flatpak_kill () {
-    if [ "$#" -lt 1 ]
-    then
-        echo "You must specify application name." >&2
-        false
-    else
-        name="$1"
-        shift
-        for pid in $(flatpak ps --columns=application,pid | awk "tolower(\$2) ~ /$name/ {print \$3}")
-        do
-            pkill "$@" "$pid"
-        done
-    fi
-}
-
 # shellcheck disable=SC2120
 prune_ssh_sockets () {
     { [ "${1:-}" != '-f' ] && [ "${1:-}" != '--force' ]; } || killall -v ssh || true
