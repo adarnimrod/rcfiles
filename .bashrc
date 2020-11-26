@@ -146,60 +146,43 @@ alias wb="ssh -t workbench.shore.co.il 'if tmux ls >/dev/null 2>&1; then tmux a;
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
 alias xargs="xargs "
 
-tfp () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform plan -out tfplan "$@"
-    else
-        terraform plan -out tfplan -var-file "$workspace.tfvars" "$@"
-    fi
+blue () {
+    printf '\e[1;94m' || true
+    echo "$@"
+    printf '\e[0m' || true
 }
 
-tfaa () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform apply -auto-approve "$@"
-    else
-        terraform apply -auto-approve -var-file "$workspace.tfvars" "$@"
-    fi
+bold () {
+    printf '\e[1m' || true
+    echo "$@"
+    printf '\e[0m' || true
 }
 
-tfr () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform refresh "$@"
-    else
-        terraform refresh -var-file "$workspace.tfvars" "$@"
-    fi
+cyan () {
+    printf '\e[1;96m' || true
+    echo "$@"
+    printf '\e[0m' || true
 }
 
-tfi () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform import "$@"
-    else
-        terraform import -var-file "$workspace.tfvars" "$@"
-    fi
-}
-
-tfv () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform validate "$@"
-    else
-        terraform validate -var-file "$workspace.tfvars" "$@"
-    fi
+ddg () {
+    w3m "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
 }
 
 genpass () {
     bytes="${1:-32}"
     head --bytes="$bytes" /dev/urandom | base64 --wrap=0
     echo
+}
+
+gen_csr () {
+    name="${1:-site}"
+    openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
+}
+
+green () {
+    printf '\e[1;92m' || true
+    echo "$@"
+    printf '\e[0m' || true
 }
 
 jt () {
@@ -211,80 +194,10 @@ jt () {
     fi
 }
 
-bold () {
-    printf '\e[1m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
-
-red () {
-    printf '\e[1;91m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
-
-green () {
-    printf '\e[1;92m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
-
-yellow () {
-    printf '\e[1;93m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
-
-blue () {
-    printf '\e[1;94m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
-
 magenta () {
     printf '\e[1;95m' || true
     echo "$@"
     printf '\e[0m' || true
-}
-
-cyan () {
-    printf '\e[1;96m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
-
-ssh_keyscan_add () {
-    ssh-keyscan "$@" >> "$HOME/.ssh/known_hosts"
-    sort -uo "$HOME/.ssh/known_hosts" "$HOME/.ssh/known_hosts"
-}
-
-gen_csr () {
-    name="${1:-site}"
-    openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
-}
-
-sync_comics () {
-    local this_month last_month format
-    format='+kodi.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*'
-    this_month="$( date "$format" )"
-    last_month="$( date --date '1 month ago' "$format" )"
-    rsync --prune-empty-dirs --ignore-missing-args --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
-    # shellcheck disable=SC2033
-    find "$HOME/Downloads/Comics/" -name "$(date --date '2 month ago' +'0-Day\ Week\ of\ %Y.%m.*')" -exec rm -r {} +
-}
-
-sync_podcasts () (
-    cd || exit 1
-    unison podcasts
-)
-
-ddg () {
-    w3m "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
-}
-
-toux () {
-    touch "$@"
-    chmod +x "$@"
 }
 
 match_ssl_pair () {
@@ -311,6 +224,93 @@ prune_ssh_sockets () {
         -type s \
         \! -name 'cm_*.sock' \
         -execdir sh -c 'lsof -t "$1" >/dev/null || rm "$1"' _ {} \;
+}
+
+red () {
+    printf '\e[1;91m' || true
+    echo "$@"
+    printf '\e[0m' || true
+}
+
+ssh_keyscan_add () {
+    ssh-keyscan "$@" >> "$HOME/.ssh/known_hosts"
+    sort -uo "$HOME/.ssh/known_hosts" "$HOME/.ssh/known_hosts"
+}
+
+sync_comics () {
+    local this_month last_month format
+    format='+kodi.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*'
+    this_month="$( date "$format" )"
+    last_month="$( date --date '1 month ago' "$format" )"
+    rsync --prune-empty-dirs --ignore-missing-args --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
+    # shellcheck disable=SC2033
+    find "$HOME/Downloads/Comics/" -name "$(date --date '2 month ago' +'0-Day\ Week\ of\ %Y.%m.*')" -exec rm -r {} +
+}
+
+sync_podcasts () (
+    cd || exit 1
+    unison podcasts
+)
+
+tfaa () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
+    then
+        terraform apply -auto-approve "$@"
+    else
+        terraform apply -auto-approve -var-file "$workspace.tfvars" "$@"
+    fi
+}
+
+tfi () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
+    then
+        terraform import "$@"
+    else
+        terraform import -var-file "$workspace.tfvars" "$@"
+    fi
+}
+
+tfp () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
+    then
+        terraform plan -out tfplan "$@"
+    else
+        terraform plan -out tfplan -var-file "$workspace.tfvars" "$@"
+    fi
+}
+
+tfr () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
+    then
+        terraform refresh "$@"
+    else
+        terraform refresh -var-file "$workspace.tfvars" "$@"
+    fi
+}
+
+tfv () {
+    workspace="$(terraform workspace show)"
+    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
+    then
+        terraform validate "$@"
+    else
+        terraform validate -var-file "$workspace.tfvars" "$@"
+    fi
+}
+
+toux () {
+    touch "$@"
+    chmod +x "$@"
+}
+
+yellow () {
+    printf '\e[1;93m' || true
+    echo "$@"
+    printf '\e[0m' || true
 }
 
 __prompt () {
