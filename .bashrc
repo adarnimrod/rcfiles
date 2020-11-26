@@ -145,6 +145,7 @@ alias tfa='terraform apply tfplan'
 alias tfvf='tfv && terraform fmt -diff'
 # shellcheck disable=SC2139
 alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
+alias wb="ssh -t workbench.shore.co.il 'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'"
 
 tfp () {
     workspace="$(terraform workspace show)"
