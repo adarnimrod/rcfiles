@@ -2,61 +2,59 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export PS1='\u@\h:\w\$ '
-export LANG=en_US.UTF8
-export HISTFILE="$HOME/Documents/.history"
-export HISTCONTROL=ignoreboth:erasedups
-export HISTSIZE=100000
-export HISTFILESIZE=100000
-export EDITOR=vim
-export GOPATH="$HOME/.local/golang"
-export PATH="$GOPATH/bin:/usr/lib/go/bin/:$PATH"
-export PATH="$HOME/Repositories/Shore/ssh-ca:$PATH"
-export PATH="$HOME/Repositories/Shore/ssl-ca:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/.cabal/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/Documents/bin:$PATH"
-export PYTHONSTARTUP=~/.config/pythonrc.py
-PIPENV_DEFAULT_PYTHON_VERSION="$(python3 --version | grep -i '3\.[0-9]*')" > /dev/null 2>&1
-export PIPENV_DEFAULT_PYTHON_VERSION
-export AWS_DEFAULT_PROFILE='shore'
-export ANSIBLE_VERBOSITY=2
-export ANSIBLE_COMMAND_WARNINGS=True
-export ANSIBLE_DEPRECATION_WARNINGS=True
-export ANSIBLE_SYSTEM_WARNINGS=True
-export ANSIBLE_RETRY_FILES_SAVE_PATH=/tmp/
-export ANSIBLE_PIPELINING=True
-export ANSIBLE_GATHERING=smart
 export ANSIBLE_CACHE_PLUGIN=jsonfile
 export ANSIBLE_CACHE_PLUGIN_CONNECTION="$HOME/.ansible/facts"
 export ANSIBLE_CALLBACK_WHITELIST="profile_tasks, timer"
-export ANSIBLE_SSH_CONTROL_PATH="/tmp/ssh-%%h"
-export ANSIBLE_INVENTORY_ANY_UNPARSED_IS_FAILED=True
-export ANSIBLE_PYTHON_INTERPRETER=auto
+export ANSIBLE_COMMAND_WARNINGS=True
+export ANSIBLE_DEPRECATION_WARNINGS=True
 export ANSIBLE_FORKS=5
-export LYNX_SAVE_SPACE="$HOME/Downloads"
-export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
-export VAGRANT_DEFAULT_PROVIDER="virtualbox"
-export PIPENV_MAX_DEPTH=5
+export ANSIBLE_GATHERING=smart
+export ANSIBLE_INVENTORY_ANY_UNPARSED_IS_FAILED=True
+export ANSIBLE_PIPELINING=True
+export ANSIBLE_PYTHON_INTERPRETER=auto
+export ANSIBLE_RETRY_FILES_SAVE_PATH=/tmp/
+export ANSIBLE_SSH_CONTROL_PATH="/tmp/ssh-%%h"
+export ANSIBLE_SYSTEM_WARNINGS=True
+export ANSIBLE_VERBOSITY=2
+export AWS_DEFAULT_PROFILE='shore'
+export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
+export DOCKER_BUILDKIT=1
+export EDITOR=vim
+export GNUPGHOME="$HOME/Documents/.gnupg"
+export GOPATH="$HOME/.local/golang"
+export HELM_HOME="$HOME/.helm"
+export HISTCONTROL=ignoreboth:erasedups
+export HISTFILE="$HOME/Documents/.history"
+export HISTFILESIZE=100000
+export HISTSIZE=100000
+export LANG=en_US.UTF8
 # Blinking (red).
 export LESS_TERMCAP_mb=$'\E[01;31m'
 # Double bright (purple).
 export LESS_TERMCAP_md=$'\E[01;35m'
 export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
 # Standout (grey).
 export LESS_TERMCAP_so=$'\E[01;33m'
-export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_ue=$'\E[0m'
 # Underline (dark grey).
 export LESS_TERMCAP_us=$'\E[01;32m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export HELM_HOME="$HOME/.helm"
-export DOCKER_BUILDKIT=1
+export LYNX_SAVE_SPACE="$HOME/Downloads"
+export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
+export PATH="$GOPATH/bin:/usr/lib/go/bin/:$PATH"
+export PATH="$HOME/.cabal/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/Documents/bin:$PATH"
+export PATH="$HOME/Repositories/Shore/ssh-ca:$PATH"
+export PATH="$HOME/Repositories/Shore/ssl-ca:$PATH"
 export PGSSLROOTCERT=/etc/ssl/certs/ca-certificates.crt
-export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
-export GNUPGHOME="$HOME/Documents/.gnupg"
+export PIPENV_DEFAULT_PYTHON_VERSION="$(python3 --version | grep -i '3\.[0-9]*')" > /dev/null 2>&1
+export PIPENV_MAX_DEPTH=5
+export PS1='\u@\h:\w\$ '
+export PYTHONSTARTUP=~/.config/pythonrc.py
 export REDISCLI_HISTFILE="$HOME/Documents/.rediscli_history"
-
+export VAGRANT_DEFAULT_PROVIDER="virtualbox"
 
 alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local -e "ansible_python_interpreter=$(which python3)"'
