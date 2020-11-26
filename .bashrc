@@ -57,46 +57,48 @@ export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
 export GNUPGHOME="$HOME/Documents/.gnupg"
 export REDISCLI_HISTFILE="$HOME/Documents/.rediscli_history"
 
-alias ll='ls -lha'
-alias la='ls -AF'
-alias l='ls -F'
-alias lsblk='lsblk --output=NAME,RM,RO,SIZE,TYPE,FSTYPE,LABEL,UUID,MODEL,TRAN,MOUNTPOINT'
-alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
-alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
-alias deborphan='deborphan -a --no-show-section --ignore-suggests'
-alias aptitude='aptitude --display-format %p --quiet'
-alias obsolete='aptitude search ?obsolete'
-alias missing-recommends="aptitude search '~RBrecommends:~i'"
-alias missing-suggests="aptitude search '~RBsuggests:~i'"
-# shellcheck disable=SC2142
-alias deinstalled="dpkg --get-selections | awk 'BEGIN {exitcode=1}; \$2==\"deinstall\" {print \$1; exitcode=0}; END {exit exitcode}'"
-alias ansible-local='ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$(which python3)"'
+
+alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local -e "ansible_python_interpreter=$(which python3)"'
-alias concat="perl -pe 's/\\n/\\\\n/g'"
-alias deconcat="perl -pe 's/\\\\n/\\n/g'"
-alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
+alias ansible-local='ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$(which python3)"'
+alias aptitude='aptitude --display-format %p --quiet'
+alias bell="printf '\\a'"
+alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
+alias black='black --line-length 79'
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
 alias cdtemp='cd $(mktemp -d)'
-alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
-alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
-alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
-alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
-# shellcheck disable=SC2142
-alias tolower='awk "{print tolower(\$0)}"'
-# shellcheck disable=SC2142
-alias toupper='awk "{print toupper(\$0)}"'
-alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
-alias transmission-remote='forward kodi.shore.co.il 9091:localhost:9091 && transmission-remote'
-alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
-alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
+alias check_tcp='nc -vzw10'
+alias check_unix='nc -Uvzw3'
 alias clean-swp="find \$HOME/ -name '*.swp' -delete"
-alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
-alias todo="vim \$HOME/Documents/TODO.yml"
-alias sudo="sudo "
-alias xargs="xargs "
+alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
+alias color='less --raw-control-chars -p'
+alias concat="perl -pe 's/\\n/\\\\n/g'"
+alias dd='dd status=progress'
+alias deborphan='deborphan -a --no-show-section --ignore-suggests'
+alias deconcat="perl -pe 's/\\\\n/\\n/g'"
+# shellcheck disable=SC2142
+alias deinstalled="dpkg --get-selections | awk 'BEGIN {exitcode=1}; \$2==\"deinstall\" {print \$1; exitcode=0}; END {exit exitcode}'"
+alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
+alias diff='diff --unified'
+alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
+alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
+alias gen-mac="hexdump -n5 -e '\"02\" 5/1 \":%02X\" \"\\n\"' /dev/urandom"
+alias gen-ssh-config="rc_make .ssh/config"
+alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
+alias http-server='python3 -m http.server 8080'
+alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
+alias jjb='jenkins-jobs'
+alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
+alias l='ls -F'
+alias la='ls -AF'
+alias listen_tcp='nc -vlk 0.0.0.0'
+alias listen_udp='nc -uvlk 0.0.0.0'
+alias listen_unix='nc -Uvlk'
+alias ll='ls -lha'
+alias lsblk='lsblk --output=NAME,RM,RO,SIZE,TYPE,FSTYPE,LABEL,UUID,MODEL,TRAN,MOUNTPOINT'
+alias missing-recommends="aptitude search '~RBrecommends:~i'"
+alias missing-suggests="aptitude search '~RBsuggests:~i'"
 alias monitor="monitor "
-alias sudome="sudome "
-alias presentation='docker dev adarnimrod/presentation'
 # shellcheck disable=SC1004
 alias netdata='docker run --detach \
                           --name netdata \
@@ -113,39 +115,38 @@ alias netdata='docker run --detach \
                           --security-opt apparmor=unconfined \
                           netdata/netdata'
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
-alias http-server='python3 -m http.server 8080'
-alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
-alias dd='dd status=progress'
-alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
-alias black='black --line-length 79'
-alias torrent_off='ssh kodi.shore.co.il sudo systemctl stop transmission-{rss,daemon}.service'
-alias torrent_on='ssh kodi.shore.co.il sudo systemctl start transmission-{daemon,rss}.service'
-alias bell="printf '\\a'"
-alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
-alias color='less --raw-control-chars -p'
+alias nextcloudcmd='flatpak run --command=nextcloudcmd org.nextcloud.Nextcloud'
+# shellcheck disable=SC2139
+alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
+alias obsolete='aptitude search ?obsolete'
 alias pip2='python2 -m pip'
 alias pip3='python3 -m pip'
+alias presentation='docker dev adarnimrod/presentation'
 # shellcheck disable=SC2139
 alias rc_make="make --directory $HOME --always-make"
 alias rc_update="rc_make vendored generated"
-alias gen-ssh-config="rc_make .ssh/config"
-alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
-alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
-alias jjb='jenkins-jobs'
-alias diff='diff --unified'
-alias check_tcp='nc -vzw10'
-alias check_unix='nc -Uvzw3'
-alias listen_tcp='nc -vlk 0.0.0.0'
-alias listen_udp='nc -uvlk 0.0.0.0'
-alias listen_unix='nc -Uvlk'
+alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
 # shellcheck disable=SC2032
 alias rm='rm --dir'
-alias nextcloudcmd='flatpak run --command=nextcloudcmd org.nextcloud.Nextcloud'
+alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
+alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
+alias sudo="sudo "
+alias sudome="sudome "
 alias tfa='terraform apply tfplan'
 alias tfvf='tfv && terraform fmt -diff'
-# shellcheck disable=SC2139
-alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
+alias todo="vim \$HOME/Documents/TODO.yml"
+# shellcheck disable=SC2142
+alias tolower='awk "{print tolower(\$0)}"'
+alias torrent_off='ssh kodi.shore.co.il sudo systemctl stop transmission-{rss,daemon}.service'
+alias torrent_on='ssh kodi.shore.co.il sudo systemctl start transmission-{daemon,rss}.service'
+# shellcheck disable=SC2142
+alias toupper='awk "{print toupper(\$0)}"'
+alias transmission-remote='forward kodi.shore.co.il 9091:localhost:9091 && transmission-remote'
+alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
+alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias wb="ssh -t workbench.shore.co.il 'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'"
+alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
+alias xargs="xargs "
 
 tfp () {
     workspace="$(terraform workspace show)"
