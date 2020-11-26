@@ -49,7 +49,8 @@ export PATH="$HOME/Documents/bin:$PATH"
 export PATH="$HOME/Repositories/Shore/ssh-ca:$PATH"
 export PATH="$HOME/Repositories/Shore/ssl-ca:$PATH"
 export PGSSLROOTCERT=/etc/ssl/certs/ca-certificates.crt
-export PIPENV_DEFAULT_PYTHON_VERSION="$(python3 --version | grep -i '3\.[0-9]*')" > /dev/null 2>&1
+PIPENV_DEFAULT_PYTHON_VERSION="$(python3 --version | grep -i '3\.[0-9]*')" > /dev/null 2>&1
+export PIPENV_DEFAULT_PYTHON_VERSION
 export PIPENV_MAX_DEPTH=5
 export PS1='\u@\h:\w\$ '
 export PYTHONSTARTUP=~/.config/pythonrc.py
