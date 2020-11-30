@@ -114,7 +114,7 @@ alias netdata='docker run --detach \
                           --security-opt apparmor=unconfined \
                           netdata/netdata'
 alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
-alias nextcloudcmd='flatpak run --command=nextcloudcmd org.nextcloud.Nextcloud'
+alias nextcloudcmd='flatpak run --command=nextcloudcmd com.nextcloud.desktopclient.nextcloud'
 # shellcheck disable=SC2139
 alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
 alias obsolete='aptitude search ?obsolete'
