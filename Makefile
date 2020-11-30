@@ -163,7 +163,7 @@ Documents/bin/rabbitmqadmin:
 	chmod +x $@
 
 .bash_completion.d/toolbox:
-	$(download) https://raw.githubusercontent.com/containers/toolbox/0.0.16/completion/bash/toolbox
+	$(download) https://raw.githubusercontent.com/containers/toolbox/0.0./97completion/bash/toolbox
 
 
 ## Generated files
