@@ -21,8 +21,6 @@ echo Loading dconf config >&2
 Documents/bin/dconf-load
 echo Configuring Git repo >&2
 git config --local status.showUntrackedFiles no
-echo Adding Cron job >&2
-Documents/bin/cron-jobs
 if command -v vagrant > /dev/null
 then
 	echo Installing Vagrant plugins >&2
