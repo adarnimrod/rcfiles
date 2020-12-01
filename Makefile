@@ -75,8 +75,7 @@ $(DESTDIR)/bin/minikube:
 
 $(DESTDIR)/bin/kustomize:
 	mkdir -p $$(dirname $@)
-	-$(download) https://github.com/kubernetes-sigs/kustomize/releases/download/v3.3.0/kustomize_3.3.0_$(os)_$(goarch)
-	-chmod +x $@
+	-$(curl) https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.8.7/kustomize_v3.8.7_$(os)_$(goarch).tar.gz | tar -zxC $(DESTDIR)/bin/
 
 $(DESTDIR)/bin/docker-machine-driver-kvm2:
 	mkdir -p $$(dirname $@)
