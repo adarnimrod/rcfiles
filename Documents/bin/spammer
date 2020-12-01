@@ -1,12 +1,20 @@
 #!/bin/sh
 set -eu
 
+export PATH="$HOME/Documents/bin:$PATH"
 URL='https://patchbay.pub/pubsub/1446c969-9a54-4b5b-83e0-bf88f22f289d'
 
 while true
 do
-    message="$(curl --silent "$URL")"
+    message="$(curl --silent "$URL" || true)"
     exitstatus="$?"
+    # Backoff in case of an error.
+    if [ -z "${message:-}" ] || [ "$exitstatus" -gt '0' ]
+    then
+        sleep 1
+        break
+    fi
+    logger --tag "spammer" "$message"
     if echo "$message" | grep --silent '^message='
     then
         message="$(echo "$message" | sed 's/message=//; s/+/ /g')"
@@ -14,9 +22,4 @@ do
     echo "$message" | notify \
         --urgency low \
         --hint "string:desktop-entry:spammer"
-    # Backoff in case of an error.
-    if [ "$exitstatus" -gt '0' ]
-    then
-        sleep 1
-    fi
 done
