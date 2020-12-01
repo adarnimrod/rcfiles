@@ -1,19 +1,9 @@
 #!/bin/sh
 set -eux
 cd "$(git rev-parse --show-toplevel)"
-echo Installing Golang apps >&2
-go get github.com/giantswarm/semver-bump || true
-go get github.com/nishanths/license || true
-go get github.com/jmespath/jp || true
-go get github.com/spelufo/on-change || true
-go get github.com/kaorimatz/mysqldump-loader || true
-go get github.com/lucagrulla/cw || true
-go get sigs.k8s.io/kind || true
-echo Installing Python apps >&2
-python3 -m pip install --user --requirement requirements.txt
 echo Downloading binary and vendored files, creating generated files >&2
 git clean -fX .bash_completion.d/
-make all
+make generated vendored
 echo Installing Git hooks >&2
 Documents/bin/install-git-hooks
 echo Loading dconf config >&2

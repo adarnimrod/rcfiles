@@ -200,7 +200,7 @@ Documents/bin/rabbitmqadmin:
 
 .bash_completion.d/rabbitmqadmin: Documents/bin/rabbitmqadmin
 	mkdir -p $$(dirname $@)
-	Documents/bin/rabbitmqadmin --bash-completion > $@
+	-Documents/bin/rabbitmqadmin --bash-completion > $@
 
 .ssh/localhost:
 	ssh-keygen -t ecdsa -N '' -C localhost -f $@
@@ -209,7 +209,7 @@ Documents/bin/rabbitmqadmin:
 	ssh-keygen -y -f $< > $@
 
 .ssh/authorized_keys: .ssh/localhost.pub
-	$(ansible-local) -m authorized_key -a "user=$$(whoami) key='$$(cat .ssh/localhost.pub)' key_options='from=\"127.0.0.1/8\"'"
+	-$(ansible-local) -m authorized_key -a "user=$$(whoami) key='$$(cat .ssh/localhost.pub)' key_options='from=\"127.0.0.1/8\"'"
 
 .bash_completion.d/minishift: $(DESTDIR)/bin/minishift
 	mkdir -p $$(dirname $@)
@@ -220,4 +220,4 @@ Documents/bin/rabbitmqadmin:
 	-$$(basename $@) completion bash > $@
 
 .bash_completion.d/poetry:
-	poetry completions bash > $@
+	-poetry completions bash > $@
