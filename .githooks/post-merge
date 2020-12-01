@@ -29,3 +29,9 @@ then
         vagrant plugin list | grep -qw "$plugin" || vagrant plugin install "$plugin" || true
     done
 fi
+if command -v helm > /dev/null
+then
+    echo Installing Hem plugins >&2
+    helm plugin remove diff
+    helm plugin install https://github.com/databus23/helm-diff --version master
+fi

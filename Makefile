@@ -13,7 +13,7 @@ ansible-local = ansible localhost -c local -i localhost, -e "ansible_python_inte
 all: binaries vendored generated
 vendored: .config/pythonrc.py .bash_completion.d/aws .bash_completion.d/docker-compose .bash_completion.d/docker-machine.bash .bash_completion.d/docker-machine.bash .travis/travis.sh .bash_completion.d/molecule Documents/bin/rabbitmqadmin .bash_completion.d/toolbox
 generated: .ssh/config .bash_completion.d/helm .bash_completion.d/kops .bash_completion.d/kubectl .bash_completion.d/kompose .bash_completion.d/minikube .bash_completion.d/pipenv .bash_completion.d/pandoc .bash_completion.d/skaffold .bash_completion.d/rabbitmqadmin .ssh/localhost .ssh/localhost.pub .ssh/authorized_keys .bash_completion.d/minishift .bash_completion.d/oc .bash_completion.d/poetry
-binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack $(DESTDIR)/bin/skaffold $(DESTDIR)/bin/minishift $(DESTDIR)/bin/oc $(DESTDIR)/bin/docker-machine-driver-kvm $(HELM_HOME)/plugins/helm-diff/bin/diff $(DESTDIR)/bin/gomplate $(DESTDIR)/bin/envconsul
+binaries: $(DESTDIR)/share/bfg/bfg.jar $(DESTDIR)/bin/rke $(DESTDIR)/bin/docker-machine $(DESTDIR)/bin/packer $(DESTDIR)/bin/terraform $(DESTDIR)/bin/vault $(DESTDIR)/bin/kubectl $(DESTDIR)/bin/kops $(DESTDIR)/bin/kompose $(DESTDIR)/bin/minikube $(DESTDIR)/bin/docker-machine-driver-kvm2 $(DESTDIR)/bin/kustomize $(DESTDIR)/bin/pack $(DESTDIR)/bin/skaffold $(DESTDIR)/bin/minishift $(DESTDIR)/bin/oc $(DESTDIR)/bin/docker-machine-driver-kvm $(DESTDIR)/bin/gomplate $(DESTDIR)/bin/envconsul
 
 
 ## Binary files
@@ -115,11 +115,6 @@ $(DESTDIR)/bin/docker-machine-driver-kvm:
 	mkdir -p $$(dirname $@)
 	-$(download) https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-ubuntu16.04
 	-chmod +x $@
-
-$(HELM_HOME)/plugins/helm-diff/bin/diff: $(DESTDIR)/bin/helm
-	mkdir -p $(HELM_HOME)/plugins
-	-helm plugin remove diff
-	-$(DESTDIR)/bin/helm plugin install https://github.com/databus23/helm-diff --version master
 
 $(DESTDIR)/bin/gomplate:
 	mkdir -p $$(dirname $@)
