@@ -143,7 +143,6 @@ alias toupper='awk "{print toupper(\$0)}"'
 alias transmission-remote='forward kodi.shore.co.il 9091:localhost:9091 && transmission-remote'
 alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
-alias wb="ssh -t workbench.shore.co.il 'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'"
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
 alias xargs="xargs "
 
@@ -306,6 +305,10 @@ tfv () {
 toux () {
     touch "$@"
     chmod +x "$@"
+}
+
+wb () {
+    ssh -t workbench.shore.co.il 'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'
 }
 
 yellow () {
