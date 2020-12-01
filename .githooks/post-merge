@@ -1,6 +1,5 @@
 #!/bin/sh
 set -eux
-eval "$(grep 'export HELM_HOME' .bashrc)"
 cd "$(git rev-parse --show-toplevel)"
 echo Installing Golang apps >&2
 go get github.com/giantswarm/semver-bump || true
@@ -32,6 +31,7 @@ fi
 if command -v helm > /dev/null
 then
     echo Installing Hem plugins >&2
+    eval "$(grep 'export HELM_HOME' .bashrc)"
     helm plugin remove diff
     helm plugin install https://github.com/databus23/helm-diff --version master
 fi
