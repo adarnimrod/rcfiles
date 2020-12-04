@@ -143,6 +143,7 @@ alias toupper='awk "{print toupper(\$0)}"'
 alias transmission-remote='forward kodi.shore.co.il 9091:localhost:9091 && transmission-remote'
 alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
+alias venv='python3 -m venv'
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
 alias xargs="xargs "
 
