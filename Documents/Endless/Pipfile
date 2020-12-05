@@ -25,9 +25,10 @@ psycopg2 = "*"
 google-api-python-client = "*"
 google-auth-httplib2 = "*"
 google-auth-oauthlib = "*"
+pygobject = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3"
 
 [pipenv]
 allow_prereleases = true
