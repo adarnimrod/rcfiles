@@ -141,7 +141,7 @@ $(DESTDIR)/bin/envconsul:
 
 .config/pythonrc.py:
 	mkdir -p $$(dirname $@)
-	$(download) https://raw.githubusercontent.com/lonetwin/pythonrc/master/pythonrc.py
+	$(download) https://raw.githubusercontent.com/lonetwin/pythonrc/0.8.4/pythonrc.py
 
 .travis/travis.sh:
 	mkdir -p $$(dirname $@)
