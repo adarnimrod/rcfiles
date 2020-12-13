@@ -2,5 +2,5 @@
 set -eu
 for image in $(docker images --format '{{.Repository}}:{{.Tag}}')
 do
-    docker pull "$image" || echo "Skipping..."
+    docker pull "$image" || echo "Failed to pull $image, skipping..." >&2
 done
