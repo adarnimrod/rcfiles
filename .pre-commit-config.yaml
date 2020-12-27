@@ -1,19 +1,30 @@
-# vim:ff=unix ts=2 sw=2 ai expandtab
 ---
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.4.0
     hooks:
-      - id: check-added-large-files
       - id: check-executables-have-shebangs
       - id: check-merge-conflict
       - id: check-symlinks
         exclude: >-
           myclirc|netrc|packet-cli|mycli-history|scwrc|gcloud\.json|\.envrc\.private
-      - id: detect-private-key
+      - id: check-toml
+        files: Pipfile
       - id: trailing-whitespace
 
-  - repo: https://github.com/ambv/black.git
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.25.0
+    hooks:
+      - id: yamllint
+
+  - repo: https://github.com/amperser/proselint/
+    rev: 0.10.2
+    hooks:
+      - id: proselint
+        types: [plain-text]
+        exclude: LICENSE
+
+  - repo: https://github.com/ambv/black
     rev: 20.8b1
     hooks:
       - id: black
@@ -22,19 +33,7 @@ repos:
           - |
               --line-length=79
 
-  - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.25.0
-    hooks:
-      - id: yamllint
-
-  - repo: https://github.com/amperser/proselint.git
-    rev: 0.10.2
-    hooks:
-      - id: proselint
-        types: [plain-text]
-        exclude: LICENSE
-
-  - repo: https://github.com/PyCQA/prospector.git
+  - repo: https://github.com/PyCQA/prospector
     rev: 1.3.1
     hooks:
       - id: prospector
@@ -73,7 +72,6 @@ repos:
         additional_dependencies:
           - flake8-bugbear
 
-
   - repo: https://github.com/Yelp/detect-secrets.git
     rev: v0.14.3
     hooks:
@@ -100,3 +98,8 @@ repos:
         name: Shellcheck .bashrc
         files: \.bashrc
         types: [text]
+
+  - repo: https://github.com/executablebooks/mdformat.git
+    rev: 0.5.3
+    hooks:
+      - id: mdformat
