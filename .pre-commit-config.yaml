@@ -1,8 +1,8 @@
 # vim:ff=unix ts=2 sw=2 ai expandtab
 ---
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.4.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+    rev: v3.4.0
     hooks:
       - id: check-added-large-files
       - id: check-executables-have-shebangs
@@ -12,81 +12,91 @@ repos:
           myclirc|netrc|packet-cli|mycli-history|scwrc|gcloud\.json|\.envrc\.private
       - id: detect-private-key
       - id: trailing-whitespace
-      - id: requirements-txt-fixer
-  - repo: https://git.shore.co.il/nimrod/shell-pre-commit.git
-    rev: v0.6.0
-    hooks:
-      - id: shell-lint
-        exclude: &excluded_shellscripts |-
-          \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)|\.travis/travis\.sh|toolbox
-      - id: shellcheck
-        exclude: *excluded_shellscripts
-      - id: shell-lint
-        name: shell-lint .bashrc
-        files: \.bashrc
-        types: [text]
-      - id: shellcheck
-        name: Shellcheck .bashrc
-        files: \.bashrc
-        types: [text]
-  - repo: https://github.com/adrienverge/yamllint
-    rev: v1.19.0
-    hooks:
-      - id: yamllint
-  - repo: https://github.com/amperser/proselint/
-    rev: 0.10.2
-    hooks:
-      - id: proselint
-        types: [plain-text]
-        exclude: LICENSE
-  - repo: https://github.com/ambv/black
-    rev: 19.10b0
+
+  - repo: https://github.com/ambv/black.git
+    rev: 20.8b1
     hooks:
       - id: black
         exclude: &excluded_pythonscripts pythonrc.py|rabbitmqadmin
         args:
           - |
               --line-length=79
-  - repo: https://github.com/PyCQA/prospector
-    rev: 1.1.7
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.25.0
+    hooks:
+      - id: yamllint
+
+  - repo: https://github.com/amperser/proselint.git
+    rev: 0.10.2
+    hooks:
+      - id: proselint
+        types: [plain-text]
+        exclude: LICENSE
+
+  - repo: https://github.com/PyCQA/prospector.git
+    rev: 1.3.1
     hooks:
       - id: prospector
         exclude: *excluded_pythonscripts
         args:
           - |-
-              --max-line-length=79
+            --max-line-length=79
           - |-
-              --tool=pyroma
+            --with-tool=pyroma
           - |-
-              --tool=dodgy
+            --with-tool=bandit
+          - |-
+            --without-tool=pep257
+          - |-
+            --doc-warnings
+          - |-
+            --test-warnings
+          - |-
+            --full-pep8
+          - |-
+            --strictness=high
+          - |-
+            --no-autodetect
         additional_dependencies:
+          - bandit
           - pyroma
-          - dodgy
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.7.9
+
+  - repo: https://gitlab.com/pycqa/flake8.git
+    rev: 3.8.4
     hooks:
       - id: flake8
         exclude: *excluded_pythonscripts
         args:
           - |-
-            --max-line-length=79
+            --doctests
         additional_dependencies:
           - flake8-bugbear
-  - repo: https://github.com/pre-commit/mirrors-pylint
-    rev: v2.4.4
-    hooks:
-      - id: pylint
-        exclude: *excluded_pythonscripts
-        args:
-          - |-
-            --disable=R0801
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.6.2
-    hooks:
-      - id: bandit
-        exclude: *excluded_pythonscripts
-  - repo: https://github.com/Yelp/detect-secrets
-    rev: v0.13.0
+
+
+  - repo: https://github.com/Yelp/detect-secrets.git
+    rev: v0.14.3
     hooks:
       - id: detect-secrets
         exclude: rabbitmqadmin|\.config/git/config|Pipfile\.lock
+
+  - repo: https://git.shore.co.il/nimrod/shell-pre-commit.git
+    rev: v0.6.0
+    hooks:
+      - id: shell-lint
+        exclude: &excluded_shellscripts |-
+          \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)|\.travis/travis\.sh|toolbox
+      - id: shell-lint
+        name: shell-lint .bashrc
+        files: \.bashrc
+        types: [text]
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py.git
+    rev: v0.7.1.1
+    hooks:
+      - id: shellcheck
+        exclude: *excluded_shellscripts
+      - id: shellcheck
+        name: Shellcheck .bashrc
+        files: \.bashrc
+        types: [text]
