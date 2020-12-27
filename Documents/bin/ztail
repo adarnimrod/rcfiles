@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+tail_args=''
+zcat_args=''
+while [ "$#" -gt 0 ]
+do
+    case $1 in
+        -*) tail_args="$tail_args $1" ;;
+        *) zcat_args="$zcat_args $1" ;;
+    esac
+    shift
+done
+
+# shellcheck disable=SC2086
+zcat $zcat_args | tail $tail_args

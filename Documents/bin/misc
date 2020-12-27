@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+install -d -o "$(whoami)" -g "$(whoami)" -m 700 "$HOME/Downloads/Comics/misc/"
+ssh xbmc.shore.co.il -C 'cd /srv/library/nimrod/misc/; for i in *; do if [ -d "$i" ] && [ ! -f "$i.cbz" ]; then zip -r "$i.cbz" "$i"; fi; done'
+rsync --compress --progress "xbmc.shore.co.il:/srv/library/nimrod/misc/*.cbz" "$HOME/Downloads/Comics/misc/"

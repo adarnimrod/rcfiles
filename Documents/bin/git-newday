@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+git checkout "$(git config init.defaultBranch)"
+git pull --progress --ff --tags
