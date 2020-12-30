@@ -36,6 +36,7 @@ fi
 
 case "$hostname" in
     ea6350) patchbay;;
+    ElementaryOS) patchbay;;
     host01) patchbay;;
     kodi) patchbay;;
     ns1) patchbay;;
