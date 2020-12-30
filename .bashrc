@@ -65,6 +65,8 @@ alias aptitude='aptitude --display-format %p --quiet'
 alias bell="printf '\\a'"
 alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
 alias black='black --line-length 79'
+alias blue="printf '\e[1;94m%s\e[0m\n'"
+alias bold="printf '\e[1m%s\e[0m\n'"
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
 alias cdtemp='cd $(mktemp -d)'
 alias check_tcp='nc -vzw10'
@@ -73,6 +75,7 @@ alias clean-swp="find \$HOME/ -name '*.swp' -delete"
 alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
 alias color='less --raw-control-chars -p'
 alias concat="perl -pe 's/\\n/\\\\n/g'"
+alias cyan="printf '\e[1;96m%s\e[0m\n'"
 alias dd='dd status=progress'
 alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias deconcat="perl -pe 's/\\\\n/\\n/g'"
@@ -84,6 +87,7 @@ alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
 alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
 alias gen-mac='hexdump -n5 -e '\''"02" 5/1 ":%02X" "\n"'\'' /dev/urandom'
 alias gen-ssh-config="rc_make .ssh/config"
+alias green="printf '\e[1;92m%s\e[0m\n'"
 alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
 alias http-server='python3 -m http.server 8080'
 alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
@@ -96,6 +100,7 @@ alias listen_udp='nc -uvlk 0.0.0.0'
 alias listen_unix='nc -Uvlk'
 alias ll='ls -lha'
 alias lsblk='lsblk --output=NAME,RM,RO,SIZE,TYPE,FSTYPE,LABEL,UUID,MODEL,TRAN,MOUNTPOINT'
+alias magenta="printf '\e[1;95m%s\e[0m\n'"
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
 alias missing-suggests="aptitude search '~RBsuggests:~i'"
 alias monitor="monitor "
@@ -125,6 +130,7 @@ alias presentation='docker dev adarnimrod/presentation'
 # shellcheck disable=SC2139
 alias rc_make="make --directory $HOME --always-make"
 alias rc_update="rc_make vendored generated"
+alias red="printf '\e[1;91m%s\e[0m\n'"
 alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
 # shellcheck disable=SC2032
 alias rm='rm --dir'
@@ -146,25 +152,8 @@ alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking 
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias venv='python3 -m venv'
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
+alias yellow="printf '\e[1;93m%s\e[0m\n'"
 alias xargs="xargs "
-
-blue () {
-    printf '\e[1;94m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
-
-bold () {
-    printf '\e[1m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
-
-cyan () {
-    printf '\e[1;96m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
 
 ddg () {
     w3m "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
@@ -181,12 +170,6 @@ gen_csr () {
     openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
 }
 
-green () {
-    printf '\e[1;92m' || true
-    echo "$@"
-    printf '\e[0m' || true
-}
-
 jt () {
     if command -v pygmentize > /dev/null
     then
@@ -194,12 +177,6 @@ jt () {
     else
         python3 -m json.tool "$@"
     fi
-}
-
-magenta () {
-    printf '\e[1;95m' || true
-    echo "$@"
-    printf '\e[0m' || true
 }
 
 match_ssl_pair () {
@@ -226,12 +203,6 @@ prune_ssh_sockets () {
         -type s \
         \! -name 'cm_*.sock' \
         -execdir sh -c 'lsof -t "$1" >/dev/null || rm "$1"' _ {} \;
-}
-
-red () {
-    printf '\e[1;91m' || true
-    echo "$@"
-    printf '\e[0m' || true
 }
 
 ssh_keyscan_add () {
@@ -311,12 +282,6 @@ toux () {
 
 wb () {
     ssh -t workbench.shore.co.il 'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'
-}
-
-yellow () {
-    printf '\e[1;93m' || true
-    echo "$@"
-    printf '\e[0m' || true
 }
 
 __prompt () {
