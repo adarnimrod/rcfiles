@@ -65,7 +65,7 @@ $(DESTDIR)/bin/kops:
 
 $(DESTDIR)/bin/kompose:
 	mkdir -p $$(dirname $@)
-	-$(download) https://github.com/kubernetes/kompose/releases/download/v1.19.0/kompose-$(os)-$(goarch)
+	-$(download) https://github.com/kubernetes/kompose/releases/download/v1.22.0/kompose-$(os)-$(goarch)
 	-chmod +x $@
 
 $(DESTDIR)/bin/minikube:
