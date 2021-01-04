@@ -75,6 +75,7 @@ alias clean-swp="find \$HOME/ -name '*.swp' -delete"
 alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
 alias color='less --raw-control-chars -p'
 alias concat="perl -pe 's/\\n/\\\\n/g'"
+alias cphere='cp --target-directory=./'
 alias cyan="printf '\e[1;96m%s\e[0m\n'"
 alias dd='dd status=progress'
 alias deborphan='deborphan -a --no-show-section --ignore-suggests'
