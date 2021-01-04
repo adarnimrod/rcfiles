@@ -135,6 +135,7 @@ alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --s
 # shellcheck disable=SC2032
 alias rm='rm --dir'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
+alias set_title='printf "\033]0;%s\007"'
 alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
 alias sudo="sudo "
 alias sudome="sudome "
