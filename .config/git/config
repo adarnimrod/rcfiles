@@ -14,6 +14,7 @@
     ff = merge --no-edit --ff-only master
     fixup = !cd "${GIT_PREFIX:-$PWD}" && git commit --fixup $(git last-commit)
     forget = reset HEAD^
+    iec = commit --allow-empty --only --message \"Initial empty commit.\"
     merg = merge --no-edit
     pop = stash pop
     posh = push --set-upstream origin HEAD
