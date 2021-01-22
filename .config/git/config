@@ -23,6 +23,7 @@
     pushes = !git remote | xargs -n1 git push
     remaster = !git fetch --all && git autorebase origin/master
     rerebase = !git autorebase "$(git tracking)"
+    retry = !git amend --no-edit . && git shove
     root = rev-parse --show-toplevel
     serve-git = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
     serve-http = !git update-server-info && cd .git && python -m http.server 8080
