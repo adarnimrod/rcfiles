@@ -136,7 +136,6 @@ alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --s
 # shellcheck disable=SC2032
 alias rm='rm --dir'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
-alias set_title='printf "\033]0;%s\007"'
 alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
 alias sudo="sudo "
 alias sudome="sudome "
@@ -205,6 +204,12 @@ prune_ssh_sockets () {
         -type s \
         \! -name 'cm_*.sock' \
         -execdir sh -c 'lsof -t "$1" >/dev/null || rm "$1"' _ {} \;
+}
+
+set_title () {
+    local default_title
+    default_title="$(basename "$PWD")"
+    printf "\033]0;%s\007" "${1:-$default_title}"
 }
 
 ssh_keyscan_add () {
