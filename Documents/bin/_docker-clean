@@ -1,6 +1,13 @@
 #!/bin/sh
 set -eu
 
+if [ -z "${DEBUG:-}" ]
+then
+    _xargs () { xargs "$@" 2>/dev/null; }
+else
+    _xargs () { xargs -t "$@"; }
+fi
+
 echo 'Checking for the Docker CLI.' >&2
 docker version --format '{{ .Server.Version }}' > /dev/null
 
@@ -8,19 +15,19 @@ echo 'Checking for a running Docker server.' >&2
 docker version --format '{{ .Client.Version }}' > /dev/null
 
 echo 'Removing exited containers.' >&2
-docker ps --quiet --filter=status=exited | xargs -r docker rm --volumes 2>/dev/null
+docker ps --quiet --filter=status=exited | _xargs -r docker rm --volumes
 
 echo 'Removing created but not run containers.' >&2
-docker ps --quiet --filter=status=created | xargs -r docker rm --volumes 2>/dev/null
+docker ps --quiet --filter=status=created | _xargs -r docker rm --volumes
 
 echo 'Removing dangling (unused) images.' >&2
-docker images --quiet --filter=dangling=true | xargs -r docker rmi 2>/dev/null
+docker images --quiet --filter=dangling=true | _xargs -r docker rmi
 
 echo 'Removing replaced (without a tag) images.' >&2
-docker images --no-trunc | awk '$2=="<none>"'  | xargs -r docker rmi 2>/dev/null
+docker images --no-trunc | awk '$2=="<none>" {print $3}'  | _xargs -r docker rmi
 
 echo 'Removing dangling (unused) volumes.' >&2
-docker volume ls --quiet --filter=dangling=true | xargs -r docker volume rm 2>/dev/null
+docker volume ls --quiet --filter=dangling=true | _xargs -r docker volume rm
 
 echo 'Running builtin Docker prune.' >&2
 docker system prune --force || true
