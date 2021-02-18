@@ -1,5 +1,6 @@
 [apply]
     whitespace = fix
+
 [alias]
     amend = commit --amend
     autorebase = -c 'core.editor=true' rebase -i --autosquash --autostash
@@ -37,40 +38,58 @@
     touch = "!f() { touch \"$@\" && git add -f \"$@\"; }; f"
     tracking = rev-parse --abbrev-ref --symbolic-full-name @{upstream}
     trigger = !git commit --allow-empty --no-edit --amend && git pushes --force-with-lease
+
 [color]
     grep = true
     ui = auto
+
 [core]
     whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+
 [diff]
     renames = copies
-	tool = meld
+    tool = meld
+
 [difftool]
-	prompt = false
+    prompt = false
+
 [fetch]
     fsckobjects = true
     prune = true
+
 [filter "ansible-vault"]
     clean = ANSIBLE_VERBOSITY=0 ansible-vault encrypt
     smudge = ANSIBLE_VERBOSITY=0 ansible-vault decrypt
+
 [grep]
     linenumber = true
+
 [init]
     defaultBranch = master
+
 [merge]
     tool = meld
     ff = false
+
 [push]
     followTags = true
     default = simple
+
 [rebase]
     autoSquash = true
+
 [receive]
     fsckObjects = true
+
 [tag]
     forceSignAnnotated = true
+
 [transfer]
     fsckobjects = true
+
+[url "git@github.com:"]
+	pushInsteadOf = "https://github.com/"
+
 [user]
 	name = Adar Nimrod
 	email = nimrod@shore.co.il
