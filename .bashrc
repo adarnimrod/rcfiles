@@ -105,6 +105,7 @@ alias magenta="printf '\e[1;95m%s\e[0m\n'"
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
 alias missing-suggests="aptitude search '~RBsuggests:~i'"
 alias monitor="monitor "
+alias mvhere='mv --target-directory=./'
 # shellcheck disable=SC1004
 alias netdata='docker run --detach \
                           --name netdata \
