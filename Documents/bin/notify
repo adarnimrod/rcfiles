@@ -35,13 +35,13 @@ fi
 #FIXME: Remove domain, just hostname.
 
 case "$hostname" in
-    ea6350) patchbay;;
-    ElementaryOS) patchbay;;
-    host01) patchbay;;
-    kodi) patchbay;;
-    ns1) patchbay;;
-    ns4) patchbay;;
-    workbench) patchbay;;
+    ea6350) bell;;
+    ElementaryOS) bell;;
+    host01) bell;;
+    kodi) bell;;
+    ns1) bell;;
+    ns4) bell;;
+    workbench) bell;;
     YOGA-C930) notify_send "$@";;
     *) ;;
 esac
