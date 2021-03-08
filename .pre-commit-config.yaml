@@ -83,7 +83,7 @@ repos:
     hooks:
       - id: shell-lint
         exclude: &excluded_shellscripts |-
-          \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)|\.travis/travis\.sh|toolbox
+          \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)|\.travis/travis\.sh
       - id: shell-lint
         name: shell-lint .bashrc
         files: \.bashrc
