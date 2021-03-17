@@ -196,6 +196,7 @@ Documents/bin/rabbitmqadmin:
 	-Documents/bin/rabbitmqadmin --bash-completion > $@
 
 .ssh/localhost:
+	-rm $@ $@.pub
 	ssh-keygen -t ecdsa -N '' -C localhost -f $@
 
 .ssh/localhost.pub: .ssh/localhost
