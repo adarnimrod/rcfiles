@@ -26,6 +26,7 @@ google-api-python-client = "*"
 google-auth-httplib2 = "*"
 google-auth-oauthlib = "*"
 pygobject = "*"
+botocore = "*"
 
 [requires]
 python_version = "3"
