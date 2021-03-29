@@ -47,3 +47,6 @@ dist/
 *.env
 .bundle/
 !Pipfile.lock
+.terraform
+tfplan
+*.tfstate*
