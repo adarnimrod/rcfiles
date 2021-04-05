@@ -41,7 +41,7 @@ $(DESTDIR)/bin/packer:
 
 $(DESTDIR)/bin/terraform:
 	mkdir -p $$(dirname $@)
-	$(curl) https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_$(os)_$(goarch).zip --output $(tempdir)/terraform.zip
+	$(curl) https://releases.hashicorp.com/terraform/0.14.9/terraform_0.14.9_$(os)_$(goarch).zip --output $(tempdir)/terraform.zip
 	unzip -d $(tempdir) $(tempdir)/terraform.zip
 	install -m 755 $(tempdir)/terraform $@
 	rm $(tempdir)/terraform*
