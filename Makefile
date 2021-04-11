@@ -55,7 +55,7 @@ $(DESTDIR)/bin/vault:
 
 $(DESTDIR)/bin/kubectl:
 	mkdir -p $$(dirname $@)
-	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.16.2/bin/$(os)/$(goarch)/kubectl"
+	-$(download) "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/$(os)/$(goarch)/kubectl"
 	-chmod +x $@
 
 $(DESTDIR)/bin/kops:
