@@ -37,7 +37,7 @@
     temptree = !git worktree prune && git worktree add "$(mktemp -d)"
     touch = "!f() { touch \"$@\" && git add -f \"$@\"; }; f"
     tracking = rev-parse --abbrev-ref --symbolic-full-name @{upstream}
-    trigger = !git commit --allow-empty --no-edit --amend && git pushes --force-with-lease
+    trigger = !git commit --allow-empty --no-edit --amend && git push --force-with-lease
 
 [color]
     grep = true
