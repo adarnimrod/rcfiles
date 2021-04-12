@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name[en_US]=Geary
+Comment[en_US]=flatpak run org.gnome.Geary --hidden
+Exec=flatpak run org.gnome.Geary --hidden
+Icon=org.gnome.Geary
+X-GNOME-Autostart-enabled=true
+Type=Application
