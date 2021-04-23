@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name[en_US]=Spammer
-Comment[en_US]=Spam Nimrod
-Exec=/home/nimrod/Documents/bin/spammer
-Icon=internet-chat-symbolic.svg
-X-GNOME-Autostart-enabled=true
-Type=Application
-NoDisplay=true
