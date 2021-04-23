@@ -14,9 +14,9 @@ notify_send () {
     $(command -v notify-send) "$@" "$message"
 }
 
-patchbay () {
+nextcloud () {
     message="$(cat)"
-    curl -d "$message" https://patchbay.pub/pubsub/1446c969-9a54-4b5b-83e0-bf88f22f289d
+    curl -d "$message" https://notify.shore.co.il/send
 }
 
 # Try hostname if present.
@@ -35,13 +35,13 @@ fi
 #FIXME: Remove domain, just hostname.
 
 case "$hostname" in
-    ea6350) patchbay;;
-    ElementaryOS) patchbay;;
-    host01) patchbay;;
-    kodi) patchbay;;
-    ns1) patchbay;;
-    ns4) patchbay;;
-    workbench) patchbay;;
+    ea6350) nextcloud;;
+    ElementaryOS) nextcloud;;
+    host01) nextcloud;;
+    kodi) nextcloud;;
+    ns1) nextcloud;;
+    ns4) nextcloud;;
+    workbench) nextcloud;;
     YOGA-C930) notify_send "$@";;
     *) ;;
 esac
