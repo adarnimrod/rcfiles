@@ -4,6 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+salt = "*"
+template = {extras = ["all"], version = "*"}
 
 [dev-packages]
 
