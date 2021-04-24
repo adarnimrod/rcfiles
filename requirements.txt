@@ -28,6 +28,7 @@ magic-wormhole
 mycli
 netaddr
 parse
+passhole
 passlib
 pgcli
 pipenv
