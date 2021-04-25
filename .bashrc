@@ -341,7 +341,7 @@ __command_notifier () {
     trap - debug
 }
 
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC1091
 . "$HOME/Repositories/Shore/bundle_certs/bundle_certs"
 
 
