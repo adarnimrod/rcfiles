@@ -48,5 +48,6 @@ dist/
 .bundle/
 !Pipfile.lock
 .terraform
+.terraform.*
 tfplan
 *.tfstate*
