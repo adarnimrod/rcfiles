@@ -362,7 +362,7 @@ fi
 
 if [ -n "${BASH:-}" ]
 then
-    export CDPATH=".:$HOME:$HOME/Documents:$HOME/Documents/Shore:$HOME/Repositories/Shore:$HOME/Documents/ChorusOne:$HOME/Repositories/ChorusOne"
+    export CDPATH=".:$HOME:$HOME/Documents:$HOME/Documents/Shore:$HOME/Repositories/Shore:$HOME/Documents/ChorusOne:$HOME/Repositories/ChorusOne:$HOME/Repositories/nehesr"
     # shellcheck disable=SC2016
     export PROMPT_COMMAND='__prompt'
     shopt -s checkwinsize
