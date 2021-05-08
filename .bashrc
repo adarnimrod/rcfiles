@@ -57,6 +57,8 @@ export PS1='\u@\h:\w\$ '
 export PYTHONSTARTUP=~/.config/pythonrc.py
 export REDISCLI_HISTFILE="$HOME/Documents/.rediscli_history"
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
+# shellcheck disable=SC1090,SC1091
+[ ! -f "$HOME/.bashrc.private" ] || . "$HOME/.bashrc.private"
 
 alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local -e "ansible_python_interpreter=$(which python3)"'
