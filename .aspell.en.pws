@@ -1,4 +1,4 @@
-personal_ws-1.1 en 163
+personal_ws-1.1 en 165
 cfg
 runtime
 Nginx
@@ -48,6 +48,7 @@ FreeBSD
 yaml
 bashrc
 docx
+Cron
 CRL
 JS
 Clojure
@@ -64,8 +65,8 @@ Dockerfile
 heartbleed
 symlinks
 ufw
-SQS
 TLS
+SQS
 ok
 continuesly
 DSA
@@ -94,6 +95,7 @@ odt
 OpenDocument
 quickstart
 init
+Kubernetes
 mailto
 sshd
 OpenSSH
@@ -101,8 +103,8 @@ ipaddresses
 LXC
 Dockerfiles
 AESGCM
-openssl
 OpenSSL
+openssl
 VM
 HostCertificate
 AGPL
