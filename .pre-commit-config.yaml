@@ -11,6 +11,7 @@ repos:
       - id: check-toml
         files: Pipfile
       - id: trailing-whitespace
+        exclude: \.aspell\.en\.pws
 
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.26.1
