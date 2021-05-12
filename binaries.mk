@@ -65,7 +65,7 @@ $(DESTDIR)/bin/kubectl:
 binaries: $(DESTDIR)/bin/kops
 $(DESTDIR)/bin/kops:
 	mkdir -p $$(dirname $@)
-	-$(download) "https://github.com/kubernetes/kops/releases/download/1.20.0/kops-$(os)-$(goarch)"
+	-$(download) "https://github.com/kubernetes/kops/releases/download/v1.20.0/kops-$(os)-$(goarch)"
 	-chmod +x $@
 
 binaries: $(DESTDIR)/bin/kompose
@@ -120,7 +120,7 @@ $(DESTDIR)/bin/minishift:
 binaries: $(DESTDIR)/bin/oc
 $(DESTDIR)/bin/oc:
 	mkdir -p $$(dirname $@)
-	-$(curl) https://github.com/openshift/okd/releases/download/4.7.0-0.okd-2021-04-24-103438/openshift-client-linux-4.7.0-0.okd-2021-04-24-103438.tar.gz | tar -xzC $(DESTDIR/bin oc
+	-$(curl) https://github.com/openshift/okd/releases/download/4.7.0-0.okd-2021-04-24-103438/openshift-client-linux-4.7.0-0.okd-2021-04-24-103438.tar.gz | tar -xzC $(DESTDIR)/bin oc
 
 binaries: $(DESTDIR)/bin/docker-machine-driver-kvm
 $(DESTDIR)/bin/docker-machine-driver-kvm:
