@@ -20,8 +20,8 @@ then
 fi
 if command -v helm > /dev/null
 then
-    echo Installing Hem plugins >&2
+    echo Installing Helm plugins >&2
     eval "$(grep 'export HELM_HOME' .bashrc)"
-    helm plugin remove diff
+    helm plugin list | { ! grep --silent '^diff'; } || helm plugin remove diff
     helm plugin install https://github.com/databus23/helm-diff --version master
 fi
