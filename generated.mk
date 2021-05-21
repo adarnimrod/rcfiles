@@ -68,37 +68,37 @@ generated: .bashrc.private
 .bashrc.private: Documents/Database.kdbx
 	echo "export GITLAB_TOKEN='$$(ph show --field Password 'shore.co.il/GitLab token')'" > '$@'
 
-.generated: .ssh/github_ed25519
+generated: .ssh/github_ed25519
 .ssh/github_ed25519: Documents/Database.kdbx
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
-.generated: .ssh/gitlab_fdo
+generated: .ssh/gitlab_fdo
 .ssh/gitlab_fdo: Documents/Database.kdbx
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
-.generated: .ssh/gitlab_toptal
+generated: .ssh/gitlab_toptal
 .ssh/gitlab_toptal: Documents/Database.kdbx
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
-.generated: .ssh/shore_rsa
+generated: .ssh/shore_rsa
 .ssh/shore_rsa: Documents/Database.kdbx
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
-.generated: .ssh/gitlab_ed25519
+generated: .ssh/gitlab_ed25519
 .ssh/gitlab_ed25519: Documents/Database.kdbx
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
-.generated: .ssh/shore_ecdsa
+generated: .ssh/shore_ecdsa
 .ssh/shore_ecdsa: Documents/Database.kdbx
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
-.generated: .ssh/shore_ed25519
+generated: .ssh/shore_ed25519
 .ssh/shore_ed25519: Documents/Database.kdbx
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
