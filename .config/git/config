@@ -19,6 +19,7 @@
     merg = merge --no-edit
     pop = stash pop
     posh = push --set-upstream origin HEAD
+    pre-commit = !git diff --name-only | xargs -r pre-commit run --files
     Pull = pull --progress --ff --tags
     pull-force = !git fetch && git reset --hard "$(git tracking)"
     pushes = !git remote | xargs -n1 git push
