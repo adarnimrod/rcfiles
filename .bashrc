@@ -293,7 +293,11 @@ toux () {
 }
 
 wb () {
-    ssh -t workbench.shore.co.il 'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'
+    toolbox run --container workbench -- /bin/sh -ic 'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'
+}
+
+wbr () {
+    ssh -t ns4.shore.co.il toolbox run --container workbench -- /bin/sh -ic "'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'"
 }
 
 __prompt () {
@@ -378,6 +382,22 @@ then
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
     ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
+fi
+
+if [ ! -S /var/run/docker.sock ] &&
+    [ -z "${DOCKER_HOST:-}" ] &&
+    [ -S "$XDG_RUNTIME_DIR/podman/podman.sock" ] &&
+    [ -w "$XDG_RUNTIME_DIR/podman/podman.sock" ]
+then
+    export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+fi
+
+if [ "$HOSTNAME" = 'toolbox' ]
+then
+    alias flatpak-spawn='/usr/libexec/flatpak-xdg-utils/flatpak-spawn --host'
+    [ ! -S "$XDG_RUNTIME_DIR/podman/podman.sock" ] ||
+        [ ! -w "$XDG_RUNTIME_DIR/podman/podman.sock" ] ||
+        alias podman='podman --remote'
 fi
 
 # shellcheck disable=SC2119
