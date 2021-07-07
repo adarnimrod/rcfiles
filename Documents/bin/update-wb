@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu
+
+IMAGE='registry.shore.co.il/workbench'
+CONTAINER='workbench'
+
+is_latest() {
+    podman image exists "$IMAGE" || return 1
+    toolbox run --container "$CONTAINER" true 2>/dev/null || return 1
+    current="$(podman image inspect "$IMAGE" --format '{{.Digest}}')"
+    podman image pull --quiet "$IMAGE" > /dev/null
+    new="$(podman image inspect "$IMAGE" --format '{{.Digest}}')"
+    [ "$new" = "$current" ] || return 1
+}
+
+update() {
+    toolbox rm --force "$CONTAINER" 2>/dev/null || true
+    yes | podman image prune --filter 'label=com.github.containers.toolbox=true'
+    toolbox create --image "$IMAGE"
+}
+
+if [ "$(hostname)" = 'toolbox' ]
+then
+    /usr/libexec/flatpak-xdg-utils/flatpak-spawn --host "$0" "$@"
+elif ! (is_latest)
+then
+    update
+fi

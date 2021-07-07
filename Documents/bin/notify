@@ -32,6 +32,12 @@ else
     hostname="$(sysctl -a 2>/dev/null | awk -F '=' '/^kern[a-z]*\.hostname/ {print $2}')"
 fi
 
+# Get the host' hostname in case
+if [ "$hostname" = 'toolbox' ]
+then
+    hostname="$(/usr/libexec/flatpak-xdg-utils/flatpak-spawn --host hostname)"
+fi
+
 #FIXME: Remove domain, just hostname.
 
 case "$hostname" in
@@ -41,7 +47,6 @@ case "$hostname" in
     kodi) nextcloud;;
     ns1) nextcloud;;
     ns4) nextcloud;;
-    workbench) nextcloud;;
     YOGA-C930) notify_send "$@";;
     *) ;;
 esac

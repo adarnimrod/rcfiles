@@ -66,7 +66,6 @@ alias ansible-local-playbook='ansible-playbook -i localhost, -c local -e "ansibl
 alias ansible-local='ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$(which python3)"'
 alias aptitude='aptitude --display-format %p --quiet'
 alias bell="printf '\\a'"
-alias bfg='java -jar $HOME/.local/share/bfg/bfg.jar'
 alias black='black --line-length 79'
 alias blue="printf '\e[1;94m%s\e[0m\n'"
 alias bold="printf '\e[1m%s\e[0m\n'"
@@ -92,12 +91,10 @@ alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
 alias gen-mac='hexdump -n5 -e '\''"02" 5/1 ":%02X" "\n"'\'' /dev/urandom'
 alias gen-ssh-config="rc_make .ssh/config"
 alias green="printf '\e[1;92m%s\e[0m\n'"
-alias hostlocal='docker run --rm --privileged --net=host gliderlabs/hostlocal'
+alias hostlocal='docker run --rm --privileged --net=host docker.io/gliderlabs/hostlocal'
 alias http-server='python3 -m http.server 8080'
 alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
 alias jjb='jenkins-jobs'
-alias killkeybase='pgrep --full keybase | xargs -rt kill'
-alias kpcli='kpcli --kdb ~/Documents/Database.kdbx'
 alias l='ls -F'
 alias la='ls -AF'
 alias listen_tcp='nc -vlk 0.0.0.0'
@@ -124,8 +121,13 @@ alias netdata='docker run --detach \
                           --volume /var/run/docker.sock:/var/run/docker.sock \
                           --publish 19999:19999 \
                           --security-opt apparmor=unconfined \
-                          netdata/netdata'
-alias newman='docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/etc/newman" -t postman/newman_alpine33'
+                          docker.io/netdata/netdata'
+# shellcheck disable=SC1004
+alias newman='docker run --rm \
+                         -u "$(id -u):$(id -g)" \
+                         -v "$PWD:/etc/newman" \
+                         -t \
+                         docker.io/postman/newman_alpine33'
 alias nextcloudcmd='flatpak run --command=nextcloudcmd com.nextcloud.desktopclient.nextcloud'
 # shellcheck disable=SC2139
 alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
