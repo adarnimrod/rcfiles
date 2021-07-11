@@ -388,10 +388,10 @@ fi
 
 if [ ! -S /var/run/docker.sock ] &&
     [ -z "${DOCKER_HOST:-}" ] &&
-    [ -S "$XDG_RUNTIME_DIR/podman/podman.sock" ] &&
-    [ -w "$XDG_RUNTIME_DIR/podman/podman.sock" ]
+    [ -S "/run/host/run/docker.sock" ] &&
+    [ -w "/run/host/run/docker.sock" ]
 then
-    export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+    export DOCKER_HOST="unix:///run/host/run/docker.sock"
 fi
 
 if [ "$HOSTNAME" = 'toolbox' ]
