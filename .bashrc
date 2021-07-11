@@ -4,8 +4,7 @@
 
 export ANSIBLE_CACHE_PLUGIN=jsonfile
 export ANSIBLE_CACHE_PLUGIN_CONNECTION="$HOME/.ansible/facts"
-export ANSIBLE_CALLBACK_WHITELIST="profile_tasks, timer"
-export ANSIBLE_COMMAND_WARNINGS=True
+export ANSIBLE_CALLBACKS_ENABLED="ansible.posix.profile_tasks, ansible.posix.timer"
 export ANSIBLE_DEPRECATION_WARNINGS=True
 export ANSIBLE_FORKS=5
 export ANSIBLE_GATHERING=smart
