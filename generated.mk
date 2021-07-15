@@ -121,3 +121,18 @@ generated: .ssh/localhost.pub
 generated: .ssh/authorized_keys
 .ssh/authorized_keys: .ssh/localhost.pub
 	-$(ansible-local) -m authorized_key -a "user=$$(whoami) key='$$(cat .ssh/localhost.pub)' key_options='from=\"127.0.0.1/8\"'"
+
+generated: .bash_completion.d/python-gitlab
+.bash_completion.d/python-gitlab:
+	-register-python-argcomplete gitlab > $@
+
+generated: .config/python-gitlab.cfg
+.config/python-gitlab.cfg:
+	echo '[global]' > '$@'
+	echo 'default = shore.co.il' >> '$@'
+	echo 'ssl_verify = true' >> '$@'
+	echo '' >> '$@'
+	echo '[shore.co.il]' >> '$@'
+	echo 'url = https://git.shore.co.il/' >> '$@'
+	echo "private_token = $$(ph show --field Password 'shore.co.il/GitLab token')" >> '$@'
+	echo 'api_version = 4' >> '$@'

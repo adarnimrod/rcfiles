@@ -55,6 +55,7 @@ export PIPENV_DEFAULT_PYTHON_VERSION
 export PIPENV_MAX_DEPTH=5
 export PS1='\u@\h:\w\$ '
 export PYTHONSTARTUP=~/.config/pythonrc.py
+export PYTHON_GITLAB_CFG=~/.config/python-gitlab.cfg
 export REDISCLI_HISTFILE="$HOME/Documents/.rediscli_history"
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
 # shellcheck disable=SC1090,SC1091
