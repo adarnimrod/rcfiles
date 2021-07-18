@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+
+# shellcheck disable=SC2016
+find ~/Repositories -maxdepth 5 -name .git -type d -print0 |
+    xargs --null dirname --zero |
+    xargs --null --replace /bin/sh -c 'f () { [ -z "$(git -C "$1" uncommitted)" -o -z "$(git -C "$1" remote -v)" ] || echo "$1"; }; f '\''{}'\'''
