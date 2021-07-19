@@ -42,6 +42,7 @@ dist/
 *.tar
 *.rar
 *.zip
+*.xz
 *.pid
 *.lock
 *.env
