@@ -397,6 +397,7 @@ fi
 if [ "$HOSTNAME" = 'toolbox' ]
 then
     alias flatpak-spawn='/usr/libexec/flatpak-xdg-utils/flatpak-spawn --host'
+    gio () { /usr/libexec/flatpak-xdg-utils/flatpak-spawn --host gio "$@"; }
     [ ! -S "$XDG_RUNTIME_DIR/podman/podman.sock" ] ||
         [ ! -w "$XDG_RUNTIME_DIR/podman/podman.sock" ] ||
         alias podman='podman --remote'
