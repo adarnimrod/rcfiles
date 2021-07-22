@@ -16,7 +16,7 @@ notify_send () {
 
 nextcloud () {
     message="$(cat)"
-    curl -d "$message" https://notify.shore.co.il/send
+    curl --silent -d "$message" https://notify.shore.co.il/send > /dev/null
 }
 
 # Try hostname if present.

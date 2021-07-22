@@ -339,9 +339,9 @@ __command_notifier () {
         then
             if [ "$exitstatus" -eq '0' ]
             then
-                echo "$last_command has finished." | notify
+                echo "$last_command has finished." | notify &
             else
-                echo "$last_command has failed." | notify --urgency=critical
+                echo "$last_command has failed." | notify --urgency=critical &
             fi
         fi
     fi
