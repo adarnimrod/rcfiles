@@ -137,3 +137,16 @@ generated: .config/python-gitlab.cfg
 	echo 'url = https://git.shore.co.il/' >> '$@'
 	echo "private_token = $$(ph show --field Password 'shore.co.il/GitLab token')" >> '$@'
 	echo 'api_version = 4' >> '$@'
+
+generated: .config/gem/gemrc
+.config/gem/gemrc:
+	echo '# vim: ft=yaml' > '$@'
+	echo '---' >> '$@'
+	echo ':backtrace: false' >> '$@'
+	echo ':bulk_threshold: 1000' >> '$@'
+	echo ':sources:' >> '$@'
+	echo '- https://rubygems.org/' >> '$@'
+	echo "- https://$$(ph show --field 'UserName' 'Web Sites/GitHub'):$$(ph show --field 'Smile gem token' 'Web Sites/GitHub')@rubygems.pkg.github.com/smile-io/" >> '$@'
+	echo ':update_sources: true' >> '$@'
+	echo ':verbose: true' >> '$@'
+	echo ':concurrent_downloads: 8' >> '$@'
