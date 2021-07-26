@@ -67,6 +67,7 @@ generated: .bash_completion.d/poetry
 generated: .bashrc.private
 .bashrc.private: Documents/Database.kdbx
 	echo "export GITLAB_TOKEN='$$(ph show --field Password 'shore.co.il/GitLab token')'" > '$@'
+	echo 'export GITLAB_PRIVATE_TOKEN="$$GITLAB_TOKEN"' >> '$@'
 	echo "export GITLAB_REGISTRATION_TOKEN='$$(ph show --field Password 'shore.co.il/GitLab runner registration token')'" >> '$@'
 
 generated: .ssh/github_ed25519
