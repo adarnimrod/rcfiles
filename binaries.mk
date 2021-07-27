@@ -48,6 +48,12 @@ $(DESTDIR)/bin/terraform:
 	install -m 755 $(tempdir)/terraform $@
 	rm $(tempdir)/terraform*
 
+binaries: $(DESTDIR)/bin/terragrunt
+$(DESTDIR)/bin/terragrunt:
+	mkdir -p $$(dirname $@)
+	-$(download) https://github.com/gruntwork-io/terragrunt/releases/download/v0.22.5/terragrunt_$(goos)_$(goarch)
+	-chmod +x '$@'
+
 binaries: $(DESTDIR)/bin/vault
 $(DESTDIR)/bin/vault:
 	mkdir -p $$(dirname $@)
