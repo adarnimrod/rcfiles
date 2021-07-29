@@ -2,12 +2,12 @@
 
 [![pipeline status](https://git.shore.co.il/nimrod/rcfiles/badges/master/pipeline.svg)](https://git.shore.co.il/nimrod/rcfiles/-/commits/master)
 
-A repository with my rc files. The purpose is for me to have revision
-control of my home directory, maybe send somebody a link to an example
-file and to be browsable for others (if anyone wants to copy some
-snippet). Because these are my actual files that I use right now, the
-repository is cloned directly to my home directory and is not meant for
-mass consumption as it is.
+A repository with my rc files and various scripts I have. The purpose is for me
+to have revision control of my home directory, maybe send somebody a link to an
+example file and to be browsable for others (if anyone wants to copy some
+snippet). Because these are my actual files that I use right now, the repository
+is cloned directly to my home directory and is not meant for mass consumption as
+it is.
 
 ## Installation
 
@@ -27,15 +27,12 @@ Documents/bin/install-git-hooks
 
 ## Dependencies
 
-Dependencies that can be installed locally inside the home directory, are
-installed with the Git hook using the supplied `Makefile`. Dependencies that
-can't be installed locally, can be install with the `workstation.yml` Ansible
-playbook from the
-[ansible-desktop-playbook](https://git.shore.co.il/ansible/ansible-desktop-playbooks)
-repository, please consult the README from that repository. Care has been given
-to minimizing the dependencies and making the scripts as cross-platform as
-reasonably possible, so most script would run without any installing any tools
-not found on a Unix-like OS by default.
+Care has been taken to make the scripts as portable as possible. Meaning that
+they should work out of the box on Debian, Alpine and OpenBSD. This is a
+best-effort on my part so mistake are made, feel free to send patches. The
+counterpart for this repository is the
+[workbench](https://git.shore.co.il/shore/workbench) project where I maintain a
+container image with all of the tools I use, but that is for Linux only.
 
 ## License
 

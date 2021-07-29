@@ -1,18 +1,20 @@
 #!/bin/sh
 set -eux
+
+notify () { printf '\n\e[1;94m=== %s ====\e[0m\n\n' "$1" >&2; }
+
 cd "$(git rev-parse --show-toplevel)"
-echo Downloading binary and vendored files, creating generated files >&2
-git clean -fX .bash_completion.d/
-make generated vendored
-echo Installing Git hooks >&2
+notify 'Generating some configuration and private files.'
+make
+notify 'Installing Git hooks'
 Documents/bin/install-git-hooks
-echo Loading dconf config >&2
+notify 'Loading dconf config'
 Documents/bin/dconf-load
-echo Configuring Git repo >&2
+notify 'Configuring Git repo'
 git config --local status.showUntrackedFiles no
 if command -v vagrant > /dev/null
 then
-	echo Installing Vagrant plugins >&2
+	notify 'Installing Vagrant plugins'
     for plugin in landrush vagrant-gatling-rsync vagrant-disksize
     do
         vagrant plugin list | grep -qw "$plugin" || vagrant plugin install "$plugin" || true
@@ -20,7 +22,7 @@ then
 fi
 if command -v helm > /dev/null
 then
-    echo Installing Helm plugins >&2
+    notify 'Installing Helm plugins'
     eval "$(grep 'export HELM_HOME' .bashrc)"
     helm plugin list | { ! grep --silent '^diff'; } || helm plugin remove diff
     helm plugin install https://github.com/databus23/helm-diff --version master
