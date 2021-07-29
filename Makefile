@@ -56,6 +56,18 @@ all: .ssh/shore_ed25519
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
+all: .ssh/smile_rsa
+.ssh/smile_rsa: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
+	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
+	chmod 600 '$@'
+
+all: .ssh/smile_ed25519
+.ssh/smile_ed25519: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
+	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
+	chmod 600 '$@'
+
 all: .ssh/config
 .ssh/config: $(ssh_configs)
 	mkdir -p $$(dirname $@)
