@@ -16,36 +16,43 @@ all: .bashrc.private
 
 all: .ssh/github_ed25519
 .ssh/github_ed25519: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
 all: .ssh/gitlab_fdo
 .ssh/gitlab_fdo: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
 all: .ssh/gitlab_toptal
 .ssh/gitlab_toptal: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
 all: .ssh/shore_rsa
 .ssh/shore_rsa: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
 all: .ssh/gitlab_ed25519
 .ssh/gitlab_ed25519: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
 all: .ssh/shore_ecdsa
 .ssh/shore_ecdsa: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
 all: .ssh/shore_ed25519
 .ssh/shore_ed25519: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
@@ -56,19 +63,23 @@ all: .ssh/config
 
 all: .ssh/localhost
 .ssh/localhost:
+	mkdir -p $$(dirname $@)
 	-rm $@ $@.pub
 	ssh-keygen -t ecdsa -N '' -C localhost -f $@
 
 all: .ssh/localhost.pub
 .ssh/localhost.pub: .ssh/localhost
+	mkdir -p $$(dirname $@)
 	ssh-keygen -y -f $< > $@
 
 all: .ssh/authorized_keys
 .ssh/authorized_keys: .ssh/localhost.pub
+	mkdir -p $$(dirname $@)
 	-$(ansible-local) -m authorized_key -a "user=$$(whoami) key='$$(cat .ssh/localhost.pub)' key_options='from=\"127.0.0.1/8\"'"
 
 all: .config/python-gitlab.cfg
-.config/python-gitlab.cfg:
+.config/python-gitlab.cfg: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
 	echo '[global]' > '$@'
 	echo 'default = shore.co.il' >> '$@'
 	echo 'ssl_verify = true' >> '$@'
@@ -79,7 +90,8 @@ all: .config/python-gitlab.cfg
 	echo 'api_version = 4' >> '$@'
 
 all: .config/gem/gemrc
-.config/gem/gemrc:
+.config/gem/gemrc: Documents/Database.kdbx
+	mkdir -p $$(dirname $@)
 	echo '# vim: ft=yaml' > '$@'
 	echo '---' >> '$@'
 	echo ':backtrace: false' >> '$@'
