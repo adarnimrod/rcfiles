@@ -8,7 +8,7 @@ is_latest() {
     podman image exists "$IMAGE" || return 1
     toolbox run --container "$CONTAINER" true 2>/dev/null || return 1
     current="$(podman container inspect "$CONTAINER" --format '{{ .Image }}')"
-    podman image pull --quiet "$IMAGE" > /dev/null
+    podman image pull "$IMAGE" > /dev/null
     new="$(podman image inspect "$IMAGE" --format '{{.Digest}}')"
     [ "$new" = "$current" ] || return 1
 }
