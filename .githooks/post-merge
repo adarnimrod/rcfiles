@@ -5,7 +5,7 @@ notify () { printf '\n\e[1;94m=== %s ====\e[0m\n\n' "$1" >&2; }
 
 cd "$(git rev-parse --show-toplevel)"
 notify 'Generating some configuration and private files.'
-make
+make --directory "$HOME" --always-make
 notify 'Installing Git hooks'
 Documents/bin/install-git-hooks
 notify 'Loading dconf config'
