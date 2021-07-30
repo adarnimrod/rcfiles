@@ -89,3 +89,7 @@ all: .aws/credentials
 	echo '[shore]' > '$@'
 	echo "aws_access_key_id = $$(ph show --field 'UserName' 'shore.co.il/AWS CLI')" >> '$@'
 	echo "aws_secret_access_key = $$(ph show --field 'Password' 'shore.co.il/AWS CLI')" >> '$@'
+	echo '' >> '$@'
+	echo '[smile]' > '$@'
+	echo "aws_access_key_id = $$(ph show --field 'UserName' 'Smile/AWS CLI')" >> '$@'
+	echo "aws_secret_access_key = $$(ph show --field 'Password' 'Smile/AWS CLI')" >> '$@'
