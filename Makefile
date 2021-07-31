@@ -93,3 +93,9 @@ all: .aws/credentials
 	echo '[smile]' > '$@'
 	echo "aws_access_key_id = $$(ph show --field 'UserName' 'Smile/AWS CLI')" >> '$@'
 	echo "aws_secret_access_key = $$(ph show --field 'Password' 'Smile/AWS CLI')" >> '$@'
+
+all: .gnupg/trustdb.gpg
+.gnupg/trustdb.gpg: Documents/Database.kdbx
+	ph show --field 'Notes' 'GPG/D3B913DE36AB5565DCAC91C6A322378C61339ECD' | gpg --import
+	echo 'D3B913DE36AB5565DCAC91C6A322378C61339ECD:6:' | gpg --import-ownertrust
+	chmod 600 '$@'

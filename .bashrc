@@ -20,7 +20,6 @@ export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
 export DOCKER_BUILDKIT=1
 export EDITOR=vim
 export GITLAB_BASE_URL='https://git.shore.co.il/api/v4'
-export GNUPGHOME="$HOME/Documents/.gnupg"
 export GOPATH="$HOME/.local/golang"
 export HELM_HOME="$HOME/.helm"
 export HISTCONTROL=ignoreboth:erasedups
