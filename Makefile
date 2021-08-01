@@ -83,6 +83,13 @@ all: .config/gem/gemrc
 	echo ':verbose: true' >> '$@'
 	echo ':concurrent_downloads: 8' >> '$@'
 
+all: .bundle/config
+.bundle/config: Documents/Database.kdbx
+	$(mkd)
+	echo '# vim:ft=yaml' > '$@'
+	echo '---' >> '$@'
+	echo "BUNDLE_HTTPS://RUBYGEMS__PKG__GITHUB__COM/SMILE-IO/: '$$(ph show --field 'UserName' 'Web Sites/GitHub'):$$(ph show --field 'Smile gem token' 'Web Sites/GitHub')'" >> '$@'
+
 all: .aws/credentials
 .aws/credentials: Documents/Database.kdbx
 	$(mkd)
