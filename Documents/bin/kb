@@ -1,0 +1,84 @@
+#!/bin/sh
+set -eu
+
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/keybase"
+RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user$(id -u)}/keybase"
+
+if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" ]
+then
+    # shellcheck disable=SC1091
+    . "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs"
+else
+    XDG_DOCUMENTS_DIR="$HOME/Documents"
+fi
+DOCUMENTS_DIR="$XDG_DOCUMENTS_DIR/Smile/keybase"
+
+start () {
+    mkdir -p "$CACHE_DIR"
+    mkdir -p "$RUNTIME_DIR"
+
+    if [ "$(ss -Hpx src /run/user/1000/keybase/keybased.sock)" = '' ]
+    then
+        keybase --log-file "$CACHE_DIR/keybase.service.log" \
+            service \
+            --chdir "$RUNTIME_DIR" &
+    fi
+
+    if ! mountpoint --quiet "$RUNTIME_DIR/kbfs"
+    then
+        KEYBASE_RUN_MODE=prod kbfsfuse \
+            -log-file "$CACHE_DIR/keybase.kbfs.log" \
+            -runtime-dir "$RUNTIME_DIR" &
+    fi
+}
+
+stop () {
+    if mountpoint --quiet "$RUNTIME_DIR/kbfs"
+    then
+        fusermount -uz "$RUNTIME_DIR/kbfs"
+    fi
+
+    if [ -f "$RUNTIME_DIR/keybased.pid" ]
+    then
+        kill "$(cat "$RUNTIME_DIR/keybased.pid")"
+    else
+        pkill keybase || true
+    fi
+
+    pkill kbfsfuse || true
+}
+
+sync () {
+    if ! mountpoint --quiet "$RUNTIME_DIR/kbfs"
+    then
+        start
+    fi
+    mkdir -p "$DOCUMENTS_DIR"
+    cp -rf "$RUNTIME_DIR/kbfs/"* "$DOCUMENTS_DIR/"
+    if [ ! -w "/Volumes" ]
+    then
+        echo "Skiped creating links in /Volumes/Keybase, directory not writeable." >&2
+    else
+        ln -sf "$DOCUMENTS_DIR" /Volumes/Keybase
+    fi
+    if [ ! -w "/keybase" ]
+    then
+        echo "Skiped creating links in /keybase, directory not writeable." >&2
+    else
+        find /home/nimrod/Documents/Smile/keybase/ -maxdepth 1 -mindepth 1 -exec ln -sf --target /keybase/ '{}' \;
+    fi
+}
+
+usage () {
+    echo "usage: $0 start|stop|sync" >&2
+    exit 1
+}
+
+command="${1:-}"
+
+case "$command" in
+    start) shift; start "$@";;
+    stop) shift; stop "$@";;
+    sync) shift; sync "$@";;
+    *) usage;;
+esac
