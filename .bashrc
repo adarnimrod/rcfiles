@@ -131,6 +131,7 @@ alias nextcloudcmd='flatpak run --command=nextcloudcmd com.nextcloud.desktopclie
 # shellcheck disable=SC2139
 alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
 alias obsolete='aptitude search ?obsolete'
+alias occ='docker --host=ssh://host01.shore.co.il exec -itu www-data nextcloud_nextcloud_1 ./occ'
 alias pip2='python2 -m pip'
 alias pip3='python3 -m pip'
 alias presentation='docker dev registry.shore.co.il/presentation'
