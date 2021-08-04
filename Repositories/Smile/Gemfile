@@ -1,0 +1,6 @@
+source "https://rubygems.pkg.github.com/smile-io" do
+    gem "smile-cli", "0.6.7"
+end
+
+source "https://rubygems.org" do
+end
