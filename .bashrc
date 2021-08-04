@@ -203,6 +203,24 @@ match_ssl_pair () {
     return "$exitcode"
 }
 
+new_experiment () {
+    if [ "$#" -ne 1 ]
+    then
+        echo 'Usage: new_experiment EXPERIMENT_NAME' >&2
+        return 1
+    fi
+    local name="$1"
+    local repo="$HOME/Repositories/Shore/experiments"
+    if [ ! -d "$repo/.git" ]
+    then
+        git clone git@git.shore.co.il:nimrod/experiments.git "$repo"
+    fi
+    # shellcheck disable=SC2164
+    cd "$HOME/Repositories/Shore/experiments"
+    git checkout master
+    git checkout -b "$name/master"
+}
+
 # shellcheck disable=SC2120
 prune_ssh_sockets () {
     { [ "${1:-}" != '-f' ] && [ "${1:-}" != '--force' ]; } || killall -v ssh || true
