@@ -89,7 +89,7 @@ logger -p user.debug "WiFi login HTTP code: $http_code"
 redirect_url="$(wifi-portal)" || die "Failed to get the redirect URL."
 if [ "$redirect_url" = "" ]
 then
-    logger -p user.debug "Successfuly logged in to the WiFi network."
+    logger -p user.debug "Successfully logged in to the WiFi network."
 else
     logger -p user.debug "Failed to login to the WiFi network, still redirecting to a captive portal."
 fi

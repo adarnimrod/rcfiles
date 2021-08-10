@@ -57,13 +57,13 @@ sync () {
     cp -rf "$RUNTIME_DIR/kbfs/"* "$DOCUMENTS_DIR/"
     if [ ! -w "/Volumes" ]
     then
-        echo "Skiped creating links in /Volumes/Keybase, directory not writeable." >&2
+        echo "Skipped creating links in /Volumes/Keybase, directory not writeable." >&2
     else
         ln -sf "$DOCUMENTS_DIR" /Volumes/Keybase
     fi
     if [ ! -w "/keybase" ]
     then
-        echo "Skiped creating links in /keybase, directory not writeable." >&2
+        echo "Skipped creating links in /keybase, directory not writeable." >&2
     else
         find /home/nimrod/Documents/Smile/keybase/ -maxdepth 1 -mindepth 1 -exec ln -sf --target /keybase/ '{}' \;
     fi

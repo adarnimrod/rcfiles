@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-# To install, add the folowing lines to your crontab:
+# To install, add the following lines to your crontab:
 # PATH="~/Documents/bin:/usr/local/bin:/usr/bin:/bin"
 # */5 * * * * update-voltage
 
