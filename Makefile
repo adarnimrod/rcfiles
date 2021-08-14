@@ -35,6 +35,7 @@ all: .bashrc.private
 	echo 'export GITLAB_PRIVATE_TOKEN="$$GITLAB_TOKEN"' >> '$@'
 	echo "export GITLAB_REGISTRATION_TOKEN='$$(ph show --field Password 'shore.co.il/GitLab runner registration token')'" >> '$@'
 	echo "export GITHUB_TOKEN='$$(ph show --field 'CLI token' 'Web Sites/GitHub')'" >> '$@'
+	printf "export RCLONE_CONFIG_NEXTCLOUD_PASS='%s'\n" "$$(rclone obscure "$$(ph show --field 'Password' 'shore.co.il/LDAP')")" >> '$@'
 
 all: .ssh/config
 .ssh/config: $(ssh_configs)
