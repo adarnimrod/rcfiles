@@ -231,6 +231,10 @@ prune_ssh_sockets () {
         -execdir sh -c 'lsof -t "$1" >/dev/null || rm "$1"' _ {} \;
 }
 
+rcnc () {
+    RCLONE_CONFIG_NEXTCLOUD_PASS="$(rclone obscure "$(ph show --field 'Password' 'shore.co.il/LDAP')")" rclone "$@"
+}
+
 set_title () {
     local default_title
     default_title="$(basename "$PWD")"
