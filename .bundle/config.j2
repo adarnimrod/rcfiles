@@ -1,0 +1,3 @@
+# vim:ft=yaml
+---
+BUNDLE_HTTPS://RUBYGEMS__PKG__GITHUB__COM/SMILE-IO/: '{{ run(["ph", "show", "--field", "UserName", "Web Sites/GitHub"])["stdout"] }}:{{ run(["ph", "show", "--field", "Smile gem token", "Web Sites/GitHub"])["stdout"] }}'
