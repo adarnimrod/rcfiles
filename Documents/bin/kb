@@ -70,7 +70,7 @@ sync () {
 }
 
 usage () {
-    echo "usage: $0 start|stop|sync" >&2
+    echo "usage: $(basename "$0") start|stop|sync" >&2
     exit 1
 }
 
