@@ -1,0 +1,9 @@
+# vim: ft=cfg
+[global]
+default = shore.co.il
+ssl_verify = true
+
+[shore.co.il]
+url = https://git.shore.co.il/
+private_token = {{ run(["ph", "show", "--field", "Password", "shore.co.il/GitLab token"])["stdout"] }}
+api_version = 4

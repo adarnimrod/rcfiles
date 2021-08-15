@@ -29,14 +29,6 @@ all: .config/pythonrc.py
 	$(mkd)
 	$(download) https://raw.githubusercontent.com/lonetwin/pythonrc/0.8.4/pythonrc.py
 
-all: .bashrc.private
-.bashrc.private: Documents/Database.kdbx
-	echo "export GITLAB_TOKEN='$$(ph show --field Password 'shore.co.il/GitLab token')'" > '$@'
-	echo 'export GITLAB_PRIVATE_TOKEN="$$GITLAB_TOKEN"' >> '$@'
-	echo "export GITLAB_REGISTRATION_TOKEN='$$(ph show --field Password 'shore.co.il/GitLab runner registration token')'" >> '$@'
-	echo "export GITHUB_TOKEN='$$(ph show --field 'CLI token' 'Web Sites/GitHub')'" >> '$@'
-	printf "export RCLONE_CONFIG_NEXTCLOUD_PASS='%s'\n" "$$(rclone obscure "$$(ph show --field 'Password' 'shore.co.il/LDAP')")" >> '$@'
-
 all: .ssh/config
 .ssh/config: $(ssh_configs)
 	$(mkd)
@@ -58,52 +50,33 @@ all: .ssh/authorized_keys
 	$(mkd)
 	-$(ansible-local) -m authorized_key -a "user=$$(whoami) key='$$(cat .ssh/localhost.pub)' key_options='from=\"127.0.0.1/8\"'"
 
-all: .config/python-gitlab.cfg
-.config/python-gitlab.cfg: Documents/Database.kdbx
-	$(mkd)
-	echo '[global]' > '$@'
-	echo 'default = shore.co.il' >> '$@'
-	echo 'ssl_verify = true' >> '$@'
-	echo '' >> '$@'
-	echo '[shore.co.il]' >> '$@'
-	echo 'url = https://git.shore.co.il/' >> '$@'
-	echo "private_token = $$(ph show --field Password 'shore.co.il/GitLab token')" >> '$@'
-	echo 'api_version = 4' >> '$@'
-
-all: .config/gem/gemrc
-.config/gem/gemrc: Documents/Database.kdbx
-	$(mkd)
-	echo '# vim: ft=yaml' > '$@'
-	echo '---' >> '$@'
-	echo ':backtrace: false' >> '$@'
-	echo ':bulk_threshold: 1000' >> '$@'
-	echo ':sources:' >> '$@'
-	echo '- https://rubygems.org/' >> '$@'
-	echo "- https://$$(ph show --field 'UserName' 'Web Sites/GitHub'):$$(ph show --field 'Smile gem token' 'Web Sites/GitHub')@rubygems.pkg.github.com/smile-io/" >> '$@'
-	echo ':update_sources: true' >> '$@'
-	echo ':verbose: true' >> '$@'
-	echo ':concurrent_downloads: 8' >> '$@'
-
-all: .bundle/config
-.bundle/config: Documents/Database.kdbx
-	$(mkd)
-	echo '# vim:ft=yaml' > '$@'
-	echo '---' >> '$@'
-	echo "BUNDLE_HTTPS://RUBYGEMS__PKG__GITHUB__COM/SMILE-IO/: '$$(ph show --field 'UserName' 'Web Sites/GitHub'):$$(ph show --field 'Smile gem token' 'Web Sites/GitHub')'" >> '$@'
-
-all: .aws/credentials
-.aws/credentials: Documents/Database.kdbx
-	$(mkd)
-	echo '[shore]' > '$@'
-	echo "aws_access_key_id = $$(ph show --field 'UserName' 'shore.co.il/AWS CLI')" >> '$@'
-	echo "aws_secret_access_key = $$(ph show --field 'Password' 'shore.co.il/AWS CLI')" >> '$@'
-	echo '' >> '$@'
-	echo '[smile]' > '$@'
-	echo "aws_access_key_id = $$(ph show --field 'UserName' 'Smile/AWS CLI')" >> '$@'
-	echo "aws_secret_access_key = $$(ph show --field 'Password' 'Smile/AWS CLI')" >> '$@'
-
 all: .gnupg/trustdb.gpg
 .gnupg/trustdb.gpg: Documents/Database.kdbx
 	ph show --field 'Notes' 'GPG/D3B913DE36AB5565DCAC91C6A322378C61339ECD' | gpg --import
 	echo 'D3B913DE36AB5565DCAC91C6A322378C61339ECD:6:' | gpg --import-ownertrust
 	chmod 600 '$@'
+
+all: .bashrc.private
+.bashrc.private: .bashrc.private.j2 Documents/Database.kdbx
+	$(mkd)
+	template '$<' > '$@'
+
+all: .config/python-gitlab.cfg
+.config/python-gitlab.cfg: .config/python-gitlab.cfg.j2 Documents/Database.kdbx
+	$(mkd)
+	template '$<' > '$@'
+
+all: .config/gem/gemrc
+.config/gem/gemrc: .config/gem/gemrc.j2 Documents/Database.kdbx
+	$(mkd)
+	template '$<' > '$@'
+
+all: .bundle/config
+.bundle/config: .bundle/config.j2 Documents/Database.kdbx
+	$(mkd)
+	template '$<' > '$@'
+
+all: .aws/credentials
+.aws/credentials: .aws/credentials.j2 Documents/Database.kdbx
+	$(mkd)
+	template '$<' > '$@'
