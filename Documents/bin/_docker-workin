@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+
+exec docker run --rm -it -v "$PWD:/volume" -w /volume -u "$(id -u):$(id -g)" "$@"
