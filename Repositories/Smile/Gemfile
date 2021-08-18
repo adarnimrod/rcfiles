@@ -2,5 +2,5 @@ source "https://rubygems.org"
 gem 'bundler'
 
 source "https://rubygems.pkg.github.com/smile-io" do
-    gem "smile-cli", "0.6.7"
+    gem "smile-cli", "0.6.8"
 end
