@@ -23,7 +23,7 @@ update() {
 if [ "$(hostname)" = 'toolbox' ]
 then
     /usr/libexec/flatpak-xdg-utils/flatpak-spawn --host "$0" "$@"
-elif [ "$1" = "-d" ] || [ "$1" = "--dry-run" ] || [ -n "${DRY_RUN:-}" ]
+elif [ "${1:-}" = "-d" ] || [ "${1:-}" = "--dry-run" ] || [ -n "${DRY_RUN:-}" ]
 then
     podman image pull "$IMAGE" > /dev/null
 elif ! (is_latest)
