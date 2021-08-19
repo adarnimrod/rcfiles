@@ -146,8 +146,10 @@ alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -d
 alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
 alias sudo="sudo "
 alias sudome="sudome "
-alias tfa='terraform apply tfplan'
-alias tfvf='tfv && terraform fmt -diff'
+alias tfa='tf apply tfplan'
+alias tfaa='tf apply -auto-approve'
+alias tfp='tf plan -out tfplan'
+alias tfvf='tf validate && tf fmt -diff'
 alias todo="vim \$HOME/Documents/TODO.yml"
 # shellcheck disable=SC2142
 alias tolower='awk "{print tolower(\$0)}"'
@@ -256,56 +258,6 @@ sync_podcasts () (
     cd || exit 1
     unison podcasts
 )
-
-tfaa () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform apply -auto-approve "$@"
-    else
-        terraform apply -auto-approve -var-file "$workspace.tfvars" "$@"
-    fi
-}
-
-tfi () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform import "$@"
-    else
-        terraform import -var-file "$workspace.tfvars" "$@"
-    fi
-}
-
-tfp () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform plan -out tfplan "$@"
-    else
-        terraform plan -out tfplan -var-file "$workspace.tfvars" "$@"
-    fi
-}
-
-tfr () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform refresh "$@"
-    else
-        terraform refresh -var-file "$workspace.tfvars" "$@"
-    fi
-}
-
-tfv () {
-    workspace="$(terraform workspace show)"
-    if [ "$workspace" = "default" ] || [ ! -f "$workspace.tfvars" ]
-    then
-        terraform validate "$@"
-    else
-        terraform validate -var-file "$workspace.tfvars" "$@"
-    fi
-}
 
 toux () {
     touch "$@"

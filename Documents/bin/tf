@@ -1,0 +1,21 @@
+#!/bin/sh
+set -eu
+
+# A wrapper for Terraform to include a variables file is one exists that matches
+# the workspace name (on commands that support that).
+
+workspace="$(terraform workspace show)"
+if [ ! -f "$workspace.tfvars" ]
+then
+    exec terraform "$@"
+fi
+
+for arg in "$@"
+do
+    if [ "$arg" = "plan" ] || [ "$arg" = "console" ] || [ "$arg" = "import" ] ||
+        [ "$arg" = "refresh" ]
+    then
+        exec terraform "$@" "-var-file=$workspace.tfvars"
+    fi
+done
+exec terraform "$@"
