@@ -265,11 +265,11 @@ toux () {
 }
 
 wb () {
-    toolbox run --container workbench -- /bin/sh -ic 'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'
+    toolbox run --container workbench -- tmux -L workbench new-session -As workbench
 }
 
 wbr () {
-    ssh -t ns4.shore.co.il toolbox run --container workbench -- /bin/sh -ic "'if tmux ls >/dev/null 2>&1; then tmux a; else tmux; fi;'"
+    ssh -t ns4.shore.co.il toolbox run --container workbench -- tmux -L workbench new-session -As workbench
 }
 
 __prompt () {
