@@ -6,8 +6,8 @@ mkd = mkdir -p $$(dirname $@)
 
 .PHONY: all
 all: .ssh/gitlab_ed25519
-all: .ssh/gitlab_fdo
-all: .ssh/gitlab_toptal
+all: .ssh/gitlab_fdo_ed25519
+all: .ssh/gitlab_toptal_ed25519
 all: .ssh/github_ed25519
 all: .ssh/shore_ecdsa
 all: .ssh/shore_ed25519
@@ -15,14 +15,15 @@ all: .ssh/shore_rsa
 all: .ssh/smile_ed25519
 all: .ssh/smile_rsa
 
-.ssh/%: Documents/Database.kdbx
+.ssh/%_rsa: Documents/Database.kdbx
 	$(mkd)
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
-# Disable the implicit rule above so that other files under .ssh/ will be
-# created using an explicit rule.
-.ssh/%: Documents/Database.kdbx
+.ssh/%_ed25519: Documents/Database.kdbx
+	$(mkd)
+	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
+	chmod 600 '$@'
 
 all: .config/pythonrc.py
 .config/pythonrc.py:
