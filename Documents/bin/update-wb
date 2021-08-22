@@ -14,13 +14,13 @@ is_latest() {
 }
 
 update() {
-    if [ -S "/tmp/tmux-$(id -u)/workbench" ]
+    if [ -S "/tmp/tmux-$(id -u)/workbench" ] && pgrep tmux >/dev/null
     then
         toolbox run --container workbench -- tmux -L workbench kill-server
     fi
     toolbox rm --force "$CONTAINER" 2>/dev/null || true
     podman image prune --filter 'label=com.github.containers.toolbox=true' --force
-    toolbox create --image "$IMAGE"
+    yes | toolbox create --image "$IMAGE"
 }
 
 if [ "$(hostname)" = 'toolbox' ]
