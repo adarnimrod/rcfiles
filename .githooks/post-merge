@@ -12,7 +12,7 @@ notify 'Loading dconf config'
 Documents/bin/dconf-load
 notify 'Configuring Git repo'
 git config --local status.showUntrackedFiles no
-if command -v vagrant > /dev/null
+if command -pv vagrant > /dev/null
 then
 	notify 'Installing Vagrant plugins'
     for plugin in landrush vagrant-gatling-rsync vagrant-disksize
