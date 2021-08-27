@@ -259,6 +259,13 @@ sync_podcasts () (
     unison podcasts
 )
 
+temp_venv () {
+    cdtemp
+    venv .
+    # shellcheck disable=SC1090,SC1091
+    . bin/activate
+}
+
 toux () {
     touch "$@"
     chmod +x "$@"
