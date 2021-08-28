@@ -14,10 +14,13 @@ import pathlib
 import sys
 import os
 import os.path
-import re
-import gitlab  # pylint: disable=import-error
 import sh  # pylint: disable=import-error
 from sh.contrib import git  # pylint: disable=import-error
+
+sys.path.append(os.path.expanduser("~/Documents/bin"))
+
+import rcfiles.git  # noqa: E402 pylint: disable=wrong-import-position
+import rcfiles.gitlab  # noqa: E402 pylint: disable=wrong-import-position
 
 
 def namespace_path(namespace):
@@ -35,92 +38,55 @@ def namespace_path(namespace):
     return path
 
 
-def name_to_path(name):
-    """Converts a name to valid path in GitLab."""
-    return re.sub("[^a-zA-Z0-9_-]", "-", name).lower()
-
-
-def get_group(lab, name):
-    """Returns a GitLab group object.
-
-    If a group with that name already exists, return that. Otherwise create a
-    new group and return that instead.
-    """
-    for i in lab.groups.list():
-        if i.name == name:
-            print(
-                "Using existing group id: {}, name: {}, path: {}.".format(
-                    i.id, i.name, i.path
-                ),
-                file=sys.stderr,
-            )
-            return i
-    new_group = lab.groups.create(
-        {
-            "name": name,
-            "path": name_to_path(name),
-            "visivility": "internal",
-        }
-    )
-    print(
-        "Created new group id: {}, name: {}, path: {}.".format(
-            new_group.id, new_group.name, new_group.path
-        ),
-        file=sys.stderr,
-    )
-    return group
-
-
-def get_project(group, name):  # pylint: disable=redefined-outer-name
-    """Returns a GitLab project.
-
-    If a project with that name already exists, return that. Otherwise create a
-    new project and return that instead.
-    """
-    for i in group.projects.list():
-        if i.name == name:
-            print(
-                "Using existing project id: {}, name: {}, path: {}.".format(
-                    i.id, i.name, i.path
-                ),
-                file=sys.stderr,
-            )
-            return i
-    new_project = group.projects.gitlab.projects.create(
-        {"name": name, "namespace_id": group.id}
-    )
-    print(
-        "Created new project id: {}, name: {}, path: {}.".format(
-            new_project.id, new_project.name, new_project.path
-        ),
-        file=sys.stderr,
-    )
-    return project
-
-
-def is_git_repo(path):
-    """Returns a boolean if the path is a Git repo."""
-    return path.is_dir() and pathlib.Path(path, ".git").is_dir()
-
-
 def list_repositories(namespace):
     """Returns a list of paths under the namespace that are Git
     repositories."""
-    return [x for x in namespace.iterdir() if is_git_repo(x)]
+    return [x for x in namespace.iterdir() if rcfiles.git.is_repo(x)]
 
-
-TOKEN = os.environ["GITLAB_PRIVATE_TOKEN"]
-URL = os.environ["GITLAB_BASE_URL"].removesuffix("api/v4")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("namespace", type=namespace_path)
     args = parser.parse_args()
 
-    with gitlab.Gitlab(url=URL, private_token=TOKEN) as Lab:
-        group = get_group(Lab, args.namespace.name)
+    with rcfiles.gitlab.connect() as conn:
+        group = rcfiles.gitlab.get_group(conn, args.namespace.name)
+        if group is None:
+            group = rcfiles.gitlab.create_group(
+                conn, args.namespace.name, visibility="internal"
+            )
+            print(
+                "Created new group id: {}, name: {}, path: {}.".format(
+                    group.id, group.name, group.path
+                ),
+                file=sys.stderr,
+            )
+        else:
+            print(
+                "Using existing group id: {}, name: {}, path: {}.".format(
+                    group.id, group.name, group.path
+                ),
+                file=sys.stderr,
+            )
         for repo in list_repositories(args.namespace):
-            project = get_project(group, repo.name)
+            project = rcfiles.gitlab.get_project(conn, group.name, repo.name)
+            if project is None:
+                project = rcfiles.gitlab.create_project(
+                    conn, repo.name, group.name
+                )
+                print(
+                    "Created new project id: {}, name: {}, path: {}.".format(
+                        project.id, project.name, project.path
+                    ),
+                    file=sys.stderr,
+                )
+            else:
+                print(
+                    "Using existing project id: {}, name: {}, path: {}.".format(  # noqa: E501
+                        project.id, project.name, project.path
+                    ),
+                    file=sys.stderr,
+                )
             with sh.pushd(repo):
                 if "shore.co.il" in git.remote().splitlines():
                     print(
