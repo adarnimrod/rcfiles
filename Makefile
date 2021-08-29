@@ -81,3 +81,8 @@ all: .aws/credentials
 .aws/credentials: .aws/credentials.j2 Documents/Database.kdbx
 	$(mkd)
 	template '$<' > '$@'
+
+all: .netrc
+.netrc: .netrc.j2 Documents/Database.kdbx
+	$(mkd)
+	template '$<' > '$@'

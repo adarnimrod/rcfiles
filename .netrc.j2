@@ -1,0 +1,8 @@
+
+machine api.heroku.com
+  login {{ run(["ph", "show", "--field", "UserName", "Smile/Heroku"])["stdout"] }}
+  password {{ run(["ph", "show", "--field", "netrc", "Smile/Heroku"])["stdout"] }}
+
+machine git.heroku.com
+  login {{ run(["ph", "show", "--field", "UserName", "Smile/Heroku"])["stdout"] }}
+  password {{ run(["ph", "show", "--field", "netrc", "Smile/Heroku"])["stdout"] }}
