@@ -20,8 +20,7 @@ git remote add origin https://git.shore.co.il/nimrod/rcfiles.git/
 git fetch
 git reset --hard origin/master
 git branch --set-upstream-to=origin/master
-git bull
-Documents/bin/install-git-hooks
+Documents/bin/download-password-db
 .githooks/post-merge
 ```
 
