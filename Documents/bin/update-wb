@@ -5,8 +5,12 @@ IMAGE='registry.shore.co.il/workbench'
 CONTAINER='workbench'
 
 is_latest() {
-    podman image exists "$IMAGE" || return 1
-    toolbox run --container "$CONTAINER" true 2>/dev/null || return 1
+    if ! podman image exists "$IMAGE" ||
+        ! toolbox run --container "$CONTAINER" true 2>/dev/null
+    then
+        podman image pull "$IMAGE" || exit 1
+        return 1
+    fi
     current="$(podman container inspect "$CONTAINER" --format '{{ .Image }}')"
     podman image pull "$IMAGE" > /dev/null
     new="$(podman image inspect "$IMAGE" --format '{{.Digest}}')"
