@@ -166,6 +166,13 @@ alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /
 alias yellow="printf '\e[1;93m%s\e[0m\n'"
 alias xargs="xargs "
 
+ansible_all () {
+    pushd ~/Repositories/Shore/homelab || return
+    ansible all "$@"
+    # shellcheck disable=SC2164
+    popd
+}
+
 ddg () {
     w3m "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
 }
