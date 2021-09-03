@@ -61,6 +61,7 @@ export VAGRANT_DEFAULT_PROVIDER="virtualbox"
 [ ! -f "$HOME/.bashrc.private" ] || . "$HOME/.bashrc.private"
 
 alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
+alias all-hosts='echo -n ea6350 ns1 ns4 host01 kodi | xargs -d " " -I HOST ssh HOST.shore.co.il'
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local -e "ansible_python_interpreter=$(which python3)"'
 alias ansible-local='ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$(which python3)"'
 alias aptitude='aptitude --display-format %p --quiet'
