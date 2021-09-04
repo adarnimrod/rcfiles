@@ -77,3 +77,9 @@ def create_project(conn, name, group=None, description=None, visibility=None):
     if visibility is not None:
         data["visibility"] = visibility
     return conn.projects.create(data)
+
+
+def read_only_project(conn, group, name):
+    """Make a GitLab project read-only."""
+    project = get_project(conn, group, name)
+    project.archive()
