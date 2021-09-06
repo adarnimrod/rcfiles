@@ -2,7 +2,34 @@
 
 import os
 import re
-import gitlab  # pylint: disable=import-error
+import gitlab  # pylint: disable=import-error,useless-suppression
+import gitlab.exceptions  # pylint: disable=import-error
+from . import git
+
+
+def http_url(conn):
+    """Return the HTTP url to the GitLab instance."""
+    return conn.get_url()
+
+
+def ssh_url(conn):
+    """Return the SSH url to the GitLab instance."""
+    return f'git@{http_url(conn).removeprefix("https://").removesuffix("/")}:'
+
+
+def url_to_name(conn, url):
+    """Get the full name from the GitLab URL."""
+    return (
+        url.removeprefix(http_url(conn))
+        .removeprefix(ssh_url(conn.git))
+        .removesuffix("/")
+        .removesuffix(".git")
+    )
+
+
+def is_gitlab_url(conn, url):
+    """Return is the URL for a GitLab repository."""
+    return url.startswith(http_url(conn)) or url.startswith(ssh_url(conn))
 
 
 def name_to_path(name):
@@ -17,11 +44,38 @@ def get_url():
     ).removesuffix("api/v4")
 
 
+def get_remotes(conn):
+    """Returns a list of all the GitLab remotes.
+
+    Very similar to the get_all_remotes function from the general git module,
+    but just the GitLab remotes and a bit more information.
+    """
+    remotes = git.get_all_remotes()
+    if remotes is None:
+        return None
+
+    gl_remotes = {
+        name: remote
+        for name, remote in remotes.items()
+        if is_gitlab_url(conn, remote["url"])
+    }
+    for name, remote in gl_remotes.items():
+        try:
+            gl_remotes[name]["project"] = conn.projects.get(
+                url_to_name(conn, remote["url"])
+            )
+        except gitlab.exceptions.GitlabGetError:
+            pass
+
+    return gl_remotes
+
+
 def connect():
     """Return the GitLab object."""
     try:
         token = os.environ["GITLAB_TOKEN"]
     except KeyError:
+        # pylint: disable-next=raise-missing-from
         raise Exception("GITLAB_TOKEN environment variable not set.")
     url = get_url()
     conn = gitlab.Gitlab(url=url, private_token=token)
@@ -29,57 +83,21 @@ def connect():
     return conn
 
 
-def get_group(conn, name):
-    """Return the GitLab group object with the given name."""
-    for group in conn.groups.list(all=True):
-        if group.name == name:
-            return group
-    return None
+# pylint: disable=invalid-name
+def me(conn):
+    """Return my GitLab account name."""
+    return conn.user.username
 
 
-def create_group(conn, name, visibility=None, description=None):
-    """Create a new GitLab group and return that object."""
-    data = {
-        "name": name,
-        "path": name_to_path(name),
-        "visibility": "public" if visibility is None else visibility,
-    }
-    if description is not None:
-        data["description"] = description
-    return conn.groups.create(data)
-
-
-def get_project(conn, group, name):
-    """Returns a GitLab project."""
-    # pylint: disable=invalid-name
-    g = get_group(conn, group)
-    if g is None:
-        return None
-    for p in g.projects.list(all=True):
-        if p.name == name:
-            return p
-    return None
-
-
-def create_project(conn, name, group=None, description=None, visibility=None):
-    """Create a new GitLab project and return that object."""
-    # pylint: disable=invalid-name
-    data = {
-        "name": name,
-    }
-    if group is not None:
-        g = get_group(conn, group)
-        if g is None:
-            return None
-        data["namespace_id"] = g.id
-    if description is not None:
-        data["description"] = description
-    if visibility is not None:
-        data["visibility"] = visibility
-    return conn.projects.create(data)
-
-
-def read_only_project(conn, group, name):
-    """Make a GitLab project read-only."""
-    project = get_project(conn, group, name)
-    project.archive()
+def empty_commit(project):
+    """Commit an empty commit."""
+    return project.commit.create(
+        {
+            "id": project.id,
+            "branch": project.default_branch,
+            "commit_message": "Initial empty commit.",
+            "actions": [],
+            "author_email": git.author_email(),
+            "author_name": git.author_name(),
+        }
+    )

@@ -14,6 +14,7 @@ import pathlib
 import sys
 import os
 import os.path
+import gitlab.exception  # pylint: disable=import-error
 import sh  # pylint: disable=import-error
 from sh.contrib import git  # pylint: disable=import-error
 
@@ -50,10 +51,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     with rcfiles.gitlab.connect() as conn:
-        group = rcfiles.gitlab.get_group(conn, args.namespace.name)
-        if group is None:
-            group = rcfiles.gitlab.create_group(
-                conn, args.namespace.name, visibility="internal"
+        try:
+            group = conn.groups.get(args.namespace.name)
+            print(
+                "Using existing group id: {}, name: {}, path: {}.".format(
+                    group.id, group.name, group.path
+                ),
+                file=sys.stderr,
+            )
+        except gitlab.exceptions.GitlabGetError:
+            group = conn.groups.create(
+                {
+                    "name": args.namespace.name,
+                    "path": rcfiles.gitlab.name_to_path(args.namespace.name),
+                    "visibility": "internal",
+                }
             )
             print(
                 "Created new group id: {}, name: {}, path: {}.".format(
@@ -61,28 +73,23 @@ if __name__ == "__main__":
                 ),
                 file=sys.stderr,
             )
-        else:
-            print(
-                "Using existing group id: {}, name: {}, path: {}.".format(
-                    group.id, group.name, group.path
-                ),
-                file=sys.stderr,
-            )
         for repo in list_repositories(args.namespace):
-            project = rcfiles.gitlab.get_project(conn, group.name, repo.name)
-            if project is None:
-                project = rcfiles.gitlab.create_project(
-                    conn, repo.name, group.name
+            try:
+                project = conn.projects.get_project(
+                    f"{group.path}/{repo.name}"
                 )
                 print(
-                    "Created new project id: {}, name: {}, path: {}.".format(
+                    "Using existing project id: {}, name: {}, path: {}.".format(  # noqa: E501
                         project.id, project.name, project.path
                     ),
                     file=sys.stderr,
                 )
-            else:
+            except gitlab.exceptions.GitlabGetError:
+                project = conn.projects.create(
+                    {"name": repo.name, "namespace_id": group.id}
+                )
                 print(
-                    "Using existing project id: {}, name: {}, path: {}.".format(  # noqa: E501
+                    "Created new project id: {}, name: {}, path: {}.".format(
                         project.id, project.name, project.path
                     ),
                     file=sys.stderr,

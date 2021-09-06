@@ -3,8 +3,8 @@
 import configparser
 import os.path
 import pathlib
+import sh  # pylint: disable=import-error
 from sh.contrib import git  # pylint: disable=import-error
-from . import gitlab
 
 
 def is_repo(path):
@@ -23,22 +23,13 @@ def in_repo():
     return is_repo(".")
 
 
-def get_remotes():
+def get_all_remotes():
     """Return a dictionary of remotes and their URL.
-    Also, deduce the remote type ("gitlab", "github" or None if couldn't figure
-    it out) and get the namespace and repository name.
 
     If not in a Git repository, return None.
     """
     if not in_repo:
         return None
-
-    gitlab_http_url = gitlab.get_url()
-    gitlab_ssh_url = (
-        f'git@{gitlab_http_url.removeprefix("https://").removesuffix("/")}:'
-    )
-    github_http_url = "https://github.com/"
-    github_ssh_url = "git@github.com:"
 
     config = configparser.ConfigParser()
     config.read(".git/config")
@@ -52,40 +43,24 @@ def get_remotes():
         if x.startswith("remote ")
     }
 
-    for name, remote in remotes.items():
-        if remote["url"].startswith(gitlab_http_url) or remote[
-            "url"
-        ].startswith(gitlab_ssh_url):
-            remotes[name]["type"] = "gitlab"
-            parts = (
-                remote["url"]
-                .removeprefix(gitlab_http_url)
-                .removeprefix(gitlab_ssh_url)
-                .removesuffix(".git")
-                .split("/")
-            )
-            if len(parts) == 2:
-                remotes[name]["namespace"] = parts[0]
-                remotes[name]["name"] = parts[1]
-        elif remote["url"].startswith(github_http_url) or remote[
-            "url"
-        ].startswith(github_ssh_url):
-            remotes[name]["type"] = "github"
-            parts = (
-                remote["url"]
-                .removeprefix(github_http_url)
-                .removeprefix(github_ssh_url)
-                .removesuffix(".git")
-                .split("/")
-            )
-            if len(parts) == 2:
-                remotes[name]["name"] = parts[1]
-        else:
-            remotes[remote]["type"] = None
-
     return remotes
 
 
-def add_remote(name, url):
+def add_remote(repo, name, url):
     """Add a remote to the Git repository."""
-    git.remote("add", name, url)
+    with sh.pushd(repo):
+        git.remote("add", name, url)
+
+
+def author_name():
+    """Get the author name."""
+    if "GIT_AUTHOR_NAME" in os.environ:
+        return os.environ["GIT_AUTHOR_NAME"]
+    return git.config("--get", "user.name")
+
+
+def author_email():
+    """Get the author email."""
+    if "GIT_AUTHOR_EMAil" in os.environ:
+        return os.environ["GIT_AUTHOR_EMAIL"]
+    return git.config("--get", "user.email")

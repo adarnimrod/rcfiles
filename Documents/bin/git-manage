@@ -6,31 +6,227 @@ import argparse
 import os
 import os.path
 import sys
+import github3.exceptions  # pylint: disable=import-error
+import gitlab.exceptions  # pylint: disable=import-error
+import passhole.passhole  # pylint: disable=import-error
 
 sys.path.append(os.path.expanduser("~/Documents/bin"))
 
-# import rcfiles.git  # noqa: E402 pylint: disable=wrong-import-position
-# import rcfiles.github  # noqa: E402 pylint: disable=wrong-import-position
-# import rcfiles.gitlab  # noqa: E402 pylint: disable=wrong-import-position
+import rcfiles.git  # noqa: E402 pylint: disable=wrong-import-position
+import rcfiles.github  # noqa: E402 pylint: disable=wrong-import-position
+import rcfiles.gitlab  # noqa: E402 pylint: disable=wrong-import-position
+
+
+GH_MIRROR_PREFIX = "https://*****@github.com"
+
+
+def github_mirrors(project, gh_conn):
+    """Return a list of GitHub repositories that are mirrored from GitLab."""
+    repos = []
+    for mirror in project.remote_mirrors.list(all=True):
+        if mirror.url.startswith(GH_MIRROR_PREFIX):
+            name, owner = (
+                mirror.url.removeprefix(GH_MIRROR_PREFIX)
+                .removesuffix("/")
+                .removesuffix(".git")
+                .split("/")
+            )
+            try:
+                repos.append(gh_conn.repository(name, owner))
+            except github3.exceptions.NotFoundError:
+                pass
+    return repos
+
+
+def mirror_project(project, gh_conn, token):
+    """Mirror a project to GitHub."""
+    gh_me = rcfiles.github.me(gh_conn)
+    mirror_url = f"https://{token}@github.com/{gh_me}/{project.name}.git"
+
+    try:
+        gh_repo = gh_conn.repository(project.name, gh_me)
+    except github3.exceptions.NotFoundError:
+        gh_repo = gh_conn.create_repository(project.name)
+
+    gh_repo.edit(
+        project.name,
+        homepage=project.web_url,
+        description=f"Mirror of {project.web_url}",
+        has_issues=False,
+        has_wiki=False,
+        default_branch=project.default_branch,
+        has_projects=False,
+    )
+
+    for mirror in project.remote_mirrors.list(all=True):
+        if mirror.url.startswith(f"{GH_MIRROR_PREFIX}/{gh_me}/{project.name}"):
+            mirror.url = mirror_url
+            break
+    else:
+        mirror = project.remote_mirrors.create({"url": mirror_url})
+
+    mirror.enabled = True
+    mirror.only_protected_branches = False
+    mirror.keep_divergent_refs = False
+    mirror.save()
+
+    return gh_repo
+
+
+def get_mirror_token():
+    """Get the GitHub token for mirroring a GitLab repository.
+
+    Reads it from a Keepass password database using Passhole.
+    """
+    ENTRY_PATH = "Web Sites/GitHub".split("/")  # noqa
+    TOKEN_FIELD = "GitLab mirroring token"  # noqa nosec
+
+    # The following line requires an interactive session for getting the
+    # password.
+    db = passhole.passhole.open_database()
+    entry = db.find_entries(path=ENTRY_PATH, first=True)
+    return passhole.passhole.get_field(entry, TOKEN_FIELD)
+
+
+def guess_remote(remote_type="gitlab", gl_conn=None):
+    # pylint: disable=too-many-return-statements
+    """Try to guess the right remote of the Git repo we're in.
+
+    return None if failed, or the repo dictionary from get_all_remotes().
+    """
+    if remote_type not in ["gitlab", "github"]:
+        return None
+
+    if remote_type == "gitlab" and gl_conn is None:
+        return None
+
+    remotes = rcfiles.git.get_all_remotes()
+    if remotes is None:
+        return None
+
+    if "origin" in remotes:
+        remote = remotes["origin"]
+        if remote_type == "gitlab" and rcfiles.gitlab.is_gitlab_url(
+            gl_conn, remote["url"]
+        ):
+            return remote
+        if remote_type == "github" and rcfiles.github.is_github_url(
+            remote["url"]
+        ):
+            return remote
+
+    for remote in remotes.values():
+        if remote_type == "gitlab" and rcfiles.gitlab.is_gitlab_url(
+            gl_conn, remote["url"]
+        ):
+            return remote
+        if remote_type == "github" and rcfiles.github.is_github_url(
+            remote["url"]
+        ):
+            return remote
+
+    return None
+
+
+def guess_name(args, gh_conn=None, gl_conn=None):
+    """Try to guess the name from the arguments and the repository remotes."""
+    if args.name is None:
+        if not rcfiles.git.in_repo():
+            parser.error("Name not provided and not in a Git repo.")
+
+        remote = guess_remote(
+            remote_type="github"
+            if "github" in args and args.github
+            else "gitlab",
+            gl_conn=gl_conn,
+        )
+        if remote is None:
+            if "github" in args and args.github:
+                parser.error(
+                    "Name not provided and could not find a GitHub remote."
+                )
+            else:
+                parser.error(
+                    "Name not provided and could not find a GitLab remote."
+                )
+        else:
+            if "github" in args and args.github:
+                name = rcfiles.github.url_to_name(remote["url"])
+            else:
+                name = rcfiles.gitlab.url_to_name(gl_conn, remote["url"])
+    else:
+        if "github" in args and args.github:
+            if "/" in args.name:
+                name = args.name
+            else:
+                name = f"{rcfiles.github.me(gh_conn)}/{args.name}"
+        else:
+            if "/" in args.name:
+                name = args.name
+            else:
+                name = f"{rcfiles.gitlab.me(gl_conn)}/{args.name}"
+    return name
 
 
 def create_repo(args):
     """Create a new repository."""
-    print(args)
+    if args.mirror and args.github:
+        parser.error("Can't mirror from GitHub to GitLab.")
 
 
 def mirror_repo(args):
     """Mirror a GitLab repository to GitHub."""
-    print(args)
+    try:
+        gh_conn = rcfiles.github.connect()
+    except Exception as e:  # pylint: disable=broad-except
+        parser.error(f"Failed to connect to GitHub: {e}")
+    try:
+        gl_conn = rcfiles.gitlab.connect()
+    except Exception as e:  # pylint: disable=broad-except
+        parser.error(f"Failed to connect to GitLab: {e}")
+
+    name = guess_name(args, gh_conn, gl_conn)
+
+    try:
+        project = gl_conn.projects.get(name)
+    except gitlab.exceptions.GitlabGetError:
+        parser.error(f"Could not find GitLab project {name}.")
+
+    gh_repo = mirror_project(project, gh_conn, get_mirror_token())
+    if args.name is None and rcfiles.git.in_repo():
+        rcfiles.git.add_remote(".", "github", gh_repo.ssh_url)
 
 
 def archive_repo(args):
     """Archive a repository."""
-    print(args)
+    try:
+        gh_conn = rcfiles.github.connect()
+    except Exception as e:  # pylint: disable=broad-except
+        parser.error(f"Failed to connect to GitHub: {e}")
+    if not args.github:
+        try:
+            gl_conn = rcfiles.gitlab.connect()
+        except Exception as e:  # pylint: disable=broad-except
+            parser.error(f"Failed to connect to GitLab: {e}")
+
+    if args.github:
+        owner, name = guess_name(args, gh_conn=gh_conn, gl_conn=None).split(
+            "/"
+        )
+    else:
+        name = guess_name(args, gh_conn=None, gl_conn=gl_conn)
+
+    if args.github:
+        repo = gh_conn.repository(owner, name)
+        repo.edit(name, archived=True)
+    else:
+        project = gl_conn.projects.get(name)
+        project.archive()
+        for mirror in github_mirrors(project, gh_conn):
+            mirror.edit(mirror.name, archived=True)
 
 
-def main():
-    """The main function."""
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(
         title="Commands", required=True, dest="command"
@@ -71,9 +267,5 @@ def main():
         "--github", help="The repository is in GitHub.", action="store_true"
     )
 
-    args = parser.parse_args()
-    args.func(args)
-
-
-if __name__ == "__main__":
-    main()
+    _args = parser.parse_args()
+    _args.func(_args)
