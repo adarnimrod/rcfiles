@@ -280,11 +280,13 @@ toux () {
 }
 
 wb () {
-    toolbox run --container workbench -- tmux -L workbench new-session -As workbench
+    toolbox run --container workbench -- \
+        tmux -L workbench new-session -As "${1:-workbench}"
 }
 
 wbr () {
-    ssh -t ns4.shore.co.il toolbox run --container workbench -- tmux -L workbench new-session -As workbench
+    ssh -t ns4.shore.co.il toolbox run --container workbench -- \
+        tmux -L workbench new-session -As "${1:-workbench}"
 }
 
 __prompt () {
