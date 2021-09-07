@@ -9,7 +9,7 @@ from . import git
 
 def http_url(conn):
     """Return the HTTP url to the GitLab instance."""
-    return conn.get_url()
+    return conn.url
 
 
 def ssh_url(conn):
@@ -21,7 +21,7 @@ def url_to_name(conn, url):
     """Get the full name from the GitLab URL."""
     return (
         url.removeprefix(http_url(conn))
-        .removeprefix(ssh_url(conn.git))
+        .removeprefix(ssh_url(conn))
         .removesuffix("/")
         .removesuffix(".git")
     )
@@ -91,7 +91,7 @@ def me(conn):
 
 def empty_commit(project):
     """Commit an empty commit."""
-    return project.commit.create(
+    return project.commits.create(
         {
             "id": project.id,
             "branch": project.default_branch,

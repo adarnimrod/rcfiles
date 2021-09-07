@@ -9,6 +9,7 @@ import sys
 import github3.exceptions  # pylint: disable=import-error
 import gitlab.exceptions  # pylint: disable=import-error
 import passhole.passhole  # pylint: disable=import-error
+import sh  # pylint: disable=import-error
 
 sys.path.append(os.path.expanduser("~/Documents/bin"))
 
@@ -17,11 +18,12 @@ import rcfiles.github  # noqa: E402 pylint: disable=wrong-import-position
 import rcfiles.gitlab  # noqa: E402 pylint: disable=wrong-import-position
 
 
-GH_MIRROR_PREFIX = "https://*****@github.com"
+GH_MIRROR_PREFIX = "https://*****@github.com/"
 
 
 def github_mirrors(project, gh_conn):
-    """Return a list of GitHub repositories that are mirrored from GitLab."""
+    """Return a list of GitHub repositories that are mirrored from the GitLab
+    project."""
     repos = []
     for mirror in project.remote_mirrors.list(all=True):
         if mirror.url.startswith(GH_MIRROR_PREFIX):
@@ -39,14 +41,22 @@ def github_mirrors(project, gh_conn):
 
 
 def mirror_project(project, gh_conn, token):
-    """Mirror a project to GitHub."""
+    """Mirror a GitLab project to GitHub."""
     gh_me = rcfiles.github.me(gh_conn)
     mirror_url = f"https://{token}@github.com/{gh_me}/{project.name}.git"
 
     try:
-        gh_repo = gh_conn.repository(project.name, gh_me)
+        gh_repo = gh_conn.repository(gh_me, project.name)
+        print(
+            f"Using existing GitHub repository {gh_repo.html_url}.",
+            file=sys.stderr,
+        )
     except github3.exceptions.NotFoundError:
         gh_repo = gh_conn.create_repository(project.name)
+        print(
+            f"Created a new GitHub reposiroty {gh_repo.html_url}.",
+            file=sys.stderr,
+        )
 
     gh_repo.edit(
         project.name,
@@ -54,7 +64,6 @@ def mirror_project(project, gh_conn, token):
         description=f"Mirror of {project.web_url}",
         has_issues=False,
         has_wiki=False,
-        default_branch=project.default_branch,
         has_projects=False,
     )
 
@@ -85,7 +94,7 @@ def get_mirror_token():
     # password.
     db = passhole.passhole.open_database()
     entry = db.find_entries(path=ENTRY_PATH, first=True)
-    return passhole.passhole.get_field(entry, TOKEN_FIELD)
+    return entry.get_custom_property(TOKEN_FIELD)
 
 
 def guess_remote(remote_type="gitlab", gl_conn=None):
@@ -154,28 +163,155 @@ def guess_name(args, gh_conn=None, gl_conn=None):
                 name = rcfiles.github.url_to_name(remote["url"])
             else:
                 name = rcfiles.gitlab.url_to_name(gl_conn, remote["url"])
+        print(
+            f"""Name not provided, using {name} from the {remote["name"]} remote.""",  # noqa: E501
+            file=sys.stderr,
+        )
     else:
         if "github" in args and args.github:
             if "/" in args.name:
                 name = args.name
             else:
+                print(
+                    "Name does not include project, defaulting to the GitHub user.",  # noqa: E501
+                    file=sys.stderr,
+                )
                 name = f"{rcfiles.github.me(gh_conn)}/{args.name}"
         else:
             if "/" in args.name:
                 name = args.name
             else:
+                print(
+                    "Name does not include project, defaulting to the GitLab user.",  # noqa: E501
+                    file=sys.stderr,
+                )
                 name = f"{rcfiles.gitlab.me(gl_conn)}/{args.name}"
     return name
+
+
+def create_github_repo(args):
+    """Create a new GitHub repository.
+
+    Does the following:
+    - Creates the mirror.
+    - Clones the repository.
+    - Commits an initial empty commit.
+    """
+    if "/" in args.name:
+        parser.error("Can't specify an organization.")
+    if args.internal or args.private:
+        parser.error("Can't create internal or private GitHub repositories.")
+    try:
+        conn = rcfiles.github.connect()
+    except Exception as e:  # pylint: disable=broad-except
+        parser.error(f"Failed to connect to GitHub: {e}")
+
+    repo = conn.create_repository(
+        args.name,
+        description=args.description,
+    )
+    print(
+        f"Created a new GitHub repository {repo.html_url}.",
+        file=sys.stderr,
+    )
+
+    rcfiles.git.git.clone(repo.ssh_url)
+    print("Cloned repository.", file=sys.stderr)
+
+    with sh.pushd(repo.name):
+        rcfiles.git.git.commit(
+            "--allow-empty", "--only", "--message", "Initial empty commit."
+        )
+        rcfiles.git.git.push("origin")
+    print(
+        "Committed an initial empty commit.",
+        file=sys.stderr,
+    )
+
+
+def create_gitlab_repo(args):
+    """Create a new GitLab repository.
+
+    Does the following:
+    - Creates the repository.
+    - Creates the mirror.
+    - Commits an initial empty commit.
+    - Clones the  repository.
+    - Adds the mirror remote.
+    """
+    if args.private and args.internal:
+        parser.error("Repository can be internal or private, not both.")
+    try:
+        conn = rcfiles.gitlab.connect()
+    except Exception as e:  # pylint: disable=broad-except
+        parser.error(f"Failed to connect to GitLab: {e}")
+
+    if args.private:
+        visibility = "private"
+    elif args.internal:
+        visibility = "internal"
+    else:
+        visibility = "public"
+
+    name_with_namespace = guess_name(args, gl_conn=conn, gh_conn=None)
+    namespace, name = name_with_namespace.split("/")
+    if namespace == rcfiles.gitlab.me(conn):
+        project = conn.projects.create(
+            {
+                "name": name,
+                "description": args.description,
+                "visibility": visibility,
+            }
+        )
+    else:
+        group = conn.groups.get(namespace)
+        project = conn.projects.create(
+            {
+                "name": name,
+                "description": args.description,
+                "visibility": visibility,
+                "namespace_id": group.id,
+            }
+        )
+    print(
+        f"Created a new {visibility} GitLab repository {project.web_url}.",
+        file=sys.stderr,
+    )
+
+    if args.mirror:
+        gh_repo = mirror_repo(args)
+
+    rcfiles.gitlab.empty_commit(project)
+    print(
+        "Committed an initial empty commit.",
+        file=sys.stderr,
+    )
+
+    rcfiles.git.git.clone(project.ssh_url_to_repo)
+    print("Cloned repository.", file=sys.stderr)
+
+    if args.mirror:
+        rcfiles.git.add_remote(project.name, "github", gh_repo.ssh_url)
+        print("Added a remote for the mirror repository.", file=sys.stderr)
 
 
 def create_repo(args):
     """Create a new repository."""
     if args.mirror and args.github:
         parser.error("Can't mirror from GitHub to GitLab.")
+    if args.github:
+        create_github_repo(args)
+    else:
+        create_gitlab_repo(args)
 
 
 def mirror_repo(args):
-    """Mirror a GitLab repository to GitHub."""
+    """Mirror a GitLab repository to GitHub.
+
+    Does the following:
+    - Creates the mirror.
+    - Adds the mirror remote.
+    """
     try:
         gh_conn = rcfiles.github.connect()
     except Exception as e:  # pylint: disable=broad-except
@@ -193,12 +329,25 @@ def mirror_repo(args):
         parser.error(f"Could not find GitLab project {name}.")
 
     gh_repo = mirror_project(project, gh_conn, get_mirror_token())
+    print(
+        f"Setup mirror for {project.web_url} to {gh_repo.html_url}.",
+        file=sys.stderr,
+    )
+
     if args.name is None and rcfiles.git.in_repo():
         rcfiles.git.add_remote(".", "github", gh_repo.ssh_url)
+        print("Added a remote for the mirror repository.", file=sys.stderr)
+
+    return gh_repo
 
 
 def archive_repo(args):
-    """Archive a repository."""
+    """Archive a repository.
+
+    Does the following:
+    - Archives the repository (sets it to read-only).
+    - Archives all GitHub mirrors.
+    """
     try:
         gh_conn = rcfiles.github.connect()
     except Exception as e:  # pylint: disable=broad-except
@@ -219,11 +368,16 @@ def archive_repo(args):
     if args.github:
         repo = gh_conn.repository(owner, name)
         repo.edit(name, archived=True)
+        print(f"Archived repository {repo.html_url}.", file=sys.stderr)
     else:
         project = gl_conn.projects.get(name)
         project.archive()
+        print(f"Archived repository {project.web_url}.", file=sys.stderr)
         for mirror in github_mirrors(project, gh_conn):
             mirror.edit(mirror.name, archived=True)
+            print(
+                f"Archived GitHub mirror {mirror.html_url}.", file=sys.stderr
+            )
 
 
 if __name__ == "__main__":
@@ -236,9 +390,7 @@ if __name__ == "__main__":
         "new", help="Create a new repository."
     )
     parser_create.set_defaults(func=create_repo)
-    parser_create.add_argument(
-        "name", help="Name of the repository.", nargs="?"
-    )
+    parser_create.add_argument("name", help="Name of the repository.")
     parser_create.add_argument(
         "-m", "--mirror", help="Setup a mirror in GitHub.", action="store_true"
     )
@@ -246,6 +398,20 @@ if __name__ == "__main__":
         "--github",
         help="Create the repository in GitHub.",
         action="store_true",
+    )
+    parser_create.add_argument(
+        "--internal",
+        help="Create an internal GitLab repository.",
+        action="store_true",
+    )
+    parser_create.add_argument(
+        "--private",
+        help="Create a private GitLab repository.",
+        action="store_true",
+    )
+    parser_create.add_argument(
+        "--description",
+        help="Repository description.",
     )
 
     parser_mirror = subparsers.add_parser(

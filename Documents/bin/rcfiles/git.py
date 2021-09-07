@@ -49,18 +49,21 @@ def get_all_remotes():
 def add_remote(repo, name, url):
     """Add a remote to the Git repository."""
     with sh.pushd(repo):
-        git.remote("add", name, url)
+        try:
+            git.remote("add", name, url)
+        except sh.ErrorReturnCode_3:
+            git.remote("set-url", name, url)
 
 
 def author_name():
     """Get the author name."""
     if "GIT_AUTHOR_NAME" in os.environ:
-        return os.environ["GIT_AUTHOR_NAME"]
-    return git.config("--get", "user.name")
+        return os.environ["GIT_AUTHOR_NAME"].strip()
+    return git.config("--get", "user.name").strip()
 
 
 def author_email():
     """Get the author email."""
     if "GIT_AUTHOR_EMAil" in os.environ:
-        return os.environ["GIT_AUTHOR_EMAIL"]
-    return git.config("--get", "user.email")
+        return os.environ["GIT_AUTHOR_EMAIL"].strip()
+    return git.config("--get", "user.email").strip()

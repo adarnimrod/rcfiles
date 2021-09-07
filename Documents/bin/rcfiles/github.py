@@ -3,8 +3,6 @@
 import os
 import github3  # pylint: disable=import-error
 
-# from . import git
-
 HTTP_URL = "https://github.com/"
 SSH_URL = "git@github.com:"
 
@@ -38,8 +36,3 @@ def connect():
 def me(conn):
     """Return my GitHub account name."""
     return conn.me().login
-
-
-def empty_commit(repository):
-    """Commit an empty commit."""
-    raise NotImplementedError
