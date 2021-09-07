@@ -9,7 +9,6 @@ import sys
 import github3.exceptions  # pylint: disable=import-error
 import gitlab.exceptions  # pylint: disable=import-error
 import passhole.passhole  # pylint: disable=import-error
-import sh  # pylint: disable=import-error
 
 sys.path.append(os.path.expanduser("~/Documents/bin"))
 
@@ -218,11 +217,7 @@ def create_github_repo(args):
     rcfiles.git.git.clone(repo.ssh_url)
     print("Cloned repository.", file=sys.stderr)
 
-    with sh.pushd(repo.name):
-        rcfiles.git.git.commit(
-            "--allow-empty", "--only", "--message", "Initial empty commit."
-        )
-        rcfiles.git.git.push("origin")
+    rcfiles.git.empty_commit(repo.name)
     print(
         "Committed an initial empty commit.",
         file=sys.stderr,

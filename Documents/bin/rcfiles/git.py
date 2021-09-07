@@ -67,3 +67,12 @@ def author_email():
     if "GIT_AUTHOR_EMAil" in os.environ:
         return os.environ["GIT_AUTHOR_EMAIL"].strip()
     return git.config("--get", "user.email").strip()
+
+
+def empty_commit(repo):
+    """Commits an empty commit and pushes."""
+    with sh.pushd(repo):
+        git.commit(
+            "--allow-empty", "--only", "--message", "Initial empty commit."
+        )
+        git.push()
