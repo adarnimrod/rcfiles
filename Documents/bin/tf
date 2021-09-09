@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-# A wrapper for Terraform to include a variables file is one exists that matches
+# A wrapper for Terraform to include a variables file if one exists that matches
 # the workspace name (on commands that support that).
 
 workspace="$(terraform workspace show)"
