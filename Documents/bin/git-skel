@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+for i in "$@"
+do
+    cp --dereference --target-directory=./ "$HOME/.config/git/skel/$i"
+done
+git add "$@"
