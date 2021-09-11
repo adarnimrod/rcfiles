@@ -1,0 +1,87 @@
+#!/bin/sh
+set -eu
+
+DEFAULT_LICENSE='mit'
+STAGED_FILES=''
+
+log_skipping () {
+    echo "$1 already exists, skipping" >&2
+}
+
+usage () {
+    echo "$0: [-l license-type] [-n project_name] [-r]" >&2
+    exit 1
+}
+
+while getopts l:n:rh flag
+do
+    case $flag in
+        l) LICENSE="$OPTARG";;
+        n) PROJECT_NAME="$OPTARG";;
+        r) RESTRUCTURED_TEXT='1';;
+        h) usage;;
+        \?) usage;;
+    esac
+done
+shift "$(( OPTIND - 1 ))"
+
+if [ -n "${LICENSE:-}" ] && ! \
+    license -list | awk '{print \$1}' | grep --quiet --fixed-strings --line-regexp "$LICENSE"
+then
+    echo 'Unknown license type.' >&2
+    exit 1
+fi
+
+if [ -z "${PROJECT_NAME:-}" ]
+then
+    PROJECT_NAME="$(basename "$PWD")"
+fi
+
+if [ -f .gitignore ]
+then
+    log_skipping .gitignore
+else
+    git skel .gitignore
+    STAGED_FILES="$STAGED_FILES .gitignore"
+fi
+
+if [ -z "${RESTRUCTURED_TEXT:-}" ]
+then
+    if [ -f README.md ]
+    then
+        log_skipping README.md
+    else
+        git skel README.md
+        sed -i "s/PROJECT_NAME/$PROJECT_NAME/" README.md
+        git add README.md
+        STAGED_FILES="$STAGED_FILES README.md"
+    fi
+else
+    if [ -f README.rst ]
+    then
+        log_skipping README.rst
+    else
+        git skel README.rst
+        UNDERLINE="$(echo "$PROJECT_NAME" | sed 's/./#/g')"
+        sed -i "s/PROJECT_NAME/$PROJECT_NAME/" README.rst
+        sed -i "2s/.*/$UNDERLINE/" README.rst
+        git add README.rst
+        STAGED_FILES="$STAGED_FILES README.rst"
+    fi
+fi
+
+if [ -f LICENSE.txt ]
+then
+    log_skipping LICENSE.txt
+else
+    git license "${LICENSE:-$DEFAULT_LICENSE}"
+    STAGED_FILES="$STAGED_FILES LICENSE.txt"
+fi
+
+if [ -n "$STAGED_FILES" ]
+then
+    # shellcheck disable=SC2086
+    git commit --message "Scaffolding." --only $STAGED_FILES
+else
+    echo 'Skipped all files, nothing to commit.' >&2
+fi

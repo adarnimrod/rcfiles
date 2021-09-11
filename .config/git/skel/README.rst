@@ -4,7 +4,7 @@ PROJECT_NAME
 License
 -------
 
-This software is licensed under the AGPL 3+ license (see the :code:`LICENSE.txt`
+This software is licensed under the MIT license (see the :code:`LICENSE.txt`
 file).
 
 Author
