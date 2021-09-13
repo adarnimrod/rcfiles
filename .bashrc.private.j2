@@ -3,5 +3,6 @@ export GITLAB_TOKEN='{{ run(["ph", "show", "--field", "Password", "shore.co.il/G
 export GITLAB_PRIVATE_TOKEN="$GITLAB_TOKEN"
 export GITLAB_REGISTRATION_TOKEN='{{ run(["ph", "show", "--field", "Password", "shore.co.il/GitLab runner registration token"])["stdout"] }}'
 export GITHUB_TOKEN='{{ run(["ph", "show", "--field", "CLI token", "Web Sites/GitHub"])["stdout"] }}'
+export GITHUB_OAUTH_TOKEN="$GITHUB_TOKEN"
 {% set nc_password = run(["ph", "show", "--field", "Password", "shore.co.il/LDAP"])["stdout"] -%}
 export RCLONE_CONFIG_NEXTCLOUD_PASS='{{ run(["rclone", "obscure", nc_password])["stdout"]|trim }}'
