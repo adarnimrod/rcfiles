@@ -3,5 +3,5 @@ gem 'bundler'
 gem 'rubocop'
 
 source "https://rubygems.pkg.github.com/smile-io" do
-    gem "smile-cli", "0.6.15"
+    gem "smile-cli", "0.6.17"
 end
