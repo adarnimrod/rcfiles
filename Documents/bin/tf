@@ -5,7 +5,7 @@ set -eu
 # the workspace name (on commands that support that).
 
 workspace="$(terraform workspace show)"
-if [ ! -f "$workspace.tfvars" ]
+if [ ! -f "$workspace.tfvars" ] && [ ! -d "$workspace" ]
 then
     exec terraform "$@"
 fi
@@ -15,7 +15,18 @@ do
     if [ "$arg" = "plan" ] || [ "$arg" = "console" ] || [ "$arg" = "import" ] ||
         [ "$arg" = "refresh" ]
     then
+        additional_args=''
+        if [ -f "$workspace.tfvars" ]
+        then
+            additional_args="$additional_args -var-files=$workspace.tfvars"
+        fi
+        if [ -d "$workspace" ]
+        then
+            additional_args="$additional_args $(find "$workspace" -type f -name '*.tfvars' -exec printf '-var-file=%s ' {} \;)"
+        fi
         exec terraform "$@" "-var-file=$workspace.tfvars"
     fi
 done
-exec terraform "$@"
+
+# shellcheck disable=SC2086
+exec terraform "$@" $additional_args
