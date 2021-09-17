@@ -120,10 +120,9 @@ repos:
     rev: v0.1.0
     hooks:
       - id: shell-validate
-      - id: docker-compose
       - id: ansible-syntax-check
       - id: ansible-vault-check
-      - id: terraform-ftm
+      - id: terraform-fmt
       - id: terraform-validate
       - id: poetry-check
       - id: docker-compose
