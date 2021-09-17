@@ -79,10 +79,10 @@ repos:
       - id: detect-secrets
         exclude: rabbitmqadmin|\.config/git/config|Pipfile\.lock
 
-  - repo: https://git.shore.co.il/nimrod/shell-pre-commit.git
-    rev: v0.6.0
+  - repo: https://git.shore.co.il/nimrod/pre-commit-hooks.git
+    rev: v0.1.0
     hooks:
-      - id: shell-lint
+      - id: shell-validate
         exclude: &excluded_shellscripts |-
           \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)
 
