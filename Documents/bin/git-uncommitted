@@ -1,5 +1,7 @@
 #!/bin/sh
 set -eu
 
-git diff --name-only
-git diff --name-only --cached
+{
+    git diff --name-only
+    git diff --name-only --cached
+} | sort -u
