@@ -136,6 +136,7 @@ alias obsolete='aptitude search ?obsolete'
 alias occ='docker --host=ssh://host01.shore.co.il exec -itu www-data nextcloud_nextcloud_1 ./occ'
 alias pip2='python2 -m pip'
 alias pip3='python3 -m pip'
+alias pre-commit-update-skel='pre-commit autoupdate --config ~/.config/git/skel/.pre-commit-config.yaml'
 alias presentation='docker dev registry.shore.co.il/presentation'
 # shellcheck disable=SC2139
 alias rc_make="make --directory $HOME --always-make"
