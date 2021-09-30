@@ -9,6 +9,7 @@ import sys
 import github3.exceptions  # pylint: disable=import-error
 import gitlab.exceptions  # pylint: disable=import-error
 import passhole.passhole  # pylint: disable=import-error
+import sh  # pylint: disable=import-error
 
 sys.path.append(os.path.expanduser("~/Documents/bin"))
 
@@ -140,7 +141,7 @@ def guess_name(args, gh_conn=None, gl_conn=None):
     """Try to guess the name from the arguments and the repository remotes."""
     if args.name is None:
         if not rcfiles.git.in_repo():
-            parser.error("Name not provided and not in a Git repo.")
+            arg_parser.error("Name not provided and not in a Git repo.")
 
         remote = guess_remote(
             remote_type="github"
@@ -150,11 +151,11 @@ def guess_name(args, gh_conn=None, gl_conn=None):
         )
         if remote is None:
             if "github" in args and args.github:
-                parser.error(
+                arg_parser.error(
                     "Name not provided and could not find a GitHub remote."
                 )
             else:
-                parser.error(
+                arg_parser.error(
                     "Name not provided and could not find a GitLab remote."
                 )
         else:
@@ -197,13 +198,15 @@ def create_github_repo(args):
     - Commits an initial empty commit.
     """
     if "/" in args.name:
-        parser.error("Can't specify an organization.")
+        arg_parser.error("Can't specify an organization.")
     if args.internal or args.private:
-        parser.error("Can't create internal or private GitHub repositories.")
+        arg_parser.error(
+            "Can't create internal or private GitHub repositories."
+        )
     try:
         conn = rcfiles.github.connect()
     except Exception as e:  # pylint: disable=broad-except
-        parser.error(f"Failed to connect to GitHub: {e}")
+        arg_parser.error(f"Failed to connect to GitHub: {e}")
 
     repo = conn.create_repository(
         args.name,
@@ -235,11 +238,11 @@ def create_gitlab_repo(args):
     - Adds the mirror remote.
     """
     if args.private and args.internal:
-        parser.error("Repository can be internal or private, not both.")
+        arg_parser.error("Repository can be internal or private, not both.")
     try:
         conn = rcfiles.gitlab.connect()
     except Exception as e:  # pylint: disable=broad-except
-        parser.error(f"Failed to connect to GitLab: {e}")
+        arg_parser.error(f"Failed to connect to GitLab: {e}")
 
     if args.private:
         visibility = "private"
@@ -293,7 +296,7 @@ def create_gitlab_repo(args):
 def create_repo(args):
     """Create a new repository."""
     if args.mirror and args.github:
-        parser.error("Can't mirror from GitHub to GitLab.")
+        arg_parser.error("Can't mirror from GitHub to GitLab.")
     if args.github:
         create_github_repo(args)
     else:
@@ -310,18 +313,18 @@ def mirror_repo(args):
     try:
         gh_conn = rcfiles.github.connect()
     except Exception as e:  # pylint: disable=broad-except
-        parser.error(f"Failed to connect to GitHub: {e}")
+        arg_parser.error(f"Failed to connect to GitHub: {e}")
     try:
         gl_conn = rcfiles.gitlab.connect()
     except Exception as e:  # pylint: disable=broad-except
-        parser.error(f"Failed to connect to GitLab: {e}")
+        arg_parser.error(f"Failed to connect to GitLab: {e}")
 
     name = guess_name(args, gh_conn, gl_conn)
 
     try:
         project = gl_conn.projects.get(name)
     except gitlab.exceptions.GitlabGetError:
-        parser.error(f"Could not find GitLab project {name}.")
+        arg_parser.error(f"Could not find GitLab project {name}.")
 
     gh_repo = mirror_project(project, gh_conn, get_mirror_token())
     print(
@@ -346,12 +349,12 @@ def archive_repo(args):
     try:
         gh_conn = rcfiles.github.connect()
     except Exception as e:  # pylint: disable=broad-except
-        parser.error(f"Failed to connect to GitHub: {e}")
+        arg_parser.error(f"Failed to connect to GitHub: {e}")
     if not args.github:
         try:
             gl_conn = rcfiles.gitlab.connect()
         except Exception as e:  # pylint: disable=broad-except
-            parser.error(f"Failed to connect to GitLab: {e}")
+            arg_parser.error(f"Failed to connect to GitLab: {e}")
 
     if args.github:
         owner, name = guess_name(args, gh_conn=gh_conn, gl_conn=None).split(
@@ -375,7 +378,40 @@ def archive_repo(args):
             )
 
 
-if __name__ == "__main__":
+def fork_repo(args):
+    """Forks a GitHub repository.
+
+    Does the following:
+    - Forks the GitHub repository.
+    - Clones the repository.
+    - Adds the upstream remote.
+    """
+    try:
+        conn = rcfiles.github.connect()
+    except Exception as e:  # pylint: disable=broad-except
+        arg_parser.error(f"Failed to connect to GitHub: {e}")
+
+    if "/" not in args.name:
+        arg_parser.error("Must provide a full repository name.")
+
+    org, name = args.name.split("/")
+    upstream = conn.repository(org, name)
+    fork = upstream.create_fork()
+    print(
+        f"Forked GitHub repo {upstream.full_name} to {fork.full_name}.",
+        file=sys.stderr,
+    )
+
+    with sh.pushd(os.path.expanduser("~/Repositories/GitHub")):
+        rcfiles.git.git.clone(fork.ssh_url)
+        print("Cloned repository.", file=sys.stderr)
+
+        rcfiles.git.add_remote(upstream.name, "upstream", upstream.ssh_url)
+        print("Added an upstream remote.", file=sys.stderr)
+
+
+def build_arg_parser():
+    """Builds the argument parser."""
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(
         title="Commands", required=True, dest="command"
@@ -428,5 +464,15 @@ if __name__ == "__main__":
         "--github", help="The repository is in GitHub.", action="store_true"
     )
 
-    _args = parser.parse_args()
+    parser_fork = subparsers.add_parser(
+        "fork", help="Forks a GitHub repository."
+    )
+    parser_fork.set_defaults(func=fork_repo)
+    parser_fork.add_argument("name", help="Name of the repository.")
+    return parser
+
+
+if __name__ == "__main__":
+    arg_parser = build_arg_parser()
+    _args = arg_parser.parse_args()
     _args.func(_args)
