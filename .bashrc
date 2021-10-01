@@ -16,6 +16,13 @@ export ANSIBLE_SSH_CONTROL_PATH="/tmp/ssh-%%h"
 export ANSIBLE_SYSTEM_WARNINGS=True
 export ANSIBLE_VERBOSITY=2
 export AWS_DEFAULT_PROFILE='shore'
+if flatpak info org.mozilla.firefox >/dev/null 2>&1
+then
+    export BROWSER='flatpak run org.mozilla.firefox'
+elif command -v w3m >/dev/null
+then
+    export BROWSER=w3m
+fi
 export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
 export DOCKER_BUILDKIT=1
 export EDITOR=vim
