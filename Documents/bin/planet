@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""Planets and aggregators reader."""
+
+import argparse
+import pathlib
+import sys
+import webbrowser
+import xdg.BaseDirectory  # pylint: disable=import-error
+import yaml
+
+
+EXAMPLE_CONFIG = """---
+general:
+  # For the list of available browsers, consult
+  # https://docs.python.org/3/library/webbrowser.html?highlight=webbrowser#webbrowser.register
+  browser: w3m
+sites:
+  shore: https://www.shore.co.il/blog/
+"""
+
+
+def build_arg_parser():
+    """Build and return the argument parser."""
+    parser = argparse.ArgumentParser(description=__doc__)
+
+    parser.add_argument(
+        "-C",
+        "--config",
+        type=pathlib.Path,
+        help="Use a different configuration file.",
+    )
+    parser.add_argument(
+        "-l", "--list", action="store_true", help="List available sites."
+    )
+    parser.add_argument("-b", "--browser", help="Use a specific browser.")
+    parser.add_argument("site", nargs="?", help="Name of the site to open.")
+    return parser
+
+
+def get_config(path=None):
+    """Returns a configuration dictionary.
+
+    If a path is passed, that file path is used. Otherwise, use the default
+    path. If path is None and the default doesn't exist, an example file is
+    created."""
+    if path:
+        path = path.expanduser()
+        if not path.exists() and not path.is_file():
+            arg_parser.error("Configuration file does not exist.")
+
+    else:
+        base_dir = pathlib.Path(xdg.BaseDirectory.save_config_path("planet"))
+        path = base_dir / "config.yaml"
+    if not path.exists():
+        with open(path, "w", encoding="utf-8") as configfile:
+            configfile.write(EXAMPLE_CONFIG)
+            arg_parser.error(
+                f"Missing config file, generated an example one at {path}."
+            )
+    try:
+        with open(path, "r", encoding="utf-8") as configfile:
+            config = yaml.safe_load(configfile)
+    except Exception as exception:  # pylint: disable=broad-except
+        arg_parser.error(str(exception))
+    if "sites" not in config or not isinstance(config["sites"], dict):
+        arg_parser.error(
+            "Config file missing 'sites' key or 'sites' is not a dictionary."
+        )
+    return config
+
+
+def list_sites(config):
+    """Prints a list of sites from the config."""
+    for site in config["sites"].keys():
+        print(site)
+
+
+def open_site(config, site, browser_name=None):
+    """Opens a site from the config in a webbrowser."""
+    if browser_name == "":
+        browser_name = None
+    elif browser_name is not None:
+        pass
+    elif "general" in config and "browser" in config["general"]:
+        browser_name = config["general"]["browser"]
+    else:
+        browser_name = None
+    browser = webbrowser.get(using=browser_name)
+    if site not in config["sites"]:
+        arg_parser.error(f"Unknown site {site}.")
+    browser.open(config["sites"][site])
+
+
+if __name__ == "__main__":
+    arg_parser = build_arg_parser()
+    args = arg_parser.parse_args()
+    if not args.list and not args.site:
+        arg_parser.error(
+            "You must specify either site name or -l to list the available sites."  # noqa: E501
+        )
+    conf = get_config(args.config)
+    if args.list:
+        list_sites(conf)
+    else:
+        open_site(conf, args.site, args.browser)
+    sys.exit()

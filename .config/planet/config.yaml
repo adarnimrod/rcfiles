@@ -1,0 +1,25 @@
+---
+general:
+  # For the list of available browsers, consult
+  # https://docs.python.org/3/library/webbrowser.html?highlight=webbrowser#webbrowser.register
+  browser: w3m
+sites:
+  shore: https://www.shore.co.il/blog/
+  #openbsd: https://openbsdnow.org/
+  openbsd: https://undeadly.org/
+  fedora: http://fedoraplanet.org/
+  debian: https://planet.debian.org/
+  gnome: http://planet.gnome.org/
+  kde: http://planetkde.org/
+  python: http://planetpython.org/
+  freedesktop: http://planet.freedesktop.org/
+  freebsd: http://planet.freedesktop.org/
+  kernel: http://planet.kernel.org/
+  foss-il: http://planet.hamakor.org.il/
+  sysadmin: http://planetsysadmin.com/
+  fsf: http://www.fsf.org/blogs/recent-blog-posts
+  hn: https://news.ycombinator.com/
+  phoronix: https://www.phoronix.com/scan.php?page=home
+  openbsd-current: http://www.openbsd.org/faq/current.html
+  debian-transitions: https://release.debian.org/transitions/index.html
+  lobsters: https://lobste.rs/
