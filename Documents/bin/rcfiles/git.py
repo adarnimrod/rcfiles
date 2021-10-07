@@ -53,7 +53,7 @@ def add_remote(repo, name, url):
             git.remote("add", name, url)
         except sh.ErrorReturnCode_3:
             git.remote("set-url", name, url)
-        git.fetch("name")
+        git.fetch(name)
 
 
 def author_name():
