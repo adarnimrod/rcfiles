@@ -149,6 +149,7 @@ alias presentation='docker dev registry.shore.co.il/presentation'
 alias rc_make="make --directory $HOME --always-make"
 alias rc_update="rc_make vendored generated"
 alias red="printf '\e[1;91m%s\e[0m\n'"
+alias reg='ssh ns4.shore.co.il docker exec registry_reg_1 reg'
 alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
 # shellcheck disable=SC2032
 alias rm='rm --dir'
