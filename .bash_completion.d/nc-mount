@@ -1,0 +1,24 @@
+# vim: ft=bash
+
+_nc_mount () {
+    local cur prev words cword opts
+    _init_completion || return
+    opts='-a --all -h --help -l --list'
+
+    if [[ $cur == -* ]]
+    then
+        COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    else
+        local IFS=$'\n'
+        declare -a candidates
+        candidates=($(compgen -W "$(nc-mount -l)" -- "$cur"))
+        if [ ${#candidates[*]} -eq 0 ]
+        then
+            COMPREPLY=()
+        else
+            COMPREPLY=($(printf '%q\n' "${candidates[@]}"))
+        fi
+    fi
+}
+
+complete -F _nc_mount nc-mount

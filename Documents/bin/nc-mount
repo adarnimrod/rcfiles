@@ -1,0 +1,39 @@
+#!/bin/sh
+set -eu
+
+command -v rclone >/dev/null || { echo 'rclone not found.' >&2; exit 1; }
+
+usage () {
+    echo "$0: [-a|--all] [-l|--list] [FOLDER]" >&2
+    exit 1
+}
+
+_mount () {
+    folder="$1"
+    mkfolder -p "$HOME/$folder"
+    rclone mount \
+        --allow-non-empty \
+        --daemon \
+        --gid "$(id -g)" \
+        --vfs-cache-mode full \
+        --uid "$(id -u)" \
+        "nextcloud:$folder" \
+        "$HOME/$folder"
+}
+
+[ "$#" -eq 1 ] || usage
+
+folders="$(rclone lsd nextcloud: | cut -c 44- | grep -vx 'System information')"
+
+case "$1" in
+    -h|--help) usage;;
+    -l|--list) echo "$folders";;
+    -a|--all) echo "$folders" | xargs -I % "$0" "%";;
+    *) if echo "$folders" | grep -qx "$1"
+    then
+        _mount "$1"
+    else
+        echo "Folder $1 not found in Nextcloud." >&2
+        exit 1
+    fi;;
+esac
