@@ -9,15 +9,14 @@
     cdiff = diff --cached
     cleaan = clean -dX
     cleaaan = clean -dx
-    default-branch = !git rev-parse  --abbrev-ref origin/HEAD | cut -d/ -f2
+    default-branch = name-rev --name-only origin/HEAD
     dif = diff --color-words
     empty-commit = commit --allow-empty
 	exec = "!${SHELL:-/bin/sh} -ic "
-    ff = merge --no-edit --ff-only master
+    ff = merge --no-edit --ff-only origin/HEAD
     fixup = !cd "${GIT_PREFIX:-$PWD}" && git commit --fixup $(git last-commit)
     forget = reset HEAD^
     iec = commit --allow-empty --only --message \"Initial empty commit.\"
-    master = !git fetch --progress --tags "${1:-origin}" "$(git default-branch):$(git default-branch)"
     merg = merge --no-edit
     pop = stash pop
     posh = push --set-upstream origin HEAD
@@ -25,8 +24,6 @@
     Pull = pull --progress --ff --tags
     pull-force = !git fetch && git reset --hard "$(git tracking)"
     pushes = !git remote | xargs -n1 git push
-    remaster = !git master && git autorebase "$(git default-branch)"
-    rerebase = !git autorebase "$(git tracking)"
     retry = !cd "${GIT_PREFIX:-$PWD}" && git amend --no-edit . && git shove
     root = rev-parse --show-toplevel
     serve-git = daemon --reuseaddr --verbose --base-path=. --export-all ./.git

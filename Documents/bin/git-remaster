@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+
+# Update the default branch using git-remaster, then rebase the current branch
+# on the default branch (unless we're already on the default branch, then we're
+# just run git Pull).
+
+default_branch="$(git default-branch)"
+current_branch="$(git branch --show-current)"
+
+if [ "$default_branch" = "$current_branch" ]
+then
+    git Pull
+else
+    git master
+    git autorebase "$default_branch"
+fi

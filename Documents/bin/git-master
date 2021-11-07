@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+
+# Update the default branch without checking out that branch (unless we're
+# already on the default branch, then just run git Pull. Accepts 1 paramter,
+# the remote name (defaults to origin).
+
+default_branch="$(git default-branch)"
+current_branch="$(git branch --show-current)"
+remote="${1:-origin}"
+
+if [ "$default_branch" = "$current_branch" ]
+then
+    git Pull
+else
+    git fetch --progress --tags "$remote" "$default_branch:$default_branch"
+fi
