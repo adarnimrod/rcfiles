@@ -1,0 +1,19 @@
+# vim: ft=bash
+# shellcheck shell=bash
+
+_smile_exec() {
+    local cur prev words cword opts
+    _init_completion || return
+    opts='-e --env -h --help -l --list'
+    if [[ $prev == -e ]] || [[ $prev == --env ]]
+    then
+        COMPREPLY=($(compgen -W "$(smile-exec -l)" -- "$cur"))
+    elif [[ $cur == -* ]]
+    then
+        COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    else
+        COMPREPLY=($(compgen -c -- "$cur"))
+    fi
+}
+
+complete -F _smile_exec smile-exec

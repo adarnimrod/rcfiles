@@ -1,0 +1,79 @@
+#!/bin/sh
+set -eu
+
+envs='dev prod sandbox-1 security shared-services stage'
+
+usage() {
+    echo "$0: [-h|--help] [-e|--env SMILE_ENV ] [-l|--list] COMMAND [PARAMETER1 [PARAMETER2 ...]]"
+    echo "You can either set the environment with -e or --env switch or set the SMILE_ENV environment variable."
+    echo "Valid environments are: $envs"
+}
+
+vault_addr() {
+    case "$1" in
+        stage) echo "https://vault.smile-staging.aws";;
+        prod) echo "https://vault.smile-production.aws";;
+        *) echo "https://vault.smile.aws";;
+    esac
+}
+
+aws_account() {
+    case "$1" in
+        sandbox-1) echo "696774765305";;
+        dev) echo "307739032832";;
+        security) echo "777170570448";;
+        shared-services) echo "877068819435";;
+        stage) echo "389299793054";;
+        prod) echo "964498696771";;
+    esac
+}
+
+if [ "$#" -eq 0 ]
+then
+    usage
+    exit 1
+fi
+
+if [ "$1" = -h ] || [ "$1" = --help ]
+then
+    usage
+    exit 0
+fi
+
+if [ "$1" = -l ] || [ "$1" = --list ]
+then
+    echo "$envs"
+    exit 0
+fi
+
+if [ "$1" = "-e" ] || [ "$1" = "--env" ]
+then
+    SMILE_ENV="$2"
+    shift 2
+elif [ -z "${SMILE_ENV:-}" ]
+then
+    usage
+    exit 1
+fi
+
+if ! echo "$envs" | grep --quiet --fixed-strings --word-regex "$SMILE_ENV"
+then
+    echo "Environment $SMILE_ENV is not a valid one." >&2;
+    echo "Valid environments are: $envs"
+    exit 1
+fi
+
+export AWS_CONFIG_FILE="$HOME/.smile/aws/config"
+export AWS_PROFILE="smile-$SMILE_ENV-admin"
+export AWS_DEFAULT_PROFILE="$AWS_PROFILE"
+export AWS_DEFAULT_REGION=us-east-1
+export HELM_HOME="$HOME/.smile/helm/$SMILE_ENV-sre"
+export HELM_TLS_ENABLE="true"
+export HELM_TLS_VERIFY="true"
+export KUBECONFIG="$HOME/.smile/kube/$SMILE_ENV/config"
+export TILLER_NAMESPACE="applications-tiller"
+# shellcheck disable=SC2155
+export VAULT_ADDR="$(vault_addr "$SMILE_ENV")"
+export VAULT_CAPATH="$HOME/Documents/Smile/keybase/team/smile_devs/ca_certs"
+
+eval exec aws-vault exec "smile-$SMILE_ENV-admin" -- "$@"
