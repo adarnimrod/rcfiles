@@ -223,6 +223,18 @@ match_ssl_pair () {
     return "$exitcode"
 }
 
+mnt_lib () {
+    mkdir -p "$HOME/Library"
+    rclone mount \
+        --allow-non-empty \
+        --daemon \
+        --gid "$(id -g)" \
+        --vfs-cache-mode full \
+        --uid "$(id -u)" \
+        library:/ \
+        "$HOME/Library"
+}
+
 new_experiment () {
     if [ "$#" -ne 1 ]
     then

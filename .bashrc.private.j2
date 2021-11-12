@@ -6,3 +6,4 @@ export GITHUB_TOKEN='{{ run(["ph", "show", "--field", "CLI token", "Web Sites/Gi
 export GITHUB_OAUTH_TOKEN="$GITHUB_TOKEN"
 {% set nc_password = run(["ph", "show", "--field", "Password", "shore.co.il/LDAP"])["stdout"] -%}
 export RCLONE_CONFIG_NEXTCLOUD_PASS='{{ run(["rclone", "obscure", nc_password])["stdout"]|trim }}'
+export RCLONE_CONFIG_LIBRARY_PASS="$RCLONE_CONFIG_NEXTCLOUD_PASS"
