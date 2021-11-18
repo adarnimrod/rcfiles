@@ -2,7 +2,7 @@
 set -eu
 
 # Update the default branch without checking out that branch (unless we're
-# already on the default branch, then just run git Pull. Accepts 1 paramter,
+# already on the default branch, then just run git Pull. Accepts 1 parameter,
 # the remote name (defaults to origin).
 
 default_branch="$(git default-branch)"

@@ -22,4 +22,5 @@ if __name__ == "__main__":
         method="POST",
         headers={"Content-Type": "application/json"},
     )
+    # pylint: disable=consider-using-with
     urllib.request.urlopen(request)  # nosec
