@@ -1,0 +1,119 @@
+#!/bin/sh
+set -eu
+
+IMAGE='registry.shore.co.il/workbench'
+CONTAINER='workbench'
+TMUX_SOCKET='workbench'
+DEFAULT_SESSION='workbench'
+
+usage() {
+    echo "$(basename "$0"): [-h|--help] [-u|--update] [-d|--dry-update] [-l|--list] [-k|--kill] [-s|--kill-server] [-i|--in-workbench] [SESSION_NAME]"
+}
+
+fail() {
+    printf '\e[1;91m%s\e[0m\n' "$1" >&2
+    exit 1
+}
+
+not_from_toolbox() {
+    fail 'This command cannot run from within the workbench container.'
+}
+
+command -v toolbox >/dev/null || fail 'Toolbox is not installed.'
+command -v podman >/dev/null || fail 'Podman is not installed.'
+
+run() {
+    exec toolbox run --container "$CONTAINER" -- \
+        tmux -L "$TMUX_SOCKET" new-session -As "${1:-$DEFAULT_SESSION}"
+}
+
+_kill() {
+    toolbox run --container "$CONTAINER" -- \
+        tmux -L "$TMUX_SOCKET" kill-session -t "${1:-$DEFAULT_SESSION}"
+}
+
+list() {
+    if in_toolbox
+    then
+        tmux -L "$TMUX_SOCKET" list-sessions | awk -F: '{print $1}'
+    elif container_exists
+    then
+        toolbox run --container "$CONTAINER" -- \
+            tmux -L "$TMUX_SOCKET" list-sessions | awk -F: '{print $1}'
+    fi
+}
+
+image_exitst() {
+    podman image exists "$IMAGE"
+}
+
+container_exists() {
+    podman container exists "$CONTAINER"
+}
+
+is_latest() {
+    if ! image_exists || ! container_exists
+    then
+        podman image pull "$IMAGE" || exit 1
+        return 1
+    fi
+    current="$(podman container inspect "$CONTAINER" --format '{{ .Image }}')"
+    podman image pull "$IMAGE" > /dev/null
+    new="$(podman image inspect "$IMAGE" --format '{{.Digest}}')"
+    [ "$new" = "$current" ] || return 1
+}
+
+kill_tmux() {
+    if [ -S "/tmp/tmux-$(id -u)/$TMUX_SOCKET" ] && pgrep tmux >/dev/null
+    then
+        toolbox run --container "$CONTAINER" -- \
+            tmux -L "$TMUX_SOCKET" kill-server
+    fi
+}
+
+kill_server() {
+    if in_toolbox
+    then
+        not_from_toolbox
+    fi
+    kill_tmux
+    toolbox rm --f "$CONTAINER"
+}
+
+update() {
+    if in_toolbox
+    then
+        not_from_toolbox
+    fi
+    if is_latest
+    then
+        exit 0
+    fi
+    kill_server 2>/dev/null || true
+    podman image prune --filter 'label=com.github.containers.toolbox=true' --force
+    yes | toolbox create --image "$IMAGE"
+}
+
+dry_update() {
+    podman image pull "$IMAGE" > /dev/null
+}
+
+in_toolbox() {
+    [ "$(hostname)" = 'toolbox' ]
+}
+
+if [ "$#" -eq 0 ]
+then
+    run
+fi
+
+case "${1:-}" in
+    -d|--dry-update) dry_update;;
+    -u|--update) update;;
+    -l|--list) list;;
+    -h|--help) usage;;
+    -s|--kill-server) kill_server;;
+    -i|--in-workbench) in_toolbox;;
+    -k|--kill) _kill "${2:-}";;
+    *) run "$1";;
+esac

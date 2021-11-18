@@ -1,0 +1,19 @@
+# vim: ft=bash
+
+_wb() {
+    local cur prev words cword opts
+    _init_completion || return
+    opts='-h --help -l --list -d --dry-update -u --update -k --kill -s --kill-server -i --in-workbench'
+
+    if [[ $prev == -k ]] || [[ $prev == --kill ]]
+    then
+        COMPREPLY=($(compgen -W "$(wb -l)" -- "$cur"))
+    elif [[ $cur == -* ]]
+    then
+        COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    else
+        COMPREPLY=($(compgen -W "$(wb -l)" -- "$cur"))
+    fi
+}
+
+complete -F _wb wb
