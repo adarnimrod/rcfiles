@@ -226,7 +226,6 @@ match_ssl_pair () {
 mnt_lib () {
     mkdir -p "$HOME/Library"
     rclone mount \
-        --allow-non-empty \
         --daemon \
         --gid "$(id -g)" \
         --vfs-cache-mode full \
