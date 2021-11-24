@@ -33,7 +33,7 @@ _kill() {
 }
 
 list() {
-    if in_toolbox
+    if in_toolbox && is_tmux_running
     then
         tmux -L "$TMUX_SOCKET" list-sessions | awk -F: '{print $1}'
     elif container_exists
@@ -43,7 +43,7 @@ list() {
     fi
 }
 
-image_exitst() {
+image_exists() {
     podman image exists "$IMAGE"
 }
 
@@ -60,11 +60,15 @@ is_latest() {
     current="$(podman container inspect "$CONTAINER" --format '{{ .Image }}')"
     podman image pull "$IMAGE" > /dev/null
     new="$(podman image inspect "$IMAGE" --format '{{.Digest}}')"
-    [ "$new" = "$current" ] || return 1
+    [ "$new" = "$current" ]
+}
+
+is_tmux_running() {
+    [ -S "/tmp/tmux-$(id -u)/$TMUX_SOCKET" ] && pgrep tmux >/dev/null
 }
 
 kill_tmux() {
-    if [ -S "/tmp/tmux-$(id -u)/$TMUX_SOCKET" ] && pgrep tmux >/dev/null
+    if is_tmux_running
     then
         toolbox run --container "$CONTAINER" -- \
             tmux -L "$TMUX_SOCKET" kill-server
