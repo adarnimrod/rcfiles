@@ -81,7 +81,7 @@ kill_server() {
         not_from_toolbox
     fi
     kill_tmux
-    toolbox rm --f "$CONTAINER"
+    toolbox rm -f "$CONTAINER"
 }
 
 update() {
@@ -93,8 +93,8 @@ update() {
     then
         exit 0
     fi
-    kill_server 2>/dev/null || true
-    podman image prune --filter 'label=com.github.containers.toolbox=true' --force
+    kill_server
+    podman image prune --filter 'label=com.github.containers.toolbox=true' --force >/dev/null
     yes | toolbox create --image "$IMAGE"
 }
 
