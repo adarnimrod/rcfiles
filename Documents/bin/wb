@@ -33,13 +33,16 @@ _kill() {
 }
 
 list() {
-    if in_toolbox && is_tmux_running
+    if is_tmux_running
     then
-        tmux -L "$TMUX_SOCKET" list-sessions | awk -F: '{print $1}'
-    elif container_exists
-    then
-        toolbox run --container "$CONTAINER" -- \
+        if in_toolbox
+        then
             tmux -L "$TMUX_SOCKET" list-sessions | awk -F: '{print $1}'
+        elif container_exists
+        then
+            toolbox run --container "$CONTAINER" -- \
+                tmux -L "$TMUX_SOCKET" list-sessions | awk -F: '{print $1}'
+        fi
     fi
 }
 
