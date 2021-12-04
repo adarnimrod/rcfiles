@@ -62,7 +62,7 @@ is_latest() {
     fi
     current="$(podman container inspect "$CONTAINER" --format '{{ .Image }}')"
     podman image pull "$IMAGE" > /dev/null
-    new="$(podman image inspect "$IMAGE" --format '{{.Digest}}')"
+    new="$(podman image inspect "$IMAGE" --format '{{ .Id }}')"
     [ "$new" = "$current" ]
 }
 
