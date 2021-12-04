@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+# shellcheck disable=SC2044
+for repo in $(find "$HOME/Repositories" -maxdepth 7 -type d -name .git -exec dirname {} \;)
+do
+    [ "$(git -C "$repo" stat | wc -l)" -gt '1' ] || continue
+    [ "$(git -C "$repo" remote show | wc -l)" -gt 0 ] || continue
+    echo "$repo"
+done
