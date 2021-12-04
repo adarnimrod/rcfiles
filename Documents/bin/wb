@@ -96,7 +96,7 @@ update() {
     then
         kill_server
         podman image prune --filter 'label=com.github.containers.toolbox=true' --force >/dev/null
-        yes | toolbox create --image "$IMAGE"
+        toolbox create --image "$IMAGE"
     fi
     toolbox run --container "$CONTAINER" -- git -C "$HOME" Pull
 }
