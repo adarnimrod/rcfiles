@@ -92,13 +92,13 @@ update() {
     then
         not_from_toolbox
     fi
-    if is_latest
+    if ! is_latest
     then
-        exit 0
+        kill_server
+        podman image prune --filter 'label=com.github.containers.toolbox=true' --force >/dev/null
+        yes | toolbox create --image "$IMAGE"
     fi
-    kill_server
-    podman image prune --filter 'label=com.github.containers.toolbox=true' --force >/dev/null
-    yes | toolbox create --image "$IMAGE"
+    toolbox run --container "$CONTAINER" -- git -C "$HOME" Pull
 }
 
 dry_update() {
