@@ -99,6 +99,7 @@ alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
 alias gen-mac='hexdump -n5 -e '\''"02" 5/1 ":%02X" "\n"'\'' /dev/urandom'
 alias gen-ssh-config="rc_make .ssh/config"
 alias green="printf '\e[1;92m%s\e[0m\n'"
+alias hcl2json='json2hcl -reverse'
 alias hostlocal='docker run --rm --privileged --net=host docker.io/gliderlabs/hostlocal'
 alias http-server='python3 -m http.server 8080'
 alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
