@@ -3,6 +3,25 @@ set -eu
 
 notify () { printf '\n\e[1;94m=== %s ====\e[0m\n\n' "$1" >&2; }
 
+helm_install () {
+    name="$1"
+    url="$2"
+    version="${3:-}"
+    if [ -z "$version" ]
+    then
+        if ! helm plugin list | grep -qw "^$name"
+        then
+            helm plugin install "$url"
+        fi
+    else
+        if [ "$version" != "$(helm plugin list | awk "\$1 == \"$name\" {print \$2}")" ]
+        then
+            helm plugin uninstall "$name" || true
+            helm plugin install "$url" --version "$version"
+        fi
+    fi
+}
+
 cd "$(git rev-parse --show-toplevel)"
 notify 'Generating some configuration and private files.'
 make --directory "$HOME" --always-make --keep-going || true
@@ -26,6 +45,7 @@ if command -v helm > /dev/null
 then
     notify 'Installing Helm plugins'
     eval "$(grep 'export HELM_HOME' .bashrc)"
-    helm plugin list | { ! grep --silent '^diff'; } || helm plugin remove diff
-    helm plugin install https://github.com/databus23/helm-diff --version master
+    helm_install diff https://github.com/databus23/helm-diff.git
+    helm_install 2to3 https://github.com/helm/helm-2to3.git
+    helm_install cm-push https://github.com/chartmuseum/helm-push.git
 fi
