@@ -98,7 +98,7 @@ repos:
       - id: mdformat
 
   - repo: https://gitlab.com/devopshq/gitlab-ci-linter
-    rev: v1.0.3
+    rev: v1.0.2
     hooks:
       - id: gitlab-ci-linter
         args:

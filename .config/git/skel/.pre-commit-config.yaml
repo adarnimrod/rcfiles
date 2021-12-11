@@ -35,7 +35,7 @@ repos:
         exclude: LICENSE
 
   - repo: https://gitlab.com/devopshq/gitlab-ci-linter.git
-    rev: v1.0.4
+    rev: v1.0.2
     hooks:
       - id: gitlab-ci-linter
         args:
