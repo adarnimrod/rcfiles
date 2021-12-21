@@ -13,8 +13,14 @@ vault_addr() {
     case "$1" in
         stage) echo "https://vault.smile-staging.aws";;
         prod) echo "https://vault.smile-production.aws";;
+        security) return;;
+        shared-services) return;;
         *) echo "https://vault.smile.aws";;
     esac
+}
+
+connected_to_vpn() {
+    [ "$(dig env.smile.config TXT)" = "$SMILE_ENV" ]
 }
 
 aws_account() {
@@ -77,6 +83,9 @@ export VAULT_ADDR="$(vault_addr "$SMILE_ENV")"
 VAULT_CAPATH="$(bundle show smile-cli)/lib/vault_ca"
 export VAULT_CAPATH
 
-aws-vault exec "smile-$SMILE_ENV-admin" -- \
-        vault login -method aws -no-print role=smile-ops
+if [ -n "$VAULT_ADDR" ] && connected_to_vpn
+then
+    aws-vault exec "smile-$SMILE_ENV-admin" -- \
+            vault login -method aws -no-print role=smile-ops
+fi
 eval exec aws-vault exec "smile-$SMILE_ENV-admin" -- "$@"
