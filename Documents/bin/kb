@@ -55,12 +55,6 @@ sync () {
     fi
     mkdir -p "$DOCUMENTS_DIR"
     cp -rf "$RUNTIME_DIR/kbfs/"* "$DOCUMENTS_DIR/"
-    if [ ! -w "/Volumes" ]
-    then
-        echo "Skipped creating links in /Volumes/Keybase, directory not writeable." >&2
-    else
-        ln -sf "$DOCUMENTS_DIR" /Volumes/Keybase
-    fi
     if [ ! -w "/keybase" ]
     then
         echo "Skipped creating links in /keybase, directory not writeable." >&2
