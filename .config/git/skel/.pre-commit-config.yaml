@@ -42,6 +42,11 @@ repos:
           - "--server"
           - https://git.shore.co.il
 
+  - repo: https://git.shore.co.il/nimrod/yamltool.git
+    rev: v0.1.2
+    hooks:
+      - id: yamltool
+
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.26.3
     hooks:
