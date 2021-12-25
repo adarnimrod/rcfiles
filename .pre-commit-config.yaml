@@ -13,6 +13,11 @@ repos:
       - id: trailing-whitespace
         exclude: \.aspell\.en\.pws
 
+  - repo: https://git.shore.co.il/nimrod/yamltool.git
+    rev: v0.1.2
+    hooks:
+      - id: yamltool
+
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.26.3
     hooks:
@@ -32,7 +37,7 @@ repos:
         exclude: &excluded_pythonscripts pythonrc.py|rabbitmqadmin
         args:
           - |
-              --line-length=79
+            --line-length=79
 
   - repo: https://github.com/PyCQA/prospector
     rev: 1.5.0.1
