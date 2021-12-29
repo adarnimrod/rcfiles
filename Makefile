@@ -17,6 +17,7 @@ ssh-keys: .ssh/shore_ed25519
 ssh-keys: .ssh/shore_rsa
 ssh-keys: .ssh/smile_ed25519
 ssh-keys: .ssh/smile_rsa
+ssh-keys: .ssh/smile_scalegrid_rsa
 ssh-keys: .ssh/smile_sre_shared_rsa
 
 .ssh/%_rsa: Documents/Database.kdbx
