@@ -1,0 +1,16 @@
+# vim: ft=bash
+
+_git_skel () {
+    local cur prev words cword opts
+    _init_completion || return
+    pushd "$HOME/.config/git/skel" >/dev/null
+    COMPREPLY=($(compgen -o filenames -f -- "$cur"))
+    popd >/dev/null
+}
+
+if [ -f /usr/share/bash-completion/completions/git ]
+then
+    . /usr/share/bash-completion/completions/git
+    __git_complete git-skel _git_skel
+fi
+
