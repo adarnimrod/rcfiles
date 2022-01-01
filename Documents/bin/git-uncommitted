@@ -2,6 +2,6 @@
 set -eu
 
 {
-    git diff --name-only
+    git ls-files --modified --others --exclude-standard
     git diff --name-only --cached
 } | sort -u
