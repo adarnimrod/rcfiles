@@ -1,0 +1,30 @@
+# vim: ft=bash
+
+_git_bump () {
+    local cur prev words cword opts
+    _init_completion || return
+    COMPREPLY=($(compgen -W 'major minor patch' -- "$cur"))
+}
+
+_git_license () {
+    local cur prev words cword opts
+    _init_completion || return
+    licenses="$(license -list | awk '{print $1}')"
+    COMPREPLY=($(compgen -W "$licenses" -- "$cur"))
+}
+
+_git_namespace_backup () {
+    local cur prev words cword opts
+    _init_completion || return
+    pushd "$HOME/Repositories" >/dev/null
+    COMPREPLY=($(compgen -o dirnames -d -- "$cur"))
+    popd >/dev/null
+}
+
+_git_skel () {
+    local cur prev words cword opts
+    _init_completion || return
+    pushd "$HOME/.config/git/skel" >/dev/null
+    COMPREPLY=($(compgen -o filenames -f -- "$cur"))
+    popd >/dev/null
+}
