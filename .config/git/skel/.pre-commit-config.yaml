@@ -57,6 +57,11 @@ repos:
     hooks:
       - id: mdformat
 
+  - repo: https://github.com/shellcheck-py/shellcheck-py.git
+    rev: v0.7.2.1
+    hooks:
+      - id: shellcheck
+
   - repo: https://github.com/pre-commit/pre-commit.git
     rev: v2.15.0
     hooks:
@@ -72,10 +77,10 @@ repos:
       - id: poetry-check
       - id: docker-compose
 
-  - repo: https://github.com/shellcheck-py/shellcheck-py.git
-    rev: v0.7.2.1
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: 2.0.708
     hooks:
-      - id: shellcheck
+      - id: checkov
 
   - repo: https://github.com/ansible/ansible-lint.git
     rev: v5.2.1
