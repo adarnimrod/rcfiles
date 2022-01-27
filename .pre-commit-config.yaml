@@ -90,12 +90,18 @@ repos:
       - id: shell-validate
         exclude: &excluded_shellscripts |-
           \.bash_completion\.d/(docker-machine\.bash|fabric-completion.bash|docker-compose)
+      - id: shell-validate
+        files: '\.envrc$'
+        types: [text]
 
   - repo: https://github.com/shellcheck-py/shellcheck-py.git
     rev: v0.7.2.1
     hooks:
       - id: shellcheck
         exclude: *excluded_shellscripts
+      - id: shellcheck
+        files: '\.envrc$'
+        types: [text]
 
   - repo: https://github.com/executablebooks/mdformat.git
     rev: 0.7.9
