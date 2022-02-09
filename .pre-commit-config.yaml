@@ -46,7 +46,7 @@ repos:
             --line-length=79
 
   - repo: https://github.com/PyCQA/prospector
-    rev: 1.5.0.1
+    rev: 1.6.0
     hooks:
       - id: prospector
         exclude: *excluded_pythonscripts

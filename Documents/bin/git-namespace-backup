@@ -32,11 +32,9 @@ def namespace_path(namespace):
     """
     path = pathlib.Path(os.path.expanduser("~/Repositories/" + namespace))
     if not path.exists():
-        raise argparse.ArgumentTypeError("Path {} does not exit.".format(path))
+        raise argparse.ArgumentTypeError(f"Path {path} does not exit.")
     if not path.is_dir():
-        raise argparse.ArgumentTypeError(
-            "Path {} is not a directory.".format(path)
-        )
+        raise argparse.ArgumentTypeError(f"Path {path} is not a directory.")
     return path
 
 
@@ -55,8 +53,9 @@ if __name__ == "__main__":
         try:
             group = conn.groups.get(args.namespace.name)
             print(
-                "Using existing group id: {}, name: {}, path: {}.".format(
-                    group.id, group.name, group.path
+                (
+                    f"Using existing group id: {group.id},"
+                    f" name: {group.name}, path: {group.path}."
                 ),
                 file=sys.stderr,
             )
@@ -69,8 +68,9 @@ if __name__ == "__main__":
                 }
             )
             print(
-                "Created new group id: {}, name: {}, path: {}.".format(
-                    group.id, group.name, group.path
+                (
+                    f"Created new group id: {group.id},"
+                    f"name: {group.name}, path: {group.path}."
                 ),
                 file=sys.stderr,
             )
@@ -80,8 +80,9 @@ if __name__ == "__main__":
                     f"{group.path}/{repo.name}"
                 )
                 print(
-                    "Using existing project id: {}, name: {}, path: {}.".format(  # noqa: E501
-                        project.id, project.name, project.path
+                    (
+                        f"Using existing project id: {project.id},"
+                        f" name: {project.name}, path: {project.path}."
                     ),
                     file=sys.stderr,
                 )
@@ -90,15 +91,16 @@ if __name__ == "__main__":
                     {"name": repo.name, "namespace_id": group.id}
                 )
                 print(
-                    "Created new project id: {}, name: {}, path: {}.".format(
-                        project.id, project.name, project.path
+                    (
+                        f"Created new project id: {project.id},"
+                        f"name: {project.name}, path: {project.path}."
                     ),
                     file=sys.stderr,
                 )
             with sh.pushd(repo):
                 if "shore.co.il" in git.remote().splitlines():
                     print(
-                        "Setting the remote URL in {}.".format(repo.name),
+                        f"Setting the remote URL in {repo.name}.",
                         file=sys.stderr,
                     )
                     git.remote(
@@ -106,12 +108,12 @@ if __name__ == "__main__":
                     )
                 else:
                     print(
-                        "Adding remote in {}.".format(repo.name),
+                        f"Adding remote in {repo.name}.",
                         file=sys.stderr,
                     )
                     git.remote("add", "shore.co.il", project.ssh_url_to_repo)
                 print(
-                    "Pushing to {}.".format(project.ssh_url_to_repo),
+                    f"Pushing to {project.ssh_url_to_repo}.",
                     file=sys.stderr,
                 )
                 git.push("--all", "shore.co.il")
