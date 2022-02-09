@@ -3,6 +3,7 @@
 import configparser
 import os.path
 import pathlib
+
 import sh  # pylint: disable=import-error
 from sh.contrib import git  # pylint: disable=import-error
 

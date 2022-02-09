@@ -10,10 +10,11 @@ In this context, a namespace is a directory under ~/Repositories.
 """
 
 import argparse
-import pathlib
-import sys
 import os
 import os.path
+import pathlib
+import sys
+
 import gitlab.exception  # pylint: disable=import-error
 import sh  # pylint: disable=import-error
 from sh.contrib import git  # pylint: disable=import-error

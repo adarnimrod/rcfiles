@@ -3,10 +3,8 @@
 
 """Update local Vagrant base boxes."""
 # pylint: disable=import-error
-from sh import vagrant
-
 from parse import parse
-
+from sh import vagrant
 
 boxes = {}
 dummy_providers = ["aws"]
@@ -21,5 +19,5 @@ for line in vagrant.box("list"):
 # pylint: disable=consider-using-dict-items
 for box in boxes:
     for provider in boxes[box]:
-        print("Updating box {0} provider {1}.".format(box, provider))
+        print(f"Updating box {box} provider {provider}.")
         vagrant.box("update", "--provider", provider, "--box", box)

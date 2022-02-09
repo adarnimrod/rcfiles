@@ -5,9 +5,9 @@ import argparse
 import pathlib
 import sys
 import webbrowser
+
 import xdg.BaseDirectory  # pylint: disable=import-error
 import yaml
-
 
 EXAMPLE_CONFIG = """---
 general:

@@ -2,8 +2,10 @@
 
 import os
 import re
+
 import gitlab  # pylint: disable=import-error,useless-suppression
 import gitlab.exceptions  # pylint: disable=import-error
+
 from . import git
 
 

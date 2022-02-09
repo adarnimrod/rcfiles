@@ -1,6 +1,7 @@
 """A bunch of convenience functions to deal with GitHub."""
 
 import os
+
 import github3  # pylint: disable=import-error
 
 HTTP_URL = "https://github.com/"

@@ -3,7 +3,6 @@
 import fileinput
 from urllib.parse import unquote_plus as unquote
 
-
 if __name__ == "__main__":
     for line in fileinput.input():
         print(unquote(line.strip()))

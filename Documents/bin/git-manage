@@ -6,6 +6,7 @@ import argparse
 import os
 import os.path
 import sys
+
 import github3.exceptions  # pylint: disable=import-error
 import gitlab.exceptions  # pylint: disable=import-error
 import passhole.passhole  # pylint: disable=import-error
@@ -16,7 +17,6 @@ sys.path.append(os.path.expanduser("~/Documents/bin"))
 import rcfiles.git  # noqa: E402 pylint: disable=wrong-import-position
 import rcfiles.github  # noqa: E402 pylint: disable=wrong-import-position
 import rcfiles.gitlab  # noqa: E402 pylint: disable=wrong-import-position
-
 
 GH_MIRROR_PREFIX = "https://*****@github.com/"
 

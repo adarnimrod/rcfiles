@@ -3,10 +3,8 @@
 
 """Remove duplicate versions of local Vagrant base boxes."""
 # pylint: disable=import-error
-from sh import vagrant
-
 from parse import parse
-
+from sh import vagrant
 
 boxes = {}
 for line in vagrant.box("list"):
@@ -22,7 +20,7 @@ for line in vagrant.box("list"):
 for box in boxes:
     for provider in boxes[box]:
         for version in boxes[box][provider][:-1]:
-            print("Removing box {0} version {1}.".format(box, version))
+            print("Removing box {box} version {version}.")
             vagrant.box(
                 "remove",
                 "--force",
