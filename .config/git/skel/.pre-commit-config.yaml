@@ -110,8 +110,14 @@ repos:
           - |
             --line-length=79
 
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        args: ["--filter-files", "--profile", "black"]
+
   - repo: https://github.com/PyCQA/prospector.git
-    rev: 1.5.1
+    rev: 1.6.0
     hooks:
       - id: prospector
         args:
