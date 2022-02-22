@@ -15,7 +15,7 @@ import os.path
 import pathlib
 import sys
 
-import gitlab.exception  # pylint: disable=import-error
+import gitlab.exceptions  # pylint: disable=import-error
 import sh  # pylint: disable=import-error
 from sh.contrib import git  # pylint: disable=import-error
 
@@ -76,9 +76,7 @@ if __name__ == "__main__":
             )
         for repo in list_repositories(args.namespace):
             try:
-                project = conn.projects.get_project(
-                    f"{group.path}/{repo.name}"
-                )
+                project = conn.projects.get(f"{group.path}/{repo.name}")
                 print(
                     (
                         f"Using existing project id: {project.id},"
