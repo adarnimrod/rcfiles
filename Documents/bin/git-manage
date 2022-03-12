@@ -11,6 +11,7 @@ import github3.exceptions  # pylint: disable=import-error
 import gitlab.exceptions  # pylint: disable=import-error
 import passhole.passhole  # pylint: disable=import-error
 import sh  # pylint: disable=import-error
+from sh import terraform  # pylint: disable=import-error
 
 sys.path.append(os.path.expanduser("~/Documents/bin"))
 
@@ -19,6 +20,13 @@ import rcfiles.github  # noqa: E402 pylint: disable=wrong-import-position
 import rcfiles.gitlab  # noqa: E402 pylint: disable=wrong-import-position
 
 GH_MIRROR_PREFIX = "https://*****@github.com/"
+
+
+def error(message):
+    """Print an error message with the current subparser's usage and exit."""
+    # pylint: disable=protected-access
+    sub_parser = arg_parser._subparsers._actions[1].choices[_args.command]
+    sub_parser.error(message)
 
 
 def github_mirrors(project, gh_conn):
@@ -139,9 +147,9 @@ def guess_remote(remote_type="gitlab", gl_conn=None):
 
 def guess_name(args, gh_conn=None, gl_conn=None):
     """Try to guess the name from the arguments and the repository remotes."""
-    if args.name is None:
+    if "name" not in args or args.name is None:
         if not rcfiles.git.in_repo():
-            arg_parser.error("Name not provided and not in a Git repo.")
+            error("Name not provided and not in a Git repo.")
 
         remote = guess_remote(
             remote_type="github"
@@ -151,13 +159,9 @@ def guess_name(args, gh_conn=None, gl_conn=None):
         )
         if remote is None:
             if "github" in args and args.github:
-                arg_parser.error(
-                    "Name not provided and could not find a GitHub remote."
-                )
+                error("Name not provided and could not find a GitHub remote.")
             else:
-                arg_parser.error(
-                    "Name not provided and could not find a GitLab remote."
-                )
+                error("Name not provided and could not find a GitLab remote.")
         else:
             if "github" in args and args.github:
                 name = rcfiles.github.url_to_name(remote["url"])
@@ -198,15 +202,13 @@ def create_github_repo(args):
     - Commits an initial empty commit.
     """
     if "/" in args.name:
-        arg_parser.error("Can't specify an organization.")
+        error("Can't specify an organization.")
     if args.internal or args.private:
-        arg_parser.error(
-            "Can't create internal or private GitHub repositories."
-        )
+        error("Can't create internal or private GitHub repositories.")
     try:
         conn = rcfiles.github.connect()
     except Exception as e:  # pylint: disable=broad-except
-        arg_parser.error(f"Failed to connect to GitHub: {e}")
+        error(f"Failed to connect to GitHub: {e}")
 
     repo = conn.create_repository(
         args.name,
@@ -238,11 +240,11 @@ def create_gitlab_repo(args):
     - Adds the mirror remote.
     """
     if args.private and args.internal:
-        arg_parser.error("Repository can be internal or private, not both.")
+        error("Repository can be internal or private, not both.")
     try:
         conn = rcfiles.gitlab.connect()
     except Exception as e:  # pylint: disable=broad-except
-        arg_parser.error(f"Failed to connect to GitLab: {e}")
+        error(f"Failed to connect to GitLab: {e}")
 
     if args.private:
         visibility = "private"
@@ -296,7 +298,7 @@ def create_gitlab_repo(args):
 def create_repo(args):
     """Create a new repository."""
     if args.mirror and args.github:
-        arg_parser.error("Can't mirror from GitHub to GitLab.")
+        error("Can't mirror from GitHub to GitLab.")
     if args.github:
         create_github_repo(args)
     else:
@@ -313,18 +315,18 @@ def mirror_repo(args):
     try:
         gh_conn = rcfiles.github.connect()
     except Exception as e:  # pylint: disable=broad-except
-        arg_parser.error(f"Failed to connect to GitHub: {e}")
+        error(f"Failed to connect to GitHub: {e}")
     try:
         gl_conn = rcfiles.gitlab.connect()
     except Exception as e:  # pylint: disable=broad-except
-        arg_parser.error(f"Failed to connect to GitLab: {e}")
+        error(f"Failed to connect to GitLab: {e}")
 
     name = guess_name(args, gh_conn, gl_conn)
 
     try:
         project = gl_conn.projects.get(name)
     except gitlab.exceptions.GitlabGetError:
-        arg_parser.error(f"Could not find GitLab project {name}.")
+        error(f"Could not find GitLab project {name}.")
 
     gh_repo = mirror_project(project, gh_conn, get_mirror_token())
     print(
@@ -349,12 +351,12 @@ def archive_repo(args):
     try:
         gh_conn = rcfiles.github.connect()
     except Exception as e:  # pylint: disable=broad-except
-        arg_parser.error(f"Failed to connect to GitHub: {e}")
+        error(f"Failed to connect to GitHub: {e}")
     if not args.github:
         try:
             gl_conn = rcfiles.gitlab.connect()
         except Exception as e:  # pylint: disable=broad-except
-            arg_parser.error(f"Failed to connect to GitLab: {e}")
+            error(f"Failed to connect to GitLab: {e}")
 
     if args.github:
         owner, name = guess_name(args, gh_conn=gh_conn, gl_conn=None).split(
@@ -379,7 +381,7 @@ def archive_repo(args):
 
 
 def fork_repo(args):
-    """Forks a GitHub repository.
+    """Fork a GitHub repository.
 
     Does the following:
     - Forks the GitHub repository.
@@ -389,10 +391,10 @@ def fork_repo(args):
     try:
         conn = rcfiles.github.connect()
     except Exception as e:  # pylint: disable=broad-except
-        arg_parser.error(f"Failed to connect to GitHub: {e}")
+        error(f"Failed to connect to GitHub: {e}")
 
     if "/" not in args.name:
-        arg_parser.error("Must provide a full repository name.")
+        error("Must provide a full repository name.")
 
     org, name = args.name.split("/")
     upstream = conn.repository(org, name)
@@ -410,6 +412,43 @@ def fork_repo(args):
         print("Added an upstream remote.", file=sys.stderr)
 
 
+def terraform_init(args):
+    """Initialize a GitLab-managed Terraform state."""
+    if not rcfiles.git.in_repo():
+        error("This command must be run from inside a Git repository.")
+    try:
+        conn = rcfiles.gitlab.connect()
+    except Exception as e:  # pylint: disable=broad-except
+        error(f"Failed to connect to GitLab: {e}")
+    remotes = rcfiles.git.get_all_remotes()
+    for remote in remotes.values():
+        if rcfiles.gitlab.is_gitlab_url(conn, remote["url"]):
+            break
+    else:
+        error(
+            "This command must be run from inside a Git repository with a GitLab remote."  # noqa: E501
+        )
+    username = rcfiles.gitlab.me(conn)
+    url = rcfiles.gitlab.http_url(conn)
+    name = guess_name(args, gl_conn=conn)
+    project = conn.projects.get(name)
+    address = (
+        f"{url}/api/v4/projects/{project.id}/terraform/state/{args.state}"
+    )
+    # fmt: off
+    terraform.init(
+        "-backend-config", f"address={address}",
+        "-backend-config", f"lock_address={address}/lock",
+        "-backend-config", f"unlock_address={address}/lock",
+        "-backend-config", f"username={username}",
+        "-backend-config", f"password={conn.private_token}",
+        "-backend-config", "lock_method=POST",
+        "-backend-config", "unlock_method=DELETE",
+        "-reconfigure",
+    )
+    # fmt: on
+
+
 def build_arg_parser():
     """Builds the argument parser."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -418,7 +457,7 @@ def build_arg_parser():
     )
 
     parser_create = subparsers.add_parser(
-        "new", help="Create a new repository."
+        "new", help=create_repo.__doc__.splitlines()[0]
     )
     parser_create.set_defaults(func=create_repo)
     parser_create.add_argument("name", help="Name of the repository.")
@@ -446,7 +485,7 @@ def build_arg_parser():
     )
 
     parser_mirror = subparsers.add_parser(
-        "mirror", help="Mirror a GitLab repository to GitHub."
+        "mirror", help=mirror_repo.__doc__.splitlines()[0]
     )
     parser_mirror.set_defaults(func=mirror_repo)
     parser_mirror.add_argument(
@@ -454,7 +493,7 @@ def build_arg_parser():
     )
 
     parser_archive = subparsers.add_parser(
-        "archive", help="Archive a repository."
+        "archive", help=archive_repo.__doc__.splitlines()[0]
     )
     parser_archive.set_defaults(func=archive_repo)
     parser_archive.add_argument(
@@ -469,6 +508,18 @@ def build_arg_parser():
     )
     parser_fork.set_defaults(func=fork_repo)
     parser_fork.add_argument("name", help="Name of the repository.")
+
+    parser_tfinit = subparsers.add_parser(
+        "tfinit", help=terraform_init.__doc__.splitlines()[0]
+    )
+    parser_tfinit.set_defaults(func=terraform_init)
+    parser_tfinit.add_argument(
+        "state",
+        help="The Terraform state name",
+        default="default",
+        nargs="?",
+    )
+
     return parser
 
 

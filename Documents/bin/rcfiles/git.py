@@ -10,18 +10,25 @@ from sh.contrib import git  # pylint: disable=import-error
 
 def is_repo(path):
     """Returns a boolean if the path is a Git repo."""
-    return os.path.isdir(path) and pathlib.Path(path, ".git").is_dir()
+    try:
+        git("-C", path, "rev-parse", "--is-inside-work-tree")
+    except sh.ErrorReturnCode:
+        return False
+    return True
 
 
 def in_repo():
-    """Is the current working directory a git repo?
-
-    Because we invoke the command as a Git command (git foo) it is run from
-    the root of the repository if inside a repository so there's no need to
-    traverse up the directory hierarchy to find if we're in a Git repository,
-    it's enough to just check if the .git directory exists where we are.
-    """
+    """Is the current working directory a git repo?"""
     return is_repo(".")
+
+
+def find_repo_toplevel(path):
+    """Return the repository's top level directory (the root of the repo)."""
+    if not is_repo(path):
+        return None
+    return pathlib.Path(
+        git("-C", path, "rev-parse", "--show-toplevel").strip()
+    )
 
 
 def get_all_remotes():
@@ -33,7 +40,7 @@ def get_all_remotes():
         return None
 
     config = configparser.ConfigParser()
-    config.read(".git/config")
+    config.read(find_repo_toplevel(".") / ".git/config")
 
     remotes = {
         x.removeprefix('remote "').removesuffix('"'): {
