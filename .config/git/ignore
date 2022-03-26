@@ -53,6 +53,7 @@ dist/
 !Gemfile.lock
 .terraform
 .terraform.*
+!.terraform.lock.hcl
 tfplan
 *.tfstate*
 *.venv
