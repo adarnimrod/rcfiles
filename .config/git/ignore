@@ -49,6 +49,7 @@ dist/
 *.env
 .bundle/
 !Pipfile.lock
+!pdm.lock
 !Gemfile.lock
 .terraform
 .terraform.*
