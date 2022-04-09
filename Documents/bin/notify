@@ -32,8 +32,8 @@ else
     hostname="$(sysctl -a 2>/dev/null | awk -F '=' '/^kern[a-z]*\.hostname/ {print $2}')"
 fi
 
-# Get the host' hostname in case
-if [ "$hostname" = 'toolbox' ]
+# Get the host' hostname in case it's a toolbox container.
+if [ "$hostname" = 'toolbox' ] && [ -x /usr/libexec/flatpak-xdg-utils/flatpak-spawn ]
 then
     hostname="$(/usr/libexec/flatpak-xdg-utils/flatpak-spawn --host hostname)"
 fi
