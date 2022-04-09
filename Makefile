@@ -36,9 +36,9 @@ ssh-keys: .ssh/smile_sre_shared_rsa
 	chmod 600 '$@'
 
 all: .config/pythonrc.py
-.config/pythonrc.py:
+.config/pythonrc.py: Makefile
 	$(mkd)
-	$(download) https://raw.githubusercontent.com/lonetwin/pythonrc/0.8.4/pythonrc.py
+	$(download) https://raw.githubusercontent.com/lonetwin/pythonrc/master/pythonrc_pre38.py
 
 all: .ssh/config
 .ssh/config: $(ssh_configs)
@@ -63,45 +63,15 @@ all: .ssh/authorized_keys
 
 .PHONY: secure-templates
 all: secure-templates
+templates != git ls-files -- '*.j2' | sed 's/\.j2$$//'
+secure-templates: ${templates}
+%: %.j2 Documents/Database.kdbx
+	$(mkd)
+	template '$<' > '$@'
+	chmod 600 '$@'
 
 secure-templates: .gnupg/trustdb.gpg
-.gnupg/trustdb.gpg: Documents/Database.kdbx
+.gnupg/trustdb.gpg: Documents/Database.kdbx Makefile
 	ph show --field 'Notes' 'GPG/D3B913DE36AB5565DCAC91C6A322378C61339ECD' | gpg --import
 	echo 'D3B913DE36AB5565DCAC91C6A322378C61339ECD:6:' | gpg --import-ownertrust
-	chmod 600 '$@'
-
-secure-templates: .bashrc.private
-.bashrc.private: .bashrc.private.j2 Documents/Database.kdbx
-	$(mkd)
-	template '$<' > '$@'
-	chmod 600 '$@'
-
-secure-templates: .config/python-gitlab.cfg
-.config/python-gitlab.cfg: .config/python-gitlab.cfg.j2 Documents/Database.kdbx
-	$(mkd)
-	template '$<' > '$@'
-	chmod 600 '$@'
-
-secure-templates: .config/gem/gemrc
-.config/gem/gemrc: .config/gem/gemrc.j2 Documents/Database.kdbx
-	$(mkd)
-	template '$<' > '$@'
-	chmod 600 '$@'
-
-secure-templates: .bundle/config
-.bundle/config: .bundle/config.j2 Documents/Database.kdbx
-	$(mkd)
-	template '$<' > '$@'
-	chmod 600 '$@'
-
-secure-templates: .aws/credentials
-.aws/credentials: .aws/credentials.j2 Documents/Database.kdbx
-	$(mkd)
-	template '$<' > '$@'
-	chmod 600 '$@'
-
-secure-templates: .netrc
-.netrc: .netrc.j2 Documents/Database.kdbx
-	$(mkd)
-	template '$<' > '$@'
 	chmod 600 '$@'
