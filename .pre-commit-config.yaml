@@ -9,6 +9,7 @@ repos:
         exclude: >-
           myclirc|netrc|packet-cli|mycli-history|scwrc|gcloud\.json|\.envrc\.private
       - id: check-toml
+      - id: check-toml
         files: Pipfile
       - id: trailing-whitespace
         exclude: \.aspell\.en\.pws
