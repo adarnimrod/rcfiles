@@ -3,7 +3,7 @@ last_zip != find -maxdepth 1 -name '*.zip' \! -name '${last_month}.zip' -printf 
 new_files != find reciepts/ -type f -newer ${last_zip}
 
 ${last_month}.zip: ${new_files}
-	zip $@ $^
+	zip $@ $(patsubst %,'%',$^)
 
 .PHONY: clean
 clean:
