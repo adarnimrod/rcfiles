@@ -25,6 +25,11 @@ ssh-keys: .ssh/smile_sre_shared_rsa
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
+.ssh/%_ecdsa: Documents/Database.kdbx
+	$(mkd)
+	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
+	chmod 600 '$@'
+
 .ssh/%_ed25519: Documents/Database.kdbx
 	$(mkd)
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
