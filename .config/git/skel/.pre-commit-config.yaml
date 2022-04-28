@@ -171,6 +171,11 @@ repos:
     hooks:
       - id: pyupgrade
 
+  - repo: https://github.com/hadialqattan/pycln.git
+    rev: v1.3.2
+    hooks:
+      - id: pycln
+
   - repo: https://github.com/pycqa/pydocstyle.git
     rev: 6.1.1
     hooks:
