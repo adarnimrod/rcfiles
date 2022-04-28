@@ -384,7 +384,6 @@ then
     export CDPATH="$CDPATH:$HOME/Repositories/Shore"
     export CDPATH="$CDPATH:$HOME/Repositories/nehesr"
     export CDPATH="$CDPATH:$HOME/Repositories/GitHub"
-    export CDPATH="$CDPATH:$HOME/Repositories/Smile"
     export CDPATH="$CDPATH:$HOME/Repositories"
     # shellcheck disable=SC2016
     export PROMPT_COMMAND='__prompt'
