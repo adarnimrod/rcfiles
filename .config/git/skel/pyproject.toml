@@ -1,0 +1,39 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools >= 61.0.0",
+  "wheel",
+]
+
+[project]
+authors = [
+  { name = "Nimrod Adar", email = "nimrod@shore.co.il"},
+]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+]
+dependencies = [
+]
+description = ""
+dynamic = [
+  "version",
+]
+keywords = [
+]
+license = {file = "LICENSE.txt"}
+name = ""
+readme = "README.rst"
+
+[project.scripts]
+sampleproject = "foo:main"
+
+[project.optional-dependencies]
+dev = [
+]
+
+[project.urls]
+homepage = ""
+
+[tool.setuptools.dynamic]
+version = {attr = "foo.__version__"}
