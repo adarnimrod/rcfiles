@@ -98,6 +98,7 @@ alias deinstalled="dpkg --get-selections | awk 'BEGIN {exitcode=1}; \$2==\"deins
 alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
 alias diff='diff --unified'
 alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
+alias escape='printf "%q"'
 alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
 alias gen-mac='hexdump -n5 -e '\''"02" 5/1 ":%02X" "\n"'\'' /dev/urandom'
 alias gen-ssh-config="rc_make .ssh/config"
@@ -305,6 +306,10 @@ temp_venv () {
 toux () {
     touch "$@"
     chmod +x "$@"
+}
+
+unescape () {
+    echo "$@" | xargs
 }
 
 __prompt () {
