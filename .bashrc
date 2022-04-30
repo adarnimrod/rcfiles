@@ -255,7 +255,7 @@ new_experiment () {
         git clone git@git.shore.co.il:nimrod/experiments.git "$repo"
     fi
     # shellcheck disable=SC2164
-    cd "$HOME/Repositories/Shore/experiments"
+    cd "$repo"
     git checkout master
     git checkout -b "$name/master"
 }
