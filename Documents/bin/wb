@@ -7,7 +7,7 @@ TMUX_SOCKET='workbench'
 DEFAULT_SESSION='workbench'
 
 usage() {
-    echo "$(basename "$0"): [-h|--help] [-u|--update] [-d|--dry-update] [-l|--list] [-k|--kill] [-s|--kill-server] [-i|--in-workbench] [SESSION_NAME]"
+    echo "Usage: $(basename "$0") [-h|--help] [-u|--update] [-d|--dry-update] [-l|--list] [-k|--kill] [-s|--kill-server] [-i|--in-workbench] [SESSION_NAME]"
 }
 
 fail() {
@@ -16,7 +16,10 @@ fail() {
 }
 
 not_from_toolbox() {
-    fail 'This command cannot run from within the workbench container.'
+    if in_toolbox
+    then
+        fail 'This command cannot run from within the workbench container.'
+    fi
 }
 
 command -v toolbox >/dev/null || fail 'Toolbox is not installed.'
@@ -79,26 +82,21 @@ kill_tmux() {
 }
 
 kill_server() {
-    if in_toolbox
-    then
-        not_from_toolbox
-    fi
+    not_from_toolbox
     kill_tmux
     toolbox rm -f "$CONTAINER"
 }
 
 update() {
-    if in_toolbox
-    then
-        not_from_toolbox
-    fi
+    not_from_toolbox
     if ! is_latest
     then
         kill_server
         podman image prune --filter 'label=com.github.containers.toolbox=true' --force >/dev/null
         toolbox create --image "$IMAGE"
     fi
-    podman exec -it -w "$HOME" -u "$(whoami)" "$CONTAINER" git pull
+    toolbox run --container "$CONTAINER" -- true
+    podman exec -it -w "$HOME" -u "$(whoami)" "$CONTAINER" git Pull
 }
 
 dry_update() {
