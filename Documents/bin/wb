@@ -98,7 +98,7 @@ update() {
         podman image prune --filter 'label=com.github.containers.toolbox=true' --force >/dev/null
         toolbox create --image "$IMAGE"
     fi
-    toolbox run --container "$CONTAINER" -- git -C "$HOME" Pull
+    podman exec -it -w "$HOME" -u "$(whoami)" "$CONTAINER" git pull
 }
 
 dry_update() {
