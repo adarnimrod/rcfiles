@@ -15,6 +15,14 @@ ssh-keys: .ssh/github_ed25519
 ssh-keys: .ssh/shore_ecdsa
 ssh-keys: .ssh/shore_ed25519
 ssh-keys: .ssh/shore_rsa
+ssh-keys: .ssh/schoolinks_ci_rsa
+ssh-keys: .ssh/schoolinks_dev_rsa
+ssh-keys: .ssh/schoolinks_prod_rsa
+ssh-keys: .ssh/schoolinks_sftp_rsa
+ssh-keys: .ssh/schoolinks_stable_rsa
+ssh-keys: .ssh/schoolinks_staging_rsa
+ssh-keys: .ssh/schoolinks_qa_rsa
+ssh-keys: .ssh/schoolinks_vpn_rsa
 
 .ssh/%_rsa: Documents/Database.kdbx
 	$(mkd)
