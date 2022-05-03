@@ -15,6 +15,7 @@ ssh-keys: .ssh/github_ed25519
 ssh-keys: .ssh/shore_ecdsa
 ssh-keys: .ssh/shore_ed25519
 ssh-keys: .ssh/shore_rsa
+ssh-keys: .ssh/schoolinks_apm_rsa
 ssh-keys: .ssh/schoolinks_ci_rsa
 ssh-keys: .ssh/schoolinks_dev_rsa
 ssh-keys: .ssh/schoolinks_prod_rsa
