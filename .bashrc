@@ -48,6 +48,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export LYNX_SAVE_SPACE="$HOME/Downloads"
 export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
 export NODE_PENDING_DEPRECATION='1'
+export NPM_CONFIG_USERCONFIG="$HOME/.config/npmrc"
 export PATH="$GOPATH/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
