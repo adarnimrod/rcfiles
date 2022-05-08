@@ -1,0 +1,27 @@
+#!/bin/sh
+set -eu
+
+usage () {
+    echo "Usage: $0 HOST"
+    exit 1
+}
+
+remove () {
+    until [ -z "$(ssh-keygen -R "$1" 2>/dev/null)" ]
+    do
+        true
+    done
+
+}
+
+if [ "$#" -ne 1 ]
+then
+    usage
+fi
+
+host="$1"
+
+for i in "$host" $(dig +short "$host")
+do
+    remove "$i"
+done
