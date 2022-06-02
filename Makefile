@@ -18,7 +18,9 @@ ssh-keys: .ssh/shore_rsa
 ssh-keys: .ssh/schoolinks_apm_rsa
 ssh-keys: .ssh/schoolinks_ci_rsa
 ssh-keys: .ssh/schoolinks_dev_rsa
+ssh-keys: .ssh/schoolinks_ed25519
 ssh-keys: .ssh/schoolinks_prod_rsa
+ssh-keys: .ssh/schoolinks_rsa
 ssh-keys: .ssh/schoolinks_sftp_rsa
 ssh-keys: .ssh/schoolinks_stable_rsa
 ssh-keys: .ssh/schoolinks_staging_rsa
