@@ -1,2 +1,0 @@
-#!/bin/sh
-exec sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'

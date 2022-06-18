@@ -1,0 +1,77 @@
+#!/bin/sh
+set -eu
+
+usage () {
+    echo "Usage: $0 [-d] [all|apt|flatpak|workbench]"
+}
+
+header () {
+    printf '\n\e[1;92m=== %s ====\e[0m\n\n' "$*" >&2
+}
+
+_apt () {
+    header Updating APT
+    if [ -n "${DOWNLOAD_ONLY:-}" ]
+    then
+        sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'
+    else
+        sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --yes --auto-remove --purge && apt-get autoclean'
+    fi
+}
+
+_flatpak() {
+    header Updating Flatpak
+    flatpak --system update --appstream
+
+    if [ -n "${DOWNLOAD_ONLY:-}" ]
+    then
+        flatpak --system update --assumeyes --no-deploy
+    else
+        flatpak --system update --assumeyes
+        flatpak --system uninstall --unused --assumeyes
+    fi
+}
+
+_workbench() {
+    header Updating Workbench
+    if [ -n "${DOWNLOAD_ONLY:-}" ]
+    then
+        wb --dry-update
+    else
+        wb --update
+    fi
+}
+
+_all() {
+    _apt
+    _flatpak
+    _workbench
+}
+
+while getopts 'dh' opt
+do
+    case "$opt" in
+        d) DOWNLOAD_ONLY=1;;
+        h) usage;;
+        *) usage; exit 1;;
+    esac
+done
+
+shift "$(( OPTIND - 1 ))"
+
+if [ "$#" -eq 0 ]
+then
+    _all
+elif [ "$#" -gt 1 ]
+then
+    usage
+    exit 1
+else
+    case "$1" in
+        all) _all;;
+        apt) _apt;;
+        flatpak) _flatpak;;
+        workbench|wb) _workbench;;
+        *) usage; exit 1;;
+    esac
+fi
