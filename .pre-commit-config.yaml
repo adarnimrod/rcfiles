@@ -7,7 +7,7 @@ repos:
       - id: check-merge-conflict
       - id: check-symlinks
         exclude: >-
-          myclirc|netrc|packet-cli|mycli-history|scwrc|gcloud\.json|\.envrc\.private
+          myclirc|netrc|packet-cli|mycli-history|scwrc|gcloud\.json|\.envrc\.private|\.config/systemd/user
       - id: check-toml
       - id: check-toml
         files: Pipfile
