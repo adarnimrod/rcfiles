@@ -1,1 +1,2 @@
 export CHROMATIC_PROJECT_TOKEN='{{ run(["ph", "show", "--field", "Token", "SchooLinks/Chromatic"])["stdout"] }}'
+export SOPS_KMS_ARN='{{ run(["ph", "show", "--field", "ARN", "SchooLinks/SOPS KMS key"])["stdout"] }}'
