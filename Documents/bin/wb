@@ -100,6 +100,7 @@ update() {
 }
 
 dry_update() {
+    not_from_toolbox
     podman image pull "$IMAGE" > /dev/null
 }
 
