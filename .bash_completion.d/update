@@ -8,7 +8,7 @@ _update() {
     then
         COMPREPLY=($(compgen -W "$opts" -- "$cur"))
     else
-        COMPREPLY=($(compgen -W "all apt flatpak workbench" -- "$cur"))
+        COMPREPLY=($(compgen -W "$(update -l)" -- "$cur"))
     fi
 }
 

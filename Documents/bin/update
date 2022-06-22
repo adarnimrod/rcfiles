@@ -2,14 +2,24 @@
 set -eu
 
 usage () {
-    echo "Usage: $0 [-d] [all|apt|flatpak|workbench]"
+    echo "Usage: $(basename "$0") [-d] [$(list_supported | tr '\n' '|')]"
 }
 
 header () {
     printf '\n\e[1;92m=== %s ====\e[0m\n\n' "$*" >&2
 }
 
+fail() {
+    printf '\e[1;91m%s\e[0m\n' "$*" >&2
+    exit 1
+}
+
+has() {
+    command -v "$1" >/dev/null 2>&1
+}
+
 _apt () {
+    has apt-get || fail apt-get not found.
     header Updating APT
     if [ -n "${DOWNLOAD_ONLY:-}" ]
     then
@@ -20,6 +30,7 @@ _apt () {
 }
 
 _flatpak() {
+    has flatpak || fail flatpak not found.
     header Updating Flatpak
     flatpak --system update --appstream
 
@@ -33,6 +44,8 @@ _flatpak() {
 }
 
 _workbench() {
+    has wb || fail wb not found.
+    ! wb -i || fail Cannot update the workbench container from inside the workbench container.
     header Updating Workbench
     if [ -n "${DOWNLOAD_ONLY:-}" ]
     then
@@ -43,16 +56,24 @@ _workbench() {
 }
 
 _all() {
-    _apt
-    _flatpak
-    _workbench
+    ! has apt-get || _apt
+    ! has flatpak || _flatpak
+    ! { has wb || wb -i; } || _workbench
 }
 
-while getopts 'dh' opt
+list_supported() {
+    ! has apt-get || echo apt
+    ! has flatpak || echo flatpak
+    ! has wb || wb -i || echo workbench
+    printf '%s' all
+}
+
+while getopts 'dhl' opt
 do
     case "$opt" in
         d) DOWNLOAD_ONLY=1;;
-        h) usage;;
+        h) usage; exit;;
+        l) list_supported; exit;;
         *) usage; exit 1;;
     esac
 done
