@@ -23,9 +23,9 @@ _apt () {
     header Updating APT
     if [ -n "${DOWNLOAD_ONLY:-}" ]
     then
-        sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --download-only --yes && apt-get autoclean'
+        sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade -o DPkg::Lock::Timeout=300 --download-only --yes && apt-get autoclean'
     else
-        sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade --yes --auto-remove --purge && apt-get autoclean'
+        sudo /bin/sh -c 'apt-get update && apt-get dist-upgrade -o DPkg::Lock::Timeout=300 --yes --auto-remove --purge && apt-get autoclean'
     fi
 }
 
