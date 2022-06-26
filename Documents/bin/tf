@@ -18,15 +18,14 @@ do
         additional_args=''
         if [ -f "$workspace.tfvars" ]
         then
-            additional_args="$additional_args -var-files=$workspace.tfvars"
+            additional_args="$additional_args -var-file=$workspace.tfvars"
         fi
         if [ -d "$workspace" ]
         then
             additional_args="$additional_args $(find "$workspace" -type f -name '*.tfvars' -exec printf '-var-file=%s ' {} \;)"
         fi
-        exec terraform "$@" "-var-file=$workspace.tfvars"
     fi
 done
 
 # shellcheck disable=SC2086
-exec terraform "$@" $additional_args
+exec terraform "$@" ${additional_args:-}
