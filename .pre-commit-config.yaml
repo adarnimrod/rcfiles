@@ -38,7 +38,7 @@ repos:
         args: ["--filter-files", "--profile", "black"]
 
   - repo: https://github.com/ambv/black
-    rev: 21.8b0
+    rev: 22.6.0
     hooks:
       - id: black
         exclude: &excluded_pythonscripts pythonrc.py|rabbitmqadmin
