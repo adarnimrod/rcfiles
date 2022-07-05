@@ -192,6 +192,16 @@ ansible_all () {
     popd
 }
 
+container_name() {
+    if [ -f /run/.containerenv ]
+    then
+        # shellcheck disable=SC1091
+        ( . /run/.containerenv; echo "$name"; )
+    else
+        hostname -s
+    fi
+}
+
 ddg () {
     w3m "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
 }
