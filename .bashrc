@@ -186,7 +186,7 @@ alias yellow="printf '\e[1;93m%s\e[0m\n'"
 alias xargs="xargs "
 
 ansible_all () {
-    pushd ~/Repositories/Shore/homelab || return
+    pushd ~/Repositories/Shore/homelab/Ansible || return
     ansible all "$@"
     # shellcheck disable=SC2164
     popd
