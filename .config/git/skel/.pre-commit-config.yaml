@@ -176,11 +176,6 @@ repos:
     hooks:
       - id: pycln
 
-  - repo: https://github.com/pycqa/pydocstyle.git
-    rev: 6.1.1
-    hooks:
-      - id: pydocstyle
-
   - repo: https://github.com/PyCQA/docformatter.git
     rev: v1.4
     hooks:
