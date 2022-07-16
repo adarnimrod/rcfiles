@@ -1,5 +1,9 @@
 include *.rst
 include *.txt
-exclude .pre-commit-config.yaml
-exclude .gitlab-ci.yml
+recursive-exclude tests *
+recursive-exclude report *
 exclude .gitignore
+exclude .gitlab-ci.yml
+exclude .pre-commit-config.yaml
+exclude Makefile
+exclude Dockerfile
