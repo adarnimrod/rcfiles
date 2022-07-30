@@ -306,11 +306,6 @@ sync_comics () {
     find "$HOME/Downloads/Comics/" -name "$(date --date '2 month ago' +'0-Day\ Week\ of\ %Y.%m.*')" -exec rm -r {} +
 }
 
-sync_podcasts () (
-    cd || exit 1
-    unison podcasts
-)
-
 temp_venv () {
     cdtemp
     venv .

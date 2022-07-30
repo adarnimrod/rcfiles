@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+
+XDG_DOWNLOAD_DIR="${XDG_DOWNLOAD_DIR:-$HOME/Downloads}"
+mkdir -p "$XDG_DOWNLOAD_DIR/Podcasts"
+
+exec wget \
+    --continue \
+    --cut-dirs=3 \
+    --directory-prefix "$XDG_DOWNLOAD_DIR/Podcasts" \
+    --mirror \
+    --no-host-directories \
+    --no-parent \
+    --recursive \
+    --reject '*.htm,*.html,index.htm*,robots.txt' \
+    --show-progress \
+    --user-agent sync-podcasts \
+    https://library.shore.co.il/webdav/nimrod/Podcasts/

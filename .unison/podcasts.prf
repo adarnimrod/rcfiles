@@ -1,7 +1,0 @@
-root = Downloads/Podcasts/
-root = ssh://kodi.shore.co.il//srv/library/nimrod/Podcasts
-path = .
-batch = true
-
-#nocreation
-#nodeletion
