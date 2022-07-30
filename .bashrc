@@ -192,6 +192,10 @@ ansible_all () {
     popd
 }
 
+black8() {
+    black "$@" && flake8 "$@"
+}
+
 container_name() {
     if [ -f /run/.containerenv ]
     then
