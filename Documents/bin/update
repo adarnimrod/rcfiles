@@ -55,14 +55,26 @@ _workbench() {
     fi
 }
 
+_pkg_add() {
+    has pkg_add || fail pkg_add not found.
+    header Updating Workbench
+    if [ -n "${DOWNLOAD_ONLY:-}" ]
+    then
+        doas pkg_add -un
+    else
+        doas pkg_add -u
+}
+
 _all() {
     ! has apt-get || _apt
+    ! has pkg_add || _pkg_add
     ! has flatpak || _flatpak
     ! { has wb || wb -i; } || _workbench
 }
 
 list_supported() {
     ! has apt-get || echo apt
+    ! has pkg_add || echo pkg_add
     ! has flatpak || echo flatpak
     ! has wb || wb -i || echo workbench
     printf '%s' all
@@ -93,6 +105,7 @@ else
         apt) _apt;;
         flatpak) _flatpak;;
         workbench|wb) _workbench;;
+        pkg|pkg_add) _pkg_add;;
         *) usage; exit 1;;
     esac
 fi
