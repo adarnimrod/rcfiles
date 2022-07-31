@@ -1,0 +1,19 @@
+if [ -f /usr/share/bash-completion/completions/ssh ]
+then
+    . /usr/share/bash-completion/completions/ssh
+    complete -F _ssh ssmh unssh
+elif [ -f /usr/local/share/bash-completion/completions/ssh ]
+then
+    . /usr/local/share/bash-completion/completions/ssh
+    complete -F _ssh ssmh unssh
+fi
+
+if [ -f /usr/share/bash-completion/completions/scp ]
+then
+    . /usr/share/bash-completion/completions/scp
+    complete -F _scp -o nospace scp
+elif [ -f /usr/local/share/bash-completion/completions/scp ]
+then
+    . /usr/local/share/bash-completion/completions/scp
+    complete -F _scp -o nospace scp
+fi
