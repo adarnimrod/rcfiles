@@ -128,3 +128,6 @@ repos:
     hooks:
       - id: codespell
         exclude: \.local/share/applications/.*\.desktop
+        args:
+          - "-L"
+          - "doas"
