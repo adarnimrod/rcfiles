@@ -97,6 +97,7 @@ alias deconcat="perl -pe 's/\\\\n/\\n/g'"
 # shellcheck disable=SC2142
 alias deinstalled="dpkg --get-selections | awk 'BEGIN {exitcode=1}; \$2==\"deinstall\" {print \$1; exitcode=0}; END {exit exitcode}'"
 alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
+alias df='df --output=source,fstype,size,used,avail,pcent,iavail,ipcent,target'
 alias diff='diff --unified'
 alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
 alias escape='printf "%q"'
