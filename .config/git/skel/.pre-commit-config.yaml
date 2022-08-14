@@ -194,3 +194,14 @@ repos:
           - "--allow-unsafe"
           - "--generate-hashes"
           - "--no-upgrade"
+
+  - repo: https://github.com/trailofbits/pip-audit.git
+    rev: v2.4.3
+    hooks:
+      - id: pip-audit
+      - id: pip-audit
+        name: pip-audit requirements files
+        args:
+          - "--requirement"
+          - "requirements.txt"
+          - "--fix"
