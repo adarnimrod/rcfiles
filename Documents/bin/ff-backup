@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+
+if flatpak ps --columns=application | grep --silent --fixed-strings 'org.mozilla.firefox'
+then
+    echo 'Firefox is running, aborting backup.' >&2
+    exit 1
+fi
+
+ff_home="$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox"
+profile="$(awk -F '=' '$1 == "Path" {print $2}' "$ff_home/profiles.ini" | xargs)"
+
+exec tar --directory "$ff_home" \
+    --create \
+    --zstd \
+    "--file=$HOME/Documents/ff-backup.tar.zstd" \
+    profiles.ini "$profile"
