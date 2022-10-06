@@ -2,3 +2,7 @@
 machine library.shore.co.il
     login {{ run(["ph", "show", "--field", "username", "shore.co.il/LDAP"])["stdout"] }}
     password {{ run(["ph", "show", "--field", "Password", "shore.co.il/LDAP"])["stdout"] }}
+
+machine schoolinks.atlassian.net
+    login {{ run(["ph", "show", "--field", "username", "SchooLinks/Jira token"])["stdout"] }}
+    password {{ run(["ph", "show", "--field", "Password", "SchooLinks/Jira token"])["stdout"] }}
