@@ -168,7 +168,7 @@ alias sudome="sudome "
 alias tfa='tf apply tfplan'
 alias tfaa='tf apply -auto-approve'
 alias tfp='tf plan -out tfplan'
-alias tfvf='tf validate && tf fmt -diff'
+alias tfvf='tf init -backend=false && tf validate && tf fmt -diff'
 alias todo="vim \$HOME/Documents/TODO.yml"
 # shellcheck disable=SC2142
 alias tolower='awk "{print tolower(\$0)}"'
@@ -425,9 +425,11 @@ if [ "$HOSTNAME" = 'toolbox' ]
 then
     alias flatpak-spawn='/usr/libexec/flatpak-xdg-utils/flatpak-spawn --host'
     gio () { /usr/libexec/flatpak-xdg-utils/flatpak-spawn --host gio "$@"; }
-    [ ! -S "$XDG_RUNTIME_DIR/podman/podman.sock" ] ||
-        [ ! -w "$XDG_RUNTIME_DIR/podman/podman.sock" ] ||
+    if [  -S "$XDG_RUNTIME_DIR/podman/podman.sock" ] && [ -w "$XDG_RUNTIME_DIR/podman/podman.sock" ]
+    then
         alias podman='podman --remote'
+        export DOCKER_HOST=unix://"$XDG_RUNTIME_DIR/podman/podman.sock"
+    fi
 fi
 
 # shellcheck disable=SC2119
