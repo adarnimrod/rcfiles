@@ -6,7 +6,7 @@ set -eu
 # AWS_SESSION_TOKEN) and executes the command given.
 
 usage() {
-    echo "$(basename "$0"): [-h|--help] ROLE_ARN COMMAND [PARAMETER [PARAMETER ...]]"
+    echo "$(basename "$0"): [-h|--help] ROLE_ARN|ROLE_NAME COMMAND [PARAMETER [PARAMETER ...]]"
 }
 
 command -v aws > /dev/null || { echo 'Cannot find the AWS CLI, exiting.' >&2; exit 1; }
@@ -17,14 +17,21 @@ then
     exit 1
 fi
 
-role_arn="$1"
+role="$1"
 shift
+
+if [ "$role" = "${role##arn:}" ]
+then
+    role_arn="$(aws iam list-roles --query "Roles[?RoleName==\`${role}\`].Arn" --output text)"
+else
+    role_arn="$role"
+fi
 
 credentials="$(aws sts assume-role \
     --output text \
     --duration-seconds 3600 \
     --role-arn "$role_arn" \
-    --role-session-name 'CircleCI_executor')"
+    --role-session-name 'assume-role-cli')"
 
 AWS_ACCESS_KEY_ID="$(echo "$credentials" | awk 'NR == 2 {print $2}')"
 AWS_SECRET_ACCESS_KEY="$(echo "$credentials" | awk 'NR == 2 {print $4}')"
