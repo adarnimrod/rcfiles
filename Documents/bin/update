@@ -43,6 +43,16 @@ _flatpak() {
     fi
 }
 
+fwupd() {
+    has fwupdmgr || fail fwupdmgr not found.
+    if [ -n "${DOWNLOAD_ONLY:-}" ]
+    then
+        sudo fwupdmgr get-updates --assume-yes || [ "$?" -eq 2 ]
+    else
+        sudo /bin/sh -c '{ fwupdmgr get-updates --assume-yes || [ "$?" -eq 2 ]; } && { fwupdmgr update --assume-yes || [ "$?" -eq 2 ]; }'
+    fi
+}
+
 _workbench() {
     has wb || fail wb not found.
     ! wb -i || fail Cannot update the workbench container from inside the workbench container.
@@ -70,6 +80,7 @@ _all() {
     ! has apt-get || _apt
     ! has pkg_add || _pkg_add
     ! has flatpak || _flatpak
+    ! has fwupdmgr || fwupd
     ! { has wb || wb -i; } || _workbench
 }
 
@@ -77,6 +88,7 @@ list_supported() {
     ! has apt-get || echo apt
     ! has pkg_add || echo pkg_add
     ! has flatpak || echo flatpak
+    ! has fwupdmgr || echo fwupd
     ! has wb || wb -i || echo workbench
     printf '%s' all
 }
@@ -105,6 +117,7 @@ else
         all) _all;;
         apt) _apt;;
         flatpak) _flatpak;;
+        fwupd|fwupdmgr) fwupd;;
         workbench|wb) _workbench;;
         pkg|pkg_add) _pkg_add;;
         *) usage; exit 1;;
