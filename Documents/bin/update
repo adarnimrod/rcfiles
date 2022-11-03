@@ -45,6 +45,7 @@ _flatpak() {
 
 fwupd() {
     has fwupdmgr || fail fwupdmgr not found.
+    header Updating fwupd
     if [ -n "${DOWNLOAD_ONLY:-}" ]
     then
         sudo fwupdmgr get-updates --assume-yes || [ "$?" -eq 2 ]
