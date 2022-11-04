@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+if wb -u
+then
+    flatpak-spawn --host \
+        sudo systemctl restart systemd-resolved.service
+else
+    sudo systemctl restart systemd-resolved.service
+fi
+ssh ns1.shore.co.il doas rcctl restart unbound
