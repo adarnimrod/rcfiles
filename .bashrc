@@ -82,7 +82,7 @@ alias black='black --line-length 79'
 alias blue="printf '\e[1;94m%s\e[0m\n'"
 alias bold="printf '\e[1m%s\e[0m\n'"
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
-alias cdtemp='cd $(mktemp -d)'
+alias cdtemp='cd "$(mktemp -d)"'
 alias check_tcp='nc -vzw10'
 alias check_unix='nc -Uvzw3'
 alias clean-swp="find \$HOME/ -name '*.swp' -delete"
