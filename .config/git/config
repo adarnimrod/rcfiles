@@ -10,7 +10,7 @@
     cleaan = clean -dX
     cleaaan = clean -dx
     default-branch = name-rev --name-only origin/HEAD
-    dif = diff --color-words
+    dif = diff --color-words --ignore-all-space
     empty-commit = commit --allow-empty
 	exec = "!${SHELL:-/bin/sh} -ic "
     ff = merge --no-edit --ff-only origin/HEAD
