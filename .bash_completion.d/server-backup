@@ -1,0 +1,14 @@
+# vim: ft=bash
+
+_server_backup() {
+    local cur prev words cword opts
+    _init_completion || return
+    opts='-c'
+
+    if [[ $cur == -* ]]
+    then
+        COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    fi
+}
+
+complete -F _server_backup server-backup
