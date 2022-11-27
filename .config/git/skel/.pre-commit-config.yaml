@@ -58,6 +58,9 @@ repos:
     rev: 0.7.14
     hooks:
       - id: mdformat
+        additional_dependencies:
+          - mdformat-frontmatter
+          - mdformat-gfm
 
   - repo: https://github.com/shellcheck-py/shellcheck-py.git
     rev: v0.8.0.4
