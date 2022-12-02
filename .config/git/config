@@ -18,6 +18,7 @@
     forget = reset HEAD^
     iec = commit --allow-empty --only --message \"Initial empty commit.\"
     merg = merge --no-edit
+    pick = log --pickaxe-all --patch -G
     pop = stash pop
     posh = push --set-upstream origin HEAD
     pre-commit = ! pre-commit run --files $(git uncommitted)
@@ -71,6 +72,9 @@
 [merge]
     tool = meld
     ff = false
+
+[notes]
+    rewriteRef = refs/notes/commits
 
 [push]
     followTags = true
