@@ -167,7 +167,7 @@ alias sudo="sudo "
 alias sudome="sudome "
 alias tfa='tf apply tfplan'
 alias tfaa='tf apply -auto-approve'
-alias tfp='tf plan -out tfplan'
+alias tfp='tf init -backend=false && tf plan -out tfplan'
 alias tfvf='tf init -backend=false && tf validate && tf fmt -diff'
 alias todo="vim \$HOME/Documents/TODO.yml"
 # shellcheck disable=SC2142
