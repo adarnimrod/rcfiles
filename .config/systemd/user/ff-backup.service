@@ -1,0 +1,5 @@
+[Unit]
+Description=Firefox backup
+
+[Service]
+ExecStart=/home/nimrod/Documents/bin/ff-backup

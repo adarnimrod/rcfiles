@@ -1,0 +1,9 @@
+[Unit]
+Description=Firefox backup
+
+[Timer]
+OnCalendar=09:00
+OnCalendar=21:00
+
+[Install]
+WantedBy=default.target
