@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Terraform wrapper to include a variable file is one exists that matches the workspace name"""  # noqa: E501
+"""Terraform wrapper to include variable files if they match the workspace
+name."""
 
 import glob
 import os
@@ -21,19 +22,33 @@ def get_workspace():
     return proc.stdout.strip()
 
 
+def is_debug_set():
+    """Check if the debug environment variable is set."""
+    debug = os.getenv("TF_DEBUG", "").lower()
+    return debug in ["1", "true"]
+
+
 if __name__ == "__main__":
+    # In case tf was run with no arguments.
     if len(sys.argv) == 1:
         os.execlp("terraform", "terraform")  # nosec
+
+    # Build a new argument list.
+    args = sys.argv[:]
+    args[0] = "terraform"
+
+    # Check if the Terraform command is one that we need to modify (include
+    # tfvars files). If not, execute Terraform with the same arguments.
     for command in TF_COMMANDS_TO_MODIFY:
         if command in sys.argv:
             break
     else:
-        args = sys.argv[:]
-        args[0] = "terraform"
         os.execvp("terraform", args)  # nosec
 
-    args = sys.argv[:]
-    args[0] = "terraform"
+    # We need to add the var files after the Terraform command (if we add it
+    # before Terraform doesn't accept them) but not at the end (not to modify
+    # other argument that accept optional values). So we add them right after
+    # the Terraform command.
     command_index = args.index(command)
     workspace = get_workspace()
     var_file = pathlib.Path(f"{workspace}.tfvars")
@@ -43,5 +58,9 @@ if __name__ == "__main__":
     elif var_dir.exists() and var_dir.is_dir():
         for var_file in glob.glob(f"{var_dir}/*.tfvars"):
             args.insert(command_index + 1, f"-var-file={var_file}")
-    print(args, file=sys.stderr)
+
+    # Print the new argument list to stderr if debugging is enabled.
+    if is_debug_set():
+        print(args, file=sys.stderr)
+
     os.execvp("terraform", args)  # nosec
