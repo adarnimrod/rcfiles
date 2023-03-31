@@ -433,6 +433,7 @@ then
     then
         alias podman='podman --remote'
         export DOCKER_HOST=unix://"$XDG_RUNTIME_DIR/podman/podman.sock"
+        export CONTAINER_HOST=unix://"$XDG_RUNTIME_DIR/podman/podman.sock"
     fi
 fi
 
