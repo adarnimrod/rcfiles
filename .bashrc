@@ -29,6 +29,7 @@ export EDITOR=vim
 export GITLAB_BASE_URL='https://git.shore.co.il/api/v4'
 export GITLAB_HOST='https://git.shore.co.il'
 export GOPATH="$HOME/.local/golang"
+export GOPRIVATE="*"
 export HELM_HOME="$HOME/.helm"
 export HISTCONTROL=ignoreboth:erasedups
 export HISTFILE="$HOME/Documents/.history"
