@@ -41,12 +41,12 @@ fi
 #FIXME: Remove domain, just hostname.
 
 case "$hostname" in
-    ea6350) nextcloud;;
     ElementaryOS) nextcloud;;
+    YOGA-C930) notify_send "$@";;
     host01) nextcloud;;
     kodi) nextcloud;;
+    mr8300) nextcloud;;
     ns1) nextcloud;;
     ns4) nextcloud;;
-    YOGA-C930) notify_send "$@";;
     *) ;;
 esac
