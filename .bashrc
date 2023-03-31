@@ -69,6 +69,7 @@ export PYTHONSTARTUP=~/.config/pythonrc.py
 export PYTHON_GITLAB_CFG=~/.config/python-gitlab.cfg
 export REDISCLI_HISTFILE="$HOME/Documents/.rediscli_history"
 export TFENV_AUTO_INSTALL=false
+export TF_DEBUG=1
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
 # shellcheck disable=SC1090,SC1091
 [ ! -f "$HOME/.bashrc.private" ] || . "$HOME/.bashrc.private"
