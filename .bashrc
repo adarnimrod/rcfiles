@@ -181,6 +181,7 @@ alias torrent_on='ssh kodi.shore.co.il docker container unpause transmission_rss
 alias toupper='awk "{print toupper(\$0)}"'
 alias transmission-remote='forward kodi.shore.co.il 9091:localhost:9091 && transmission-remote'
 alias unscp="scp -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
+alias unsftp="sftp -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias venv='python3 -m venv'
