@@ -131,6 +131,8 @@ sl-dev-purple = mysql://{{ run(["ph", "show", "--field", "username", "SchooLinks
 # pragma: allowlist nextline secret
 sl-dev-red = mysql://{{ run(["ph", "show", "--field", "username", "SchooLinks/Dev Red Database"])["stdout"] }}:{{ run(["ph", "show", "--field", "Password", "SchooLinks/Dev Red Database"])["stdout"] }}@{{ run(["ph", "show", "--field", "URL", "SchooLinks/Dev Red Database"])["stdout"] }}/{{ run(["ph", "show", "--field", "Database", "SchooLinks/Dev Red Database"])["stdout"] }}
 # pragma: allowlist nextline secret
+sl-e2e = mysql://{{ run(["ph", "show", "--field", "username", "SchooLinks/E2E Database"])["stdout"] }}:{{ run(["ph", "show", "--field", "Password", "SchooLinks/E2E Database"])["stdout"] }}@{{ run(["ph", "show", "--field", "URL", "SchooLinks/E2E Database"])["stdout"] }}/{{ run(["ph", "show", "--field", "Database", "SchooLinks/E2E Database"])["stdout"] }}
+# pragma: allowlist nextline secret
 sl-prod = mysql://{{ run(["ph", "show", "--field", "username", "SchooLinks/Production Database"])["stdout"] }}:{{ run(["ph", "show", "--field", "Password", "SchooLinks/Production Database"])["stdout"] }}@{{ run(["ph", "show", "--field", "URL", "SchooLinks/Production Database"])["stdout"] }}/{{ run(["ph", "show", "--field", "Database", "SchooLinks/Production Database"])["stdout"] }}
 # pragma: allowlist nextline secret
 sl-qa = mysql://{{ run(["ph", "show", "--field", "username", "SchooLinks/QA Database"])["stdout"] }}:{{ run(["ph", "show", "--field", "Password", "SchooLinks/QA Database"])["stdout"] }}@{{ run(["ph", "show", "--field", "URL", "SchooLinks/QA Database"])["stdout"] }}/{{ run(["ph", "show", "--field", "Database", "SchooLinks/QA Database"])["stdout"] }}
