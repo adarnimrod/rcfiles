@@ -1,0 +1,8 @@
+# vim: ft=config
+[distutils]
+index-servers =
+    pypi
+
+[pypi]
+username = __token__
+password = {{ run(["ph", "show", "--field", "Global token", "Web sites/PyPI"])["stdout"] }}
