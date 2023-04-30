@@ -23,6 +23,7 @@ elif command -v w3m >/dev/null
 then
     export BROWSER=w3m
 fi
+export CFLAGS="-g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap"
 export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
 export DOCKER_BUILDKIT=1
 export EDITOR=vim
@@ -49,6 +50,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export LYNX_SAVE_SPACE="$HOME/Downloads"
 export LYNX_TEMP_SPACE="$HOME/.cache/lynx"
+export MAKEFLAGS="-e -k -j4"
 export NODE_PENDING_DEPRECATION='1'
 export NPM_CONFIG_USERCONFIG="$HOME/.config/npmrc"
 export PATH="$GOPATH/bin:$PATH"
@@ -104,7 +106,6 @@ alias df='df --output=source,fstype,size,used,avail,pcent,iavail,ipcent,target'
 alias diff='diff --unified'
 alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
 alias escape='printf "%q"'
-alias gcc='gcc --std=c99 -Wall -Wextra -Werror -pedantic'
 alias gen-mac='hexdump -n5 -e '\''"02" 5/1 ":%02X" "\n"'\'' /dev/urandom'
 alias gen-ssh-config="rc_make .ssh/config"
 alias green="printf '\e[1;92m%s\e[0m\n'"
