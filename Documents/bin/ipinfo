@@ -1,0 +1,36 @@
+#!/bin/sh
+set -eu
+
+is_ip () {
+    echo "$1" | grep --extended-regexp --quiet  '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+}
+
+usage () {
+    echo "USAGE: $(basename "$0") [-h] [hostname or IP address]" >&2
+    echo "If no address is passed, the internet IP address is used instead." >&2
+}
+
+if [ "$#" -eq 0 ]
+then
+    address="$(curl --silent --fail --show-error https://myip.shore.co.il/)"
+elif [ "$#" -gt 1 ]
+then
+    usage
+    exit 1
+elif [ "$1" = "-h" ]
+then
+    usage
+elif is_ip "$1"
+then
+    address="$1"
+else
+    address="$(dig +short "$1")"
+fi
+
+
+if command -v pygmentize > /dev/null
+then
+    curl --silent --fail --show-error --header "Accept: application/json" "https://ipinfo.io/${address}" | pygmentize -l json
+else
+    curl --fail --show-error --header "Accept: application/json" "https://ipinfo.io/${address}"
+fi

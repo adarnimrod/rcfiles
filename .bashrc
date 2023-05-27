@@ -231,7 +231,7 @@ gen_csr () {
 jt () {
     if command -v pygmentize > /dev/null
     then
-        python3 -m json.tool "$@" | pygmentize -l javascript
+        python3 -m json.tool "$@" | pygmentize -l json
     else
         python3 -m json.tool "$@"
     fi
