@@ -184,6 +184,7 @@ alias unscp="scp -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking 
 alias unsftp="sftp -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
+alias utcnow='date --utc --iso-8601=seconds'
 alias venv='python3 -m venv'
 # shellcheck disable=SC2139
 alias wbr="ssh -t ns4.shore.co.il $(command -v wb)"
