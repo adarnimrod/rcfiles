@@ -398,6 +398,7 @@ fi
 if [ -n "${BASH:-}" ]
 then
     export CDPATH=".:$HOME"
+    export CDPATH="$CDPATH:$HOME/Documents"
     export CDPATH="$CDPATH:$HOME/Repositories/Shore"
     export CDPATH="$CDPATH:$HOME/Repositories/nehesr"
     export CDPATH="$CDPATH:$HOME/Repositories/GitHub"
