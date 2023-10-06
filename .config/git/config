@@ -1,3 +1,6 @@
+[advice]
+    skippedCherryPicks = false
+
 [apply]
     whitespace = fix
 
@@ -13,7 +16,7 @@
     dif = diff --color-words --ignore-all-space
     empty-commit = commit --allow-empty
 	exec = "!${SHELL:-/bin/sh} -ic "
-    ff = merge --no-edit --ff-only origin/HEAD
+    ff = merge --no-edit --ff-only
     fixup = !cd "${GIT_PREFIX:-$PWD}" && git commit --fixup $(git last-commit)
     forget = reset HEAD^
     iec = commit --allow-empty --only --message \"Initial empty commit.\"
