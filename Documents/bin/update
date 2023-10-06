@@ -77,12 +77,19 @@ _pkg_add() {
     fi
 }
 
+_presentation() {
+    has podman || fail podman not found.
+    header Updating presentation
+    podman image pull registry.shore.co.il/presentation
+}
+
 _all() {
     ! has apt-get || _apt
     ! has pkg_add || _pkg_add
     ! has flatpak || _flatpak
     ! has fwupdmgr || fwupd
     ! { has wb || wb -i; } || _workbench
+    ! had podman || _presetation
 }
 
 list_supported() {
@@ -91,6 +98,7 @@ list_supported() {
     ! has flatpak || echo flatpak
     ! has fwupdmgr || echo fwupd
     ! has wb || wb -i || echo workbench
+    ! has podman || echo presentation
     printf '%s' all
 }
 
@@ -121,6 +129,7 @@ else
         fwupd|fwupdmgr) fwupd;;
         workbench|wb) _workbench;;
         pkg|pkg_add) _pkg_add;;
+        presentation) _presentation;;
         *) usage; exit 1;;
     esac
 fi
