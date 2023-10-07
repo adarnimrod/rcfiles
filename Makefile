@@ -5,7 +5,12 @@ download = $(curl) --output $@
 mkd = mkdir -p $$(dirname $@)
 
 .PHONY: all
+all: secure-templates
 all: ssh-keys
+all: vendored
+
+.PHONY: secure-templates
+.PHONY: vendored
 
 .PHONY: ssh-keys
 ssh-keys: .ssh/gitlab_ed25519
@@ -42,10 +47,28 @@ ssh-keys: .ssh/schoolinks_vpn_rsa
 	ph show --field Notes "SSH/$$(basename '$@')" > '$@'
 	chmod 600 '$@'
 
-all: .config/pythonrc.py
+vendored: .config/pythonrc.py
 .config/pythonrc.py: Makefile
 	$(mkd)
 	$(download) https://raw.githubusercontent.com/lonetwin/pythonrc/master/pythonrc_pre38.py
+
+vendored: .local/bin/presentation
+.local/bin/presentation: Makefile
+	$(mkd)
+	$(download) https://git.shore.co.il/nimrod/presentation/-/raw/master/presentation
+	chmod +x '$@'
+
+all: .local/bin/gm
+.local/bin/gm: .local/bin/presentation
+	ln -s presentation '$@'
+
+all: .local/bin/pandoc
+.local/bin/pandoc: .local/bin/presentation
+	ln -s presentation '$@'
+
+all: .local/bin/qpdf
+.local/bin/qpdf: .local/bin/presentation
+	ln -s presentation '$@'
 
 all: .ssh/config
 .ssh/config: $(ssh_configs)
@@ -68,8 +91,6 @@ all: .ssh/authorized_keys
 	$(mkd)
 	-$(ansible-local) -m authorized_key -a "user=$$(whoami) key='$$(cat .ssh/localhost.pub)' key_options='from=\"127.0.0.1/8\"'"
 
-.PHONY: secure-templates
-all: secure-templates
 templates != git ls-files -- '*.j2' | sed 's/\.j2$$//'
 secure-templates: ${templates}
 %: %.j2 Documents/Database.kdbx
