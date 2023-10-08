@@ -89,7 +89,7 @@ _all() {
     ! has flatpak || _flatpak
     ! has fwupdmgr || fwupd
     ! { has wb || wb -i; } || _workbench
-    ! had podman || _presetation
+    ! has podman || _presetation
 }
 
 list_supported() {
