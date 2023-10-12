@@ -2,3 +2,5 @@
 include:
   - project: shore/ci-stuff
     file: templates/pre-commit.yml
+  - project: shore/ci-stuff
+    file: templates/dummy.yml
