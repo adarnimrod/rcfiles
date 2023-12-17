@@ -1,6 +1,18 @@
 # shellcheck disable=SC2148 shell=bash
+# vim: ft=sh
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
+
+# Source all of the files in ~/.bashrc.d
+for sourcefile in "$HOME"/.bashrc.d/*
+do
+    if [ -f "$sourcefile" ] && [ "$sourcefile" = "${sourcefile%.j2}" ]
+    then
+        # shellcheck disable=SC1090
+        . "$sourcefile"
+    fi
+done
 
 export ANSIBLE_CACHE_PLUGIN=jsonfile
 export ANSIBLE_CACHE_PLUGIN_CONNECTION="$HOME/.ansible/facts"
@@ -72,8 +84,6 @@ export PYTHON_GITLAB_CFG=~/.config/python-gitlab.cfg
 export REDISCLI_HISTFILE="$HOME/Documents/.rediscli_history"
 export TF_DEBUG=1
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
-# shellcheck disable=SC1090,SC1091
-[ ! -f "$HOME/.bashrc.private" ] || . "$HOME/.bashrc.private"
 
 alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
 alias all-hosts='echo -n ns1 ns4 host01 kodi mr8300 | xargs -d " " -I HOST ssh HOST.shore.co.il'
