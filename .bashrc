@@ -82,7 +82,6 @@ export PS1='\u@\h:\w\$ '
 export PYTHONSTARTUP=~/.config/pythonrc.py
 export PYTHON_GITLAB_CFG=~/.config/python-gitlab.cfg
 export REDISCLI_HISTFILE="$HOME/Documents/.rediscli_history"
-export TF_DEBUG=1
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
 
 alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
@@ -177,10 +176,6 @@ alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -d
 alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
 alias sudo="sudo "
 alias sudome="sudome "
-alias tfa='tf apply tfplan'
-alias tfaa='tf apply -auto-approve'
-alias tfp='tf init -backend=false && tf plan -out tfplan'
-alias tfvf='tf init -backend=false && tf validate && tf fmt -diff'
 alias todo="vim \$HOME/Documents/TODO.yml"
 # shellcheck disable=SC2142
 alias tolower='awk "{print tolower(\$0)}"'

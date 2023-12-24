@@ -1,0 +1,9 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+export TF_CLI=tofu
+export TF_DEBUG=1
+alias tfa='tf apply tfplan && tf -auto-approve -refresh-only'
+alias tfaa='tf apply -auto-approve'
+alias tfp='tf init -backend=false && tf plan -out tfplan'
+alias tfvf='tf init -backend=false && tf validate && tf fmt -diff'
