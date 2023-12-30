@@ -225,7 +225,7 @@ container_name() {
 }
 
 ddg () {
-    w3m "https://duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
+    w3m "https://lite.duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
 }
 
 genpass () {
