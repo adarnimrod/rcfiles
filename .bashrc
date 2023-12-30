@@ -203,6 +203,13 @@ ansible_all () {
     popd
 }
 
+bak () {
+    for x in "$@"
+    do
+        cp --preserve=all --reflink=auto "$x" "${x}~"
+    done
+}
+
 black8() {
     black "$@" && flake8 "$@"
 }
