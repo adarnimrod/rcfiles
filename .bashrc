@@ -122,6 +122,7 @@ alias hostlocal='docker run --rm --privileged --net=host docker.io/gliderlabs/ho
 alias http-server='python3 -m http.server 8080'
 alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
 alias jjb='jenkins-jobs'
+alias kodi_scan="docker --host=ssh://kodi.shore.co.il exec poquita-poquita-1 kodi_scan"
 alias l='ls -F'
 alias la='ls -AF'
 alias lh='ls -lhAS'
