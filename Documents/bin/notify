@@ -11,7 +11,7 @@ wall () {
 
 notify_send () {
     message="$(cat)"
-    $(command -v notify-send) "$@" "$message"
+    $(command -v notify-send) --icon terminal --app-name Terminal "$@" "$message"
 }
 
 nextcloud () {
@@ -42,7 +42,7 @@ fi
 
 case "$hostname" in
     ElementaryOS) nextcloud;;
-    YOGA-C930) notify_send "$@";;
+    YOGA-C930|ThinkPad-T14s) notify_send "$@";;
     host01) nextcloud;;
     kodi) nextcloud;;
     mr8300) nextcloud;;
