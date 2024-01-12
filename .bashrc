@@ -75,11 +75,7 @@ export PATH="$HOME/Documents/bin:$PATH"
 export PATH="$HOME/Repositories/Shore/ssh-ca:$PATH"
 export PATH="$HOME/Repositories/Shore/ssl-ca:$PATH"
 export PGSSLROOTCERT=/etc/ssl/certs/ca-certificates.crt
-PIPENV_DEFAULT_PYTHON_VERSION="$(python3 --version | grep -o '3\.[0-9]*')" > /dev/null 2>&1
-export PIPENV_DEFAULT_PYTHON_VERSION
-export PIPENV_MAX_DEPTH=5
 export PS1='\u@\h:\w\$ '
-export PYTHONSTARTUP=~/.config/pythonrc.py
 export PYTHON_GITLAB_CFG=~/.config/python-gitlab.cfg
 export REDISCLI_HISTFILE="$HOME/Documents/.rediscli_history"
 export VAGRANT_DEFAULT_PROVIDER="virtualbox"
@@ -119,8 +115,6 @@ alias gen-ssh-config="rc_make .ssh/config"
 alias green="printf '\e[1;92m%s\e[0m\n'"
 alias hcl2json='json2hcl -reverse'
 alias hostlocal='docker run --rm --privileged --net=host docker.io/gliderlabs/hostlocal'
-alias http-server='python3 -m http.server 8080'
-alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
 alias jjb='jenkins-jobs'
 alias kodi_scan="docker --host=ssh://kodi.shore.co.il exec poquita-poquita-1 kodi_scan"
 alias l='ls -F'
@@ -162,8 +156,6 @@ alias nextcloudcmd='flatpak run --command=nextcloudcmd com.nextcloud.desktopclie
 alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
 alias obsolete='apt list "~o"'
 alias occ='docker --host=ssh://host01.shore.co.il exec -itu www-data nextcloud-nextcloud-1 ./occ'
-alias pip2='python2 -m pip'
-alias pip3='python3 -m pip'
 alias pre-commit-update-skel='pre-commit autoupdate --config ~/.config/git/skel/.pre-commit-config.yaml'
 # shellcheck disable=SC2139
 alias rc_make="make --directory $HOME --always-make"
@@ -174,7 +166,6 @@ alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --s
 # shellcheck disable=SC2032
 alias rm='rm --dir'
 alias screenshot-cleanup='find "$HOME/Pictures" -name "Screenshot from *.png" -delete'
-alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
 alias sudo="sudo "
 alias sudome="sudome "
 alias todo="vim \$HOME/Documents/TODO.yml"
@@ -190,7 +181,6 @@ alias unsftp="sftp -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyCheckin
 alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
 alias update-requirements='find -name "*requirements*.txt" -exec pur --requirement {} \;'
 alias utcnow='date --utc --iso-8601=seconds'
-alias venv='python3 -m venv'
 # shellcheck disable=SC2139
 alias wbr="ssh -t ns4.shore.co.il $(command -v wb)"
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
@@ -238,15 +228,6 @@ genpass () {
 gen_csr () {
     name="${1:-site}"
     openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
-}
-
-jt () {
-    if command -v pygmentize > /dev/null
-    then
-        python3 -m json.tool "$@" | pygmentize -l json
-    else
-        python3 -m json.tool "$@"
-    fi
 }
 
 match_ssl_pair () {

@@ -1,0 +1,29 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+PIPENV_DEFAULT_PYTHON_VERSION="$(python3 --version | grep -o '3\.[0-9]*')" > /dev/null 2>&1
+export PIPENV_DEFAULT_PYTHON_VERSION
+export PIPENV_MAX_DEPTH=5
+export PYTHONSTARTUP=~/.config/pythonrc.py
+alias http-server='python3 -m http.server 8080'
+alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
+alias pip2='python2 -m pip'
+alias pip3='python3 -m pip'
+alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
+alias venv='python3 -m venv'
+
+jt () {
+    if command -v pygmentize > /dev/null
+    then
+        python3 -m json.tool "$@" | pygmentize -l json
+    else
+        python3 -m json.tool "$@"
+    fi
+}
+
+pep582 () {
+    PIP_TARGET="${PWD}/__pypackages__"
+    export PIP_TARGET
+    PYTHONPATH="${PWD}/__pypackages__:${PYTHONPATH:-}"
+    export PYTHONPATH
+}
