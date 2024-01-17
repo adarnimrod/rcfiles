@@ -1,0 +1,4 @@
+# vim: ft=bash
+export GITHUB_TOKEN='{{ run(["ph", "show", "--field", "CLI2023 token", "Web Sites/GitHub"])["stdout"] }}'
+export GITHUB_OAUTH_TOKEN="$GITHUB_TOKEN"
+
