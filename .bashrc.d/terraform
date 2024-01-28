@@ -3,7 +3,9 @@
 
 export TF_CLI=tofu
 export TF_DEBUG=1
-alias tfa='tf apply tfplan && tf apply -auto-approve -refresh-only'
+alias tfa='tf apply tfplan'
 alias tfaa='tf apply -auto-approve'
+alias tfar='tf apply tfplan && tf plan -out tfplan -refresh-only && tf apply tfplan'
 alias tfp='tf init -backend=false && tf plan -out tfplan'
+alias tfr='tf apply -auto-approve -refresh-only'
 alias tfvf='tf init -backend=false && tf validate && tf fmt -diff'
