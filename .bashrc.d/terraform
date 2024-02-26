@@ -9,3 +9,17 @@ alias tfar='tf apply tfplan && tf plan -out tfplan -refresh-only && tf apply tfp
 alias tfp='tf init -backend=false && tf plan -out tfplan'
 alias tfr='tf apply -auto-approve -refresh-only'
 alias tfvf='tf init -backend=false && tf validate && tf fmt -diff'
+
+tfp-next () {
+    current="$(tf workspace show)"
+    next="$(tf workspace list | cut -c3- | grep --line-regexp --after-context=1 "$current" | tail +2)"
+    tf apply tfplan
+    tf apply -auto-approve -refresh-only
+    if [ -z "$next" ]
+    then
+        red "Last workspace in the cycle."
+        return
+    fi
+    tf workspace select "$next"
+    tf plan -out tfplan "$@"
+}
