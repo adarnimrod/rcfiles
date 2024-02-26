@@ -43,4 +43,4 @@ export AWS_SESSION_TOKEN
 
 unset AWS_SECURITY_TOKEN
 
-eval exec "$@"
+exec "$@"
