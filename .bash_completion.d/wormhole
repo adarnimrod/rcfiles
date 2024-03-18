@@ -1,0 +1,7 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+if command -v wormhole >/dev/null
+then
+    eval "$(_WORMHOLE_COMPLETE=bash_source wormhole)"
+fi
