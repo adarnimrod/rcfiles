@@ -87,9 +87,9 @@ _all() {
     ! has apt-get || _apt
     ! has pkg_add || _pkg_add
     ! has flatpak || _flatpak
-    ! has fwupdmgr || fwupd
     ! { has wb || wb -i; } || _workbench
     ! has podman || _presentation
+    ! has fwupdmgr || fwupd
 }
 
 list_supported() {
