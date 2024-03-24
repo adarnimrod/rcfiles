@@ -13,5 +13,10 @@ alias tfvf='tf init -backend=false && tf validate && tf fmt -diff'
 tf-next () {
     current="$(tf workspace show)"
     next="$(tf workspace list | cut -c3- | grep --line-regexp --after-context=1 "$current" | tail +2)"
+    if [ -z "${next}" ]
+    then
+        red "Last workspace."
+        return
+    fi
     tf workspace select "$next"
 }
