@@ -8,10 +8,16 @@ usage() {
 if [ "$#" -eq 0 ]
 then
     ssh -t host01.shore.co.il -o \
-        "RemoteCommand tmux new-session -As backup sudo sh -c 'mount /dev/sdb1 /mnt && offsite-backup /mnt && umount /mnt'"
+        "RemoteCommand sudo mount /dev/sdb1 /mnt"
+    ssh host01.shore.co.il -o \
+        "RemoteCommand sudo -H systemd-run --unit server-backup --collect  sh -c 'offsite-backup /mnt && umount /mnt'"
 elif [ "$1" = '-c' ]
 then
-    if ssh host01.shore.co.il tmux has-session -t backup 2>/dev/null
+    if ssh host01.shore.co.il systemctl --system is-failed server-backup.service >/dev/null
+    then
+        echo 'Backup failed.'
+        exit 1
+    elif ssh host01.shore.co.il systemctl --system is-active server-backup.service >/dev/null
     then
         echo 'Backup is still running.'
     else
