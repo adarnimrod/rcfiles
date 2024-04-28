@@ -116,7 +116,6 @@ alias green="printf '\e[1;92m%s\e[0m\n'"
 alias hcl2json='json2hcl -reverse'
 alias hostlocal='docker run --rm --privileged --net=host docker.io/gliderlabs/hostlocal'
 alias jjb='jenkins-jobs'
-alias kodi_scan="docker --host=ssh://kodi.shore.co.il exec poquita-poquita-1 kodi_scan"
 alias l='ls -F'
 alias la='ls -AF'
 alias lh='ls -lhAS'
@@ -228,6 +227,13 @@ genpass () {
 gen_csr () {
     name="${1:-site}"
     openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
+}
+
+kodi_scan () {
+    # shellcheck disable=SC1083
+    ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"VideoLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc; echo
+    # shellcheck disable=SC1083
+    ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"AudioLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc; echo
 }
 
 match_ssl_pair () {
