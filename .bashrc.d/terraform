@@ -16,7 +16,7 @@ tf-next () {
     if [ -z "${next}" ]
     then
         red "Last workspace."
-        return
+        return 1
     fi
     tf workspace select "$next"
 }
