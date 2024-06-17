@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""Send last month's receipts to Paperless.tax."""
+
+import argparse
+import datetime
+import email
+import email.message
+import mimetypes
+import pathlib
+import smtplib
+import zipfile
+
+import dateutil.relativedelta  # pylint: disable=import-error
+import passhole.passhole  # pylint: disable=import-error
+
+KEEPASS_DB = pathlib.Path("~/Documents/Database.kdbx").expanduser()
+SMTP_HOST = "smtp.shore.co.il"
+
+
+if __name__ == "__main__":
+    arg_parser = argparse.ArgumentParser(description=__doc__)
+    arg_parser.add_argument(
+        "zip_file",
+        help="Path to the zip file with the receipts.",
+        type=pathlib.Path,
+    )
+    args = arg_parser.parse_args()
+
+    # Get passwords from the Keepass database.
+    db = passhole.passhole.open_database(database=KEEPASS_DB)
+    entry = db.find_entries_by_title("Paperless")[0]
+    paperless_address = entry.get_custom_property("Direct email address")
+    entry = db.find_entries_by_title(
+        "LDAP", group=db.find_groups_by_name("shore.co.il")[0]
+    )[0]
+    smtp_username = entry.username
+    smtp_password = entry.password
+
+    # What month these receipts belong to?
+    now = datetime.datetime.now()
+    last_month = now + dateutil.relativedelta.relativedelta(months=-1)
+
+    # Build the email message.
+    msg = email.message.EmailMessage()
+    msg["Subject"] = last_month.strftime("%B %Y receipts")
+    msg["From"] = "nimrod@shore.co.il"
+    msg["To"] = paperless_address
+
+    # Attach the receipts.
+    with zipfile.ZipFile(args.zip_file) as zf:
+        for receipt in zf.namelist():
+            with zf.open(receipt) as attachment:
+                maintype, subtype = mimetypes.guess_type(receipt)[0].split("/")
+                msg.add_attachment(
+                    attachment.read(),
+                    maintype=maintype,
+                    subtype=subtype,
+                    filename=receipt,
+                )
+
+    # Send the message.
+    with smtplib.SMTP(SMTP_HOST) as s:
+        s.starttls()
+        s.login(smtp_username, smtp_password)
+        s.send_message(msg)
