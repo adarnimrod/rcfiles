@@ -8,7 +8,7 @@ usage() {
 if [ "$#" -eq 0 ]
 then
     ssh -t host01.shore.co.il -o \
-        "RemoteCommand sudo mount /dev/sdb1 /mnt"
+        "RemoteCommand sudo mount /dev/sda1 /mnt"
     ssh host01.shore.co.il -o \
         "RemoteCommand sudo -H systemd-run --unit server-backup --collect  sh -c 'offsite-backup /mnt && umount /mnt'"
 elif [ "$1" = '-c' ]
