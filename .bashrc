@@ -84,10 +84,7 @@ alias all-repos='find "$HOME/Repositories" -maxdepth 3 -type d -name .git -print
 alias ansible-local-playbook='ansible-playbook -i localhost, -c local -e "ansible_python_interpreter=$(which python3)"'
 alias ansible-local='ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$(which python3)"'
 alias aptitude='aptitude --display-format %p --quiet'
-alias bell="printf '\\a'"
 alias black='black --line-length 79'
-alias blue="printf '\e[1;94m%s\e[0m\n'"
-alias bold="printf '\e[1m%s\e[0m\n'"
 alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
 alias cdtemp='cd "$(mktemp -d)"'
 alias check_tcp='nc -vzw10'
@@ -97,7 +94,6 @@ alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
 alias color='less --raw-control-chars -p'
 alias concat="perl -pe 's/\\n/\\\\n/g'"
 alias cphere='cp --target-directory=./'
-alias cyan="printf '\e[1;96m%s\e[0m\n'"
 alias dd='dd status=progress'
 alias deborphan='deborphan -a --no-show-section --ignore-suggests'
 alias deconcat="perl -pe 's/\\\\n/\\n/g'"
@@ -107,10 +103,8 @@ alias detectproxy='w3m http://detectportal.firefox.com/success.txt'
 alias df='df --output=source,fstype,size,used,avail,pcent,iavail,ipcent,target'
 alias diff='diff --unified'
 alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
-alias escape='printf "%q"'
 alias gen-mac='hexdump -n5 -e '\''"02" 5/1 ":%02X" "\n"'\'' /dev/urandom'
 alias gen-ssh-config="rc_make .ssh/config"
-alias green="printf '\e[1;92m%s\e[0m\n'"
 alias hcl2json='json2hcl -reverse'
 alias hostlocal='docker run --rm --privileged --net=host docker.io/gliderlabs/hostlocal'
 alias jjb='jenkins-jobs'
@@ -122,7 +116,6 @@ alias listen_udp='nc -uvlk 0.0.0.0'
 alias listen_unix='nc -Uvlk'
 alias ll='ls -lha'
 alias lsblk='lsblk --output=NAME,RM,RO,SIZE,TYPE,FSTYPE,LABEL,UUID,MODEL,TRAN,MOUNTPOINT'
-alias magenta="printf '\e[1;95m%s\e[0m\n'"
 alias missing-recommends="aptitude search '~RBrecommends:~i'"
 alias missing-suggests="aptitude search '~RBsuggests:~i'"
 alias monitor="monitor "
@@ -157,7 +150,6 @@ alias pre-commit-update-skel='pre-commit autoupdate --config ~/.config/git/skel/
 # shellcheck disable=SC2139
 alias rc_make="make --directory $HOME --always-make"
 alias rc_update="rc_make vendored generated"
-alias red="printf '\e[1;91m%s\e[0m\n'"
 alias reg='ssh ns4.shore.co.il docker exec registry_reg_1 reg'
 alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
 # shellcheck disable=SC2032
@@ -181,7 +173,6 @@ alias utcnow='date --utc --iso-8601=seconds'
 # shellcheck disable=SC2139
 alias wbr="ssh -t ns4.shore.co.il $(command -v wb)"
 alias wifi-portal='curl --silent --fail --write-out "%{redirect_url}" --output /dev/null http://detectportal.firefox.com/success.txt'
-alias yellow="printf '\e[1;93m%s\e[0m\n'"
 alias xargs="xargs "
 
 ansible_all () {

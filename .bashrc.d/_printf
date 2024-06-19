@@ -1,0 +1,11 @@
+# vim: ft=bash
+
+alias bell="printf '\\a'"
+alias blue="printf '\e[1;94m%s\e[0m\n'"
+alias bold="printf '\e[1m%s\e[0m\n'"
+alias cyan="printf '\e[1;96m%s\e[0m\n'"
+alias escape='printf "%q"'
+alias green="printf '\e[1;92m%s\e[0m\n'"
+alias magenta="printf '\e[1;95m%s\e[0m\n'"
+alias red="printf '\e[1;91m%s\e[0m\n'"
+alias yellow="printf '\e[1;93m%s\e[0m\n'"
