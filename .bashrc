@@ -220,9 +220,9 @@ gen_csr () {
 
 kodi_scan () {
     # shellcheck disable=SC1083
-    ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"VideoLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc; echo
+    ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"VideoLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc | jt
     # shellcheck disable=SC1083
-    ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"AudioLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc; echo
+    ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"AudioLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc | jt
 }
 
 match_ssl_pair () {
