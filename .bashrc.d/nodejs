@@ -1,0 +1,6 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+export COREPACK_ENABLE_AUTO_PIN=0
+export NODE_PENDING_DEPRECATION='1'
+export NPM_CONFIG_USERCONFIG="$HOME/.config/npmrc"
