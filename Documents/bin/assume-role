@@ -20,6 +20,33 @@ fi
 role="$1"
 shift
 
+if [ "$(aws iam list-mfa-devices --query 'length(MFADevices)')" -gt 0 ]
+then
+    printf "Enter the MFA token: "
+    read -r mfa_token
+    for mfa_dev in $(aws iam list-mfa-devices --query 'MFADevices[].SerialNumber' --output text)
+    do
+        credentials="$(aws sts get-session-token --output text --token-code "$mfa_token" --serial-number "$mfa_dev" 2>/dev/null)" || continue
+        break
+    done
+    if [ -z "$credentials" ]
+    then
+        echo 'Failed to get a temporary token.' >&2
+        exit 1
+    fi
+
+    AWS_ACCESS_KEY_ID="$(echo "$credentials" | awk '{print $2}')"
+    AWS_SECRET_ACCESS_KEY="$(echo "$credentials" | awk '{print $4}')"
+    AWS_SESSION_TOKEN="$(echo "$credentials" | awk '{print $5}')"
+
+    export AWS_ACCESS_KEY_ID
+    export AWS_SECRET_ACCESS_KEY
+    export AWS_SESSION_TOKEN
+
+    unset AWS_SECURITY_TOKEN
+fi
+
+
 if [ "$role" = "${role##arn:}" ]
 then
     role_arn="$(aws iam list-roles --query "Roles[?RoleName==\`${role}\`].Arn" --output text)"
