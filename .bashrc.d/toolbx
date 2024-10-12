@@ -1,0 +1,8 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+if [ "$HOSTNAME" = 'toolbox' ] || [ -f "/run/.toolboxenv" ]
+then
+    alias flatpak-spawn='/usr/libexec/flatpak-xdg-utils/flatpak-spawn --host'
+    gio () { /usr/libexec/flatpak-xdg-utils/flatpak-spawn --host gio "$@"; }
+fi

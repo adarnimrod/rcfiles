@@ -1,0 +1,1 @@
+{"Name":"kodi","Metadata":{},"Endpoints":{"docker":{"Host":"ssh://kodi.shore.co.il","SkipTLSVerify":false}}}

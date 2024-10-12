@@ -37,7 +37,6 @@ then
 fi
 export CFLAGS="-g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap"
 export CLOUDSDK_ACTIVE_CONFIG_NAME='shore'
-export DOCKER_BUILDKIT=1
 export EDITOR=vim
 export GITLAB_BASE_URL='https://git.shore.co.il/api/v4'
 export GITLAB_HOST='https://git.shore.co.il'
@@ -85,7 +84,6 @@ alias ansible-local-playbook='ansible-playbook -i localhost, -c local -e "ansibl
 alias ansible-local='ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$(which python3)"'
 alias aptitude='aptitude --display-format %p --quiet'
 alias black='black --line-length 79'
-alias cadvisor='docker run --rm   --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --volume=/dev/disk/:/dev/disk:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest'
 alias cdtemp='cd "$(mktemp -d)"'
 alias check_tcp='nc -vzw10'
 alias check_unix='nc -Uvzw3'
@@ -106,7 +104,6 @@ alias dpkglog="grep -v 'status\\|trigproc\\|configure' /var/log/dpkg.log"
 alias gen-mac='hexdump -n5 -e '\''"02" 5/1 ":%02X" "\n"'\'' /dev/urandom'
 alias gen-ssh-config="rc_make .ssh/config"
 alias hcl2json='json2hcl -reverse'
-alias hostlocal='docker run --rm --privileged --net=host docker.io/gliderlabs/hostlocal'
 alias jjb='jenkins-jobs'
 alias l='ls -F'
 alias la='ls -AF'
@@ -121,36 +118,14 @@ alias missing-suggests="aptitude search '~RBsuggests:~i'"
 alias monitor="monitor "
 alias mvhere='mv --target-directory=./'
 # shellcheck disable=SC1004
-alias netdata='docker run --detach \
-                          --name netdata \
-                          --cap-add SYS_PTRACE \
-                          --volume netdatalib:/var/lib/netdata \
-                          --volume netdatacache:/var/cache/netdata \
-                          --volume /etc/os-release:/host/etc/os-release:ro \
-                          --volume /etc/passwd:/host/etc/passwd:ro \
-                          --volume /etc/group:/host/etc/group:ro \
-                          --volume /proc:/host/proc:ro \
-                          --volume /sys:/host/sys:ro \
-                          --volume /var/run/docker.sock:/var/run/docker.sock \
-                          --publish 19999:19999 \
-                          --security-opt apparmor=unconfined \
-                          docker.io/netdata/netdata'
-# shellcheck disable=SC1004
-alias newman='docker run --rm \
-                         -u "$(id -u):$(id -g)" \
-                         -v "$PWD:/etc/newman" \
-                         -t \
-                         docker.io/postman/newman_alpine33'
 alias nextcloudcmd='flatpak run --command=nextcloudcmd com.nextcloud.desktopclient.nextcloud'
 # shellcheck disable=SC2139
 alias notify="notify --hint \"string:desktop-entry:$(basename "${GIO_LAUNCHED_DESKTOP_FILE:-io.elementary.terminal.desktop}")\""
 alias obsolete='apt list "~o"'
-alias occ='docker --host=ssh://host01.shore.co.il exec -itu www-data nextcloud-nextcloud-1 ./occ'
 alias pre-commit-update-skel='pre-commit autoupdate --config ~/.config/git/skel/.pre-commit-config.yaml'
 # shellcheck disable=SC2139
 alias rc_make="make --directory $HOME --always-make"
 alias rc_update="rc_make vendored generated"
-alias reg='ssh ns4.shore.co.il docker exec registry_reg_1 reg'
 alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
 # shellcheck disable=SC2032
 alias rm='rm --dir'
@@ -160,8 +135,6 @@ alias sudome="sudome "
 alias todo="vim \$HOME/Documents/TODO.yml"
 # shellcheck disable=SC2142
 alias tolower='awk "{print tolower(\$0)}"'
-alias torrent_off='ssh kodi.shore.co.il docker container pause transmission_rss_1 transmission_daemon_1'
-alias torrent_on='ssh kodi.shore.co.il docker container unpause transmission_rss_1 transmission_daemon_1'
 # shellcheck disable=SC2142
 alias toupper='awk "{print toupper(\$0)}"'
 alias transmission-remote='forward kodi.shore.co.il 9091:localhost:9091 && transmission-remote'
@@ -405,26 +378,6 @@ then
         [ ! -f "$sourcefile" ] || . "$sourcefile"
     done
     ! command -v direnv > /dev/null || eval "$(direnv hook bash)"
-fi
-
-if [ ! -S /var/run/docker.sock ] &&
-    [ -z "${DOCKER_HOST:-}" ] &&
-    [ -S "/run/host/run/docker.sock" ] &&
-    [ -w "/run/host/run/docker.sock" ]
-then
-    export DOCKER_HOST="unix:///run/host/run/docker.sock"
-fi
-
-if [ "$HOSTNAME" = 'toolbox' ]
-then
-    alias flatpak-spawn='/usr/libexec/flatpak-xdg-utils/flatpak-spawn --host'
-    gio () { /usr/libexec/flatpak-xdg-utils/flatpak-spawn --host gio "$@"; }
-    if [  -S "$XDG_RUNTIME_DIR/podman/podman.sock" ] && [ -w "$XDG_RUNTIME_DIR/podman/podman.sock" ]
-    then
-        alias podman='podman --remote'
-        export DOCKER_HOST=unix://"$XDG_RUNTIME_DIR/podman/podman.sock"
-        export CONTAINER_HOST=unix://"$XDG_RUNTIME_DIR/podman/podman.sock"
-    fi
 fi
 
 # shellcheck disable=SC2119

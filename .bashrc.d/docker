@@ -1,0 +1,9 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+export DOCKER_BUILDKIT=1
+alias hostlocal='docker run --rm --privileged --net=host docker.io/gliderlabs/hostlocal'
+alias occ='docker --context=host01 exec -itu www-data nextcloud-nextcloud-1 ./occ'
+alias reg='docker --context=ns4 exec registry-reg-1 reg'
+alias torrent-off='docker --context=kodi container pause transmission-rss-1 transmission-daemon-1'
+alias torrent-on='docker --context=kodi container unpause transmission-rss-1 transmission-daemon-1'
