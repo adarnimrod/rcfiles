@@ -76,6 +76,7 @@
     defaultBranch = master
 
 [merge]
+    conflictstyle = zdiff3
     ff = false
     tool = meld
 
