@@ -1,19 +1,39 @@
 if [ -f /usr/share/bash-completion/completions/ssh ]
 then
     . /usr/share/bash-completion/completions/ssh
-    complete -F _ssh ssmh unssh
+    if command -v _ssh > /dev/null
+    then
+        complete -F _ssh ssmh unssh
+    else
+        complete -F _comp_cmd_ssh ssmh unssh
+    fi
 elif [ -f /usr/local/share/bash-completion/completions/ssh ]
 then
     . /usr/local/share/bash-completion/completions/ssh
-    complete -F _ssh ssmh unssh
+    if command -v _ssh > /dev/null
+    then
+        complete -F _ssh ssmh unssh
+    else
+        complete -F _comp_cmd_ssh ssmh unssh
+    fi
 fi
 
 if [ -f /usr/share/bash-completion/completions/scp ]
 then
     . /usr/share/bash-completion/completions/scp
-    complete -F _scp -o nospace scp
+    if command -v _scp > /dev/null
+    then
+        complete -F _scp -o nospace scp
+    else
+        complete -F _comp_cmd_scp -o nospace scp
+    fi
 elif [ -f /usr/local/share/bash-completion/completions/scp ]
 then
     . /usr/local/share/bash-completion/completions/scp
-    complete -F _scp -o nospace scp
+    if command -v _scp > /dev/null
+    then
+        complete -F _scp -o nospace scp
+    else
+        complete -F _comp_cmd_scp -o nospace scp
+    fi
 fi
