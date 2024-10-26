@@ -108,6 +108,22 @@ in_toolbox() {
     [ "$(hostname)" = 'toolbox' ]
 }
 
+remove() {
+    not_from_toolbox
+    if container_exists
+    then
+        podman container rm --force "$CONTAINER"
+    else
+        echo "Container not found." >&2
+    fi
+    if image_exists
+    then
+        podman image rm --force "$IMAGE"
+    else
+        echo "Image not found." >&2
+    fi
+}
+
 if [ "$#" -eq 0 ]
 then
     run
@@ -115,11 +131,12 @@ fi
 
 case "${1:-}" in
     -d|--dry-update) dry_update;;
-    -u|--update) update;;
-    -l|--list) list;;
     -h|--help) usage;;
-    -s|--kill-server) kill_server;;
     -i|--in-workbench) in_toolbox;;
     -k|--kill) _kill "${2:-}";;
+    -l|--list) list;;
+    -r|--rm|--remove) remove;;
+    -s|--kill-server) kill_server;;
+    -u|--update) update;;
     *) run "$1";;
 esac
