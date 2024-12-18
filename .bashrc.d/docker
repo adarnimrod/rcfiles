@@ -2,6 +2,8 @@
 # vim: ft=sh
 
 export DOCKER_BUILDKIT=1
+export DOCKER_HOST=unix://"$XDG_RUNTIME_DIR/podman/podman.sock"
+
 alias hostlocal='docker run --rm --privileged --net=host docker.io/gliderlabs/hostlocal'
 alias occ='docker --context=host01 exec -itu www-data nextcloud-nextcloud-1 ./occ'
 alias reg='docker --context=ns4 exec registry-reg-1 reg'
