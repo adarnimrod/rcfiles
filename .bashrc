@@ -186,32 +186,11 @@ genpass () {
     echo
 }
 
-gen_csr () {
-    name="${1:-site}"
-    openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
-}
-
 kodi_scan () {
     # shellcheck disable=SC1083
     ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"VideoLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc | jt
     # shellcheck disable=SC1083
     ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"AudioLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc | jt
-}
-
-match_ssl_pair () {
-    if [ "$#" -ne 2 ]
-    then
-        echo "Usage: match_ssl_pair private_key certificate"
-        return 1
-    fi
-    tempkey="$(mktemp)"
-    tempcert="$(mktemp)"
-    openssl pkey -pubout -outform PEM -in "$1" > "$tempkey"
-    openssl x509 -pubkey -noout -in "$2" > "$tempcert"
-    cmp "$tempkey" "$tempcert" > /dev/null
-    exitcode="$?"
-    rm "$tempkey" "$tempcert"
-    return "$exitcode"
 }
 
 mnt_lib () {

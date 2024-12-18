@@ -1,0 +1,25 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+alias cert-check="echo | openssl s_client -port 443 -build_chain -showcerts -connect"
+
+gen_csr () {
+    name="${1:-site}"
+    openssl req -new -newkey rsa:4096 -nodes -out "$name.csr" -keyout "$name.key"
+}
+
+match_ssl_pair () {
+    if [ "$#" -ne 2 ]
+    then
+        echo "Usage: match_ssl_pair private_key certificate"
+        return 1
+    fi
+    tempkey="$(mktemp)"
+    tempcert="$(mktemp)"
+    openssl pkey -pubout -outform PEM -in "$1" > "$tempkey"
+    openssl x509 -pubkey -noout -in "$2" > "$tempcert"
+    cmp "$tempkey" "$tempcert" > /dev/null
+    exitcode="$?"
+    rm "$tempkey" "$tempcert"
+    return "$exitcode"
+}
