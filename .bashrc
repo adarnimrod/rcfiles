@@ -44,7 +44,6 @@ export GOPATH="$HOME/.local/golang"
 export GOPRIVATE="*"
 export HELM_HOME="$HOME/.helm"
 export HISTCONTROL=ignoreboth:erasedups
-export HISTFILE="$HOME/Documents/.history"
 export HISTFILESIZE=100000
 export HISTSIZE=100000
 export LANG=en_US.UTF8
