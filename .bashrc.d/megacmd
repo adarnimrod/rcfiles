@@ -1,0 +1,7 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+megacmd() {
+    docker --context kodi image pull registry.shore.co.il/megacmd
+    docker --context kodi run --rm --volume "/srv/library:/Downloads" registry.shore.co.il/megacmd "$@"
+}
