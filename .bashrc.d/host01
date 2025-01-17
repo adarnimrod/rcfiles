@@ -1,0 +1,6 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+new-mail-folder () {
+    docker --host=ssh://host01.shore.co.il exec mail-imap-1 install -o "$(id -u)" -g dovecot -m 660 /dev/null "/var/mail/nimrod/${1}"
+}
