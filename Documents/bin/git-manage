@@ -345,38 +345,44 @@ def archive_repo(args):
 
     Does the following:
     - Archives the repository (sets it to read-only).
-    - Archives all GitHub mirrors.
+    - Archives all GitHub mirrors (for a GitLab project).
     """
-    try:
-        gh_conn = rcfiles.github.connect()
-    except Exception as e:  # pylint: disable=broad-except
-        error(f"Failed to connect to GitHub: {e}")
-    if not args.github:
-        try:
-            gl_conn = rcfiles.gitlab.connect()
-        except Exception as e:  # pylint: disable=broad-except
-            error(f"Failed to connect to GitLab: {e}")
-
     if args.github:
+        try:
+            gh_conn = rcfiles.github.connect()
+        except Exception as e:  # pylint: disable=broad-except
+            error(f"Failed to connect to GitHub: {e}")
         owner, name = guess_name(args, gh_conn=gh_conn, gl_conn=None).split(
             "/"
         )
-    else:
-        name = guess_name(args, gh_conn=None, gl_conn=gl_conn)
-
-    if args.github:
         repo = gh_conn.repository(owner, name)
         repo.edit(name, archived=True)
         print(f"Archived repository {repo.html_url}.", file=sys.stderr)
     else:
+        try:
+            gl_conn = rcfiles.gitlab.connect()
+        except Exception as e:  # pylint: disable=broad-except
+            error(f"Failed to connect to GitLab: {e}")
+        name = guess_name(args, gh_conn=None, gl_conn=gl_conn)
         project = gl_conn.projects.get(name)
         project.archive()
         print(f"Archived repository {project.web_url}.", file=sys.stderr)
-        for mirror in github_mirrors(project, gh_conn):
-            mirror.edit(mirror.name, archived=True)
-            print(
-                f"Archived GitHub mirror {mirror.html_url}.", file=sys.stderr
-            )
+
+        # Archive the GitHub mirrors if there are any.
+        remotes = rcfiles.git.get_all_remotes()
+        if len(remotes) > 1 and any(
+            map(lambda x: "github.com" in x["url"], remotes.values())
+        ):
+            try:
+                gh_conn = rcfiles.github.connect()
+            except Exception as e:  # pylint: disable=broad-except
+                error(f"Failed to connect to GitHub: {e}")
+            for mirror in github_mirrors(project, gh_conn):
+                mirror.edit(mirror.name, archived=True)
+                print(
+                    f"Archived GitHub mirror {mirror.html_url}.",
+                    file=sys.stderr,
+                )
 
 
 def fork_repo(args):
