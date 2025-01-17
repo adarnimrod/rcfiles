@@ -24,7 +24,7 @@ GH_MIRROR_PREFIX = "https://*****@github.com/"
 
 def error(message):
     """Print an error message with the current subparser's usage and exit."""
-    # pylint: disable=protected-access
+    # pylint: disable=protected-access,possibly-used-before-assignment
     sub_parser = arg_parser._subparsers._actions[1].choices[_args.command]
     sub_parser.error(message)
 
@@ -62,7 +62,7 @@ def mirror_project(project, gh_conn, token):
     except github3.exceptions.NotFoundError:
         gh_repo = gh_conn.create_repository(project.name)
         print(
-            f"Created a new GitHub reposiroty {gh_repo.html_url}.",
+            f"Created a new GitHub repository {gh_repo.html_url}.",
             file=sys.stderr,
         )
 
@@ -96,7 +96,7 @@ def get_mirror_token():
     Reads it from a Keepass password database using Passhole.
     """
     ENTRY_PATH = "Web Sites/GitHub".split("/")  # noqa
-    TOKEN_FIELD = "GitLab mirroring token"  # noqa nosec
+    TOKEN_FIELD = "GitLab mirroring token"  # nosec # noqa
 
     # The following line requires an interactive session for getting the
     # password.
@@ -152,9 +152,9 @@ def guess_name(args, gh_conn=None, gl_conn=None):
             error("Name not provided and not in a Git repo.")
 
         remote = guess_remote(
-            remote_type="github"
-            if "github" in args and args.github
-            else "gitlab",
+            remote_type=(
+                "github" if "github" in args and args.github else "gitlab"
+            ),
             gl_conn=gl_conn,
         )
         if remote is None:
@@ -162,11 +162,10 @@ def guess_name(args, gh_conn=None, gl_conn=None):
                 error("Name not provided and could not find a GitHub remote.")
             else:
                 error("Name not provided and could not find a GitLab remote.")
+        if "github" in args and args.github:
+            name = rcfiles.github.url_to_name(remote["url"])
         else:
-            if "github" in args and args.github:
-                name = rcfiles.github.url_to_name(remote["url"])
-            else:
-                name = rcfiles.gitlab.url_to_name(gl_conn, remote["url"])
+            name = rcfiles.gitlab.url_to_name(gl_conn, remote["url"])
         print(
             f"""Name not provided, using {name} from the {remote["name"]} remote.""",  # noqa: E501
             file=sys.stderr,

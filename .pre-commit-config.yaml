@@ -46,33 +46,24 @@ repos:
           - |
             --line-length=79
 
-  - repo: https://github.com/PyCQA/prospector
-    rev: v1.12.1
+  - repo: https://github.com/pylint-dev/pylint.git
+    rev: v3.3.3
     hooks:
-      - id: prospector
+      - id: pylint
         exclude: *excluded_pythonscripts
-        args:
-          - |-
-            --max-line-length=79
-          - |-
-            --with-tool=pyroma
-          - |-
-            --with-tool=bandit
-          - |-
-            --without-tool=pep257
-          - |-
-            --doc-warnings
-          - |-
-            --test-warnings
-          - |-
-            --full-pep8
-          - |-
-            --strictness=high
-          - |-
-            --no-autodetect
-        additional_dependencies:
-          - bandit
-          - pyroma
+        args: ["--disable", "line-too-long,broad-exception-raised"]
+
+  - repo: https://github.com/DanielNoord/pydocstringformatter.git
+    rev: v0.7.3
+    hooks:
+      - id: pydocstringformatter
+        exclude: *excluded_pythonscripts
+
+  - repo: https://github.com/PyCQA/bandit.git
+    rev: "1.8.0"
+    hooks:
+      - id: bandit
+        exclude: *excluded_pythonscripts
 
   - repo: https://github.com/pycqa/flake8.git
     rev: 7.1.1
@@ -92,7 +83,7 @@ repos:
         exclude: rabbitmqadmin|\.config/git/config|Pipfile\.lock|npmrc
 
   - repo: https://git.shore.co.il/nimrod/pre-commit-hooks.git
-    rev: v0.5.1
+    rev: v0.5.2
     hooks:
       - id: shell-validate
         exclude: &excluded_shellscripts |-
@@ -111,17 +102,9 @@ repos:
         types: [text]
 
   - repo: https://github.com/executablebooks/mdformat.git
-    rev: 0.7.17
+    rev: 0.7.21
     hooks:
       - id: mdformat
-
-  - repo: https://gitlab.com/devopshq/gitlab-ci-linter
-    rev: v1.0.6
-    hooks:
-      - id: gitlab-ci-linter
-        args:
-          - "--server"
-          - https://git.shore.co.il
 
   - repo: https://github.com/codespell-project/codespell.git
     rev: v2.3.0

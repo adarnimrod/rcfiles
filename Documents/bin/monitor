@@ -8,7 +8,7 @@ else
     notify='notify'
 fi
 
-eval "$@" || code="$?"
+eval "$*" || code="$?"
 code="${code:-0}"
 
 if [ "$code" -eq 0 ]
