@@ -1,7 +1,12 @@
 # shellcheck shell=bash
 # vim: ft=sh
 
+
 megacmd() {
     docker --context kodi image pull registry.shore.co.il/megacmd
-    docker --context kodi run --rm --volume "/srv/library:/Downloads" registry.shore.co.il/megacmd "$@"
+    cid="$(docker --context kodi run --detach  --volume "/srv/library:/Downloads" registry.shore.co.il/megacmd "$@")"
+    docker --context kodi logs --follow "$cid"
+    docker --context kodi container rm "$cid"
 }
+
+alias mega-exec='docker --context kodi run registry.shore.co.il/megacmd'
