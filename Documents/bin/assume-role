@@ -20,7 +20,7 @@ fi
 role="$1"
 shift
 
-if [ "$(aws iam list-mfa-devices --query 'length(MFADevices)')" -gt 0 ]
+if mfa_count="$(aws iam list-mfa-devices --query 'length(MFADevices)' 2>/dev/null)" && [ "$mfa_count" -gt 0 ]
 then
     printf "Enter the MFA token: "
     read -r mfa_token
