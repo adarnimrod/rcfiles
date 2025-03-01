@@ -44,9 +44,15 @@
     tracking = rev-parse --abbrev-ref --symbolic-full-name @{upstream}
     trigger = !git commit --allow-empty --no-edit --amend && git push --force-with-lease
 
+[branch]
+    sort = -committerdate
+
 [color]
     grep = true
     ui = auto
+
+[commit]
+    verbose = true
 
 [core]
     whitespace = space-before-tab,-indent-with-non-tab,trailing-space
@@ -54,13 +60,17 @@
 [diff]
     renames = copies
     tool = meld
+    algorithm = histogram
+    colorMoved = plain
 
 [difftool]
     prompt = false
 
 [fetch]
+    all = true
     fsckobjects = true
     prune = true
+    pruneTags = true
 
 [filter "ansible-vault"]
     clean = ANSIBLE_VERBOSITY=0 ansible-vault encrypt
@@ -89,12 +99,14 @@
 
 [rebase]
     autoSquash = true
+    updateRefs = true
 
 [receive]
     fsckObjects = true
 
 [tag]
     forceSignAnnotated = true
+    sort = version:refname
 
 [transfer]
     fsckobjects = true
