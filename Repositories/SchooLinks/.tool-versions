@@ -1,2 +1,4 @@
-nodejs 20.13.0 18.17.1
-python 3.11.9 3.12.4 3.9.21
+# Nodejs 18 for sl-synthetics, Nodejs 20 for sl-e2e.
+nodejs 22.12.0 20.13.0 18.17.1
+# Python 3.9 for the Synthetics canaries.
+python 3.11.9 3.9.21 3.12.9
