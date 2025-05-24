@@ -3,6 +3,7 @@
 
 export TF_CLI=tofu
 export TF_DEBUG=1
+export TF_PLUGIN_CACHE_DIR="${HOME}/.cache/tofu/plugins"
 alias tfa='tf apply tfplan'
 alias tfaa='tf apply -auto-approve'
 alias tfar='tf apply tfplan && tf plan -out tfplan -refresh-only && tf apply tfplan'
