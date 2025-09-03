@@ -1,0 +1,7 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+export GOMAXPROCS=2
+export GOPATH="$HOME/.local/golang"
+export GOPRIVATE="*"
+export PATH="$GOPATH/bin:$PATH"
