@@ -176,6 +176,14 @@ ddg () {
     w3m "https://lite.duckduckgo.com/lite/?q=$(echo "$@" | urlencode)"
 }
 
+extension () {
+    [ "$#" -gt 0 ] || return 0
+    for filename in "$@"
+    do
+        echo "${filename##*.}"
+    done
+}
+
 genpass () {
     bytes="${1:-32}"
     head --bytes="$bytes" /dev/urandom | base64 --wrap=0
