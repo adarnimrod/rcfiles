@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+
+usage () {
+    echo "usage: $(basename "$0") [-h] [-d]"
+    echo
+    echo "Clears Nextcloud sync conflicts."
+    echo
+    echo "Options:"
+    echo "-d   dry-run (only show the files that would have been deleted)."
+    echo "-h   shows this help message."
+}
+
+while getopts hd f
+do
+    case $f in
+        h) usage; exit;;
+        d) DRY_RUN=1;;
+        \?) usage; exit 1;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if [ "${DRY_RUN:-}" = 1 ]
+then
+    find ~/Documents -name 'SYNC CONFLICT*' -type f
+else
+    find ~/Documents -name 'SYNC CONFLICT*' -type f -delete
+fi
