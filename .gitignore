@@ -1,1 +1,9 @@
 *
+!.bash_completion.d/
+!.bash_completion.d/*
+!.bashrc.d/
+!.bashrc.d/*
+!.ssh/config.d/
+!.ssh/config.d/*
+!Documents/bin/
+!Documents/bin/*
