@@ -1,0 +1,30 @@
+# vim: ft=bash
+
+. "${HOME}/.bashrc.d/claude"
+
+_claude_complete() {
+    local cur prev words cword opts
+    _init_completion || return
+    opts='--add-dir --agent --agents --allow-dangerously-skip-permissions --allowedTools --allowed-tools --append-system-prompt --autocompact --ax-screen-reader --bg --background --bare --betas --brief --chrome --cloud -c --continue --dangerously-skip-permissions -d --debug --debug-file --desktop --disable-slash-commands --disallowedTools --disallowed-tools --effort --environment --exclude-dynamic-system-prompt-sections --fallback-model --file --fork-session --forward-subagent-text --from-pr -h --help --ide --include-hook-events --include-partial-messages --input-format --input-format --json-schema --max-budget-usd --mcp-config --model -n --name --no-chrome --no-session-persistence --output-format --permission-mode --permission-prompts --plugin-dir --plugin-url -p --print --prompt-suggestions --remote-control --remote-control-session-name-prefix --restricted -r --resume --safe-mode --session-id --setting-sources --setting-sources --settings --strict-mcp-config --system-prompt --system-prompt-snapshot --teleport --tmux --tools -v --verson -w --worktree -l --list'
+    commands='agents attach auth auth-mode doctor gateway import install logs mcp plugin purge respawn rm setup-token stop kill ultrareview update upgrade prune'
+    if [[ $prev == rm ]] || [[ $prev == -r ]] || [[ $prev == --resume ]] || [[ $prev == -c ]] || [[ $prev == --continue ]]
+    then
+        COMPREPLY=($(compgen -W "$(_claude_list)" -- "$cur"))
+    elif [[ $prev == --input-format ]]
+    then
+        COMPREPLY=($(compgen -W "text stream-json" -- "$cur"))
+    elif [[ $prev == --output-format ]]
+    then
+        COMPREPLY=($(compgen -W "text json stream-json" -- "$cur"))
+    elif [[ $prev == --permission-prompts ]]
+    then
+        COMPREPLY=($(compgen -W "host none" -- "$cur"))
+    elif [[ $cur == -* ]]
+    then
+        COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    else
+        COMPREPLY=($(compgen -W "$(_claude_list) ${commands}" -- "$cur"))
+    fi
+}
+
+complete -F _claude_complete claude

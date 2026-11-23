@@ -99,3 +99,10 @@ secure-templates: .gnupg/trustdb.gpg
 	ph show --field 'Notes' 'GPG/D3B913DE36AB5565DCAC91C6A322378C61339ECD' | gpg --import
 	echo 'D3B913DE36AB5565DCAC91C6A322378C61339ECD:6:' | gpg --import-ownertrust
 	chmod 600 '$@'
+
+.PHONY: claude
+claude: .local/bin/claude
+
+.local/bin/claude:
+	$(curl) https://downloads.claude.ai/claude-code-releases/$$($(curl) https://downloads.claude.ai/claude-code-releases/latest)/linux-x64/claude > '$@'
+	chmod +x '$@'

@@ -1,0 +1,97 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+_claude_list() {
+    if [ "$#" -eq 0 ]
+    then
+        find "$HOME/.claude/projects" -maxdepth 2 -name '*.jsonl' -print0 | xargs --null cat | jq --raw-output 'select(.customTitle != null) | .customTitle' | sort -u
+        find "$HOME/.claude/projects" -maxdepth 2 -name '*.jsonl' -print0 | xargs --null cat | jq --raw-output 'select(.sessionId != null) | .sessionId' | sort -u
+    else
+        sessionId="$(find "$HOME/.claude/projects" -maxdepth 2 -name '*.jsonl' -print0 | xargs --null cat | jq --raw-output "select(.customTitle == \"$1\") | .sessionId" | sort -u)"
+        if [ -z "$sessionId" ]
+        then
+            echo "Session '$1' not found." >&2
+            return 1
+        fi
+        echo "$sessionId"
+    fi
+}
+
+_claude_session_prune() {
+    find "${HOME}/.claude/projects" -name '*.jsonl' -mtime +14 -delete || true
+    find "${HOME}/.claude/projects" -mindepth 1 -type d -empty -delete || true
+}
+
+_claude() {
+    _sl="$HOME/Repositories/SchooLinks"
+    case "$PWD/" in "$_sl"/*) _cd="$PWD" ;; *) _cd="$_sl" ;; esac
+    env -i \
+        ANSIBLE_CACHE_PLUGIN="$ANSIBLE_CACHE_PLUGIN" \
+        ANSIBLE_INVENTORY_ANY_UNPARSED_IS_FAILED="$ANSIBLE_INVENTORY_ANY_UNPARSED_IS_FAILED" \
+        ANSIBLE_PIPELINING="$ANSIBLE_PIPELINING" \
+        ANSIBLE_PYTHON_INTERPRETER="$ANSIBLE_PYTHON_INTERPRETER" \
+        BROWSER="$BROWSER" \
+        CFLAGS="$CFLAGS" \
+        CLOUDSDK_ACTIVE_CONFIG_NAME="$CLOUDSDK_ACTIVE_CONFIG_NAME" \
+        COLORTERM="$COLORTERM" \
+        COREPACK_ENABLE_AUTO_PIN="$COREPACK_ENABLE_AUTO_PIN" \
+        COREPACK_HOME="$COREPACK_HOME" \
+        DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" \
+        DIRENV_LOG_FORMAT= DOCKER_HOST="$DOCKER_HOST"  \
+        DISABLE_AUTOUPDATER=1 \
+        HELM_HOME="$HELM_HOME" \
+        HOME="$HOME" \
+        LANG="$LANG" \
+        MAKEFLAGS="$MAKEFLAGS" \
+        NPM_CONFIG_USERCONFIG="$NPM_CONFIG_USERCONFIG" \
+        PATH="$PATH" \
+        PGSSLROOTCERT="$PGSSLROOTCERT" \
+        SENTRY_AUTH_TOKEN="$SENTRY_AUTH_TOKEN" \
+        TERM="$TERM" \
+        TF_CLI="$TF_CLI" \
+        TF_PLUGIN_CACHE_DIR="$TF_PLUGIN_CACHE_DIR" \
+        USER="$USER" \
+        XDG_DATA_DIRS="$XDG_DATA_DIRS" \
+        XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
+    direnv exec "$_sl" \
+    bwrap \
+        --ro-bind / / \
+        --dev /dev \
+        --proc /proc \
+        --tmpfs /tmp \
+        --tmpfs /run/host \
+        --tmpfs /home \
+        --tmpfs /etc/ssh/ssh_config.d \
+        --ro-bind /etc/resolv.conf "$(readlink /etc/resolv.conf)" \
+        --ro-bind "${HOME}/.local/bin" "${HOME}/.local/bin" \
+        --ro-bind "${HOME}/.asdf" "${HOME}/.asdf" \
+        --ro-bind "${HOME}/.tool-versions" "${HOME}/.tool-versions" \
+        --ro-bind "${HOME}/.aws/config" "${HOME}/.aws/config" \
+        --ro-bind "${HOME}/.config/npmrc" "${HOME}/.config/npmrc" \
+        --ro-bind "${HOME}/.config/git" "${HOME}/.config/git" \
+        --ro-bind "${HOME}/.local/share/gh/extensions" "${HOME}/.local/share/gh/extensions" \
+        --bind "${HOME}/.aws/sso/cache" "${HOME}/.aws/sso/cache" \
+        --bind "${HOME}/.cache/tofu/plugins" "${HOME}/.cache/tofu/plugins" \
+        --bind "${HOME}/.cache/tofu" "${HOME}/.cache/tofu" \
+        --bind "${HOME}/.claude" "${HOME}/.claude" \
+        --bind "${HOME}/.claude.json" "${HOME}/.claude.json" \
+        --bind "${HOME}/.config/git/config.claude" "${HOME}/.config/git/config" \
+        --bind "$_sl" "$_sl" \
+        --chdir "$_cd" \
+        --unshare-all \
+        --share-net \
+        --die-with-parent \
+        --new-session \
+        claude \
+        "$@"
+}
+
+claude() {
+    case "${1:-}" in
+        -l|--list) _claude_list;;
+        prune) _claude_session_prune;;
+        ""|agents|attach|auth|auth-mode|doctor|gateway|import|install|logs|mcp|plugin|purge|respawn|rm|setup-token|stop|kill|ultrareview|update|upgrade|-*)
+            [ -z "${TMUX:-}" ] || tmux rename-window claude; _claude "$@"; tmux rename-window bash;;
+        *) local name="$*"; [ -z "${TMUX:-}" ] || tmux rename-window "claude (${name})"; if [ -z "$(_claude_list "$name")" ]; then _claude --name "$name"; else _claude --resume "$name"; fi; tmux rename-window bash;;
+    esac
+}
