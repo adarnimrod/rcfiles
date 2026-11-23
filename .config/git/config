@@ -57,6 +57,9 @@
 [core]
     whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 
+[credential "https://github.com"]
+    helper = !gh auth git-credential
+
 [diff]
     renames = copies
     tool = meld
@@ -70,7 +73,6 @@
     all = true
     fsckobjects = true
     prune = true
-    pruneTags = true
 
 [filter "ansible-vault"]
     clean = ANSIBLE_VERBOSITY=0 ansible-vault encrypt
@@ -110,9 +112,6 @@
 
 [transfer]
     fsckobjects = true
-
-[url "git@github.com:"]
-	pushInsteadOf = "https://github.com/"
 
 [user]
 	email = nimrod@shore.co.il
