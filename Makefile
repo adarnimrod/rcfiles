@@ -1,6 +1,6 @@
 ansible-local = ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$$(which python3)"
 ssh_configs != find ".ssh/config.d/" -type f \! -name '.*' | sort
-curl = curl --location --silent --fail
+curl = curl --location --silent --fail --proto "=https" --show-error
 download = $(curl) --output $@
 mkd = mkdir -p $$(dirname $@)
 
