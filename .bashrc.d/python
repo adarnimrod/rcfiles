@@ -5,12 +5,18 @@ PIPENV_DEFAULT_PYTHON_VERSION="$(python3 --version | grep -o '3\.[0-9]*')" > /de
 export PIPENV_DEFAULT_PYTHON_VERSION
 export PIPENV_MAX_DEPTH=5
 export PYTHONSTARTUP=~/.config/pythonrc.py
+
+alias black='black --line-length 79'
 alias http-server='python3 -m http.server 8080'
 alias httpbin='gunicorn httpbin:app --bind 0.0.0.0:8080'
 alias pip2='python2 -m pip'
 alias pip3='python3 -m pip'
 alias smtp-server='python3 -m smtpd -ndc DebuggingServer'
 alias venv='python3 -m venv'
+
+black8() {
+    black "$@" && flake8 "$@"
+}
 
 jt () {
     if command -v pygmentize > /dev/null
@@ -26,4 +32,11 @@ pep582 () {
     export PIP_TARGET
     PYTHONPATH="${PWD}/__pypackages__:${PYTHONPATH:-}"
     export PYTHONPATH
+}
+
+temp_venv () {
+    cdtemp
+    venv .
+    # shellcheck disable=SC1090,SC1091
+    . bin/activate
 }

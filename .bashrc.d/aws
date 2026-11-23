@@ -1,0 +1,4 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+export AWS_DEFAULT_PROFILE='shore'

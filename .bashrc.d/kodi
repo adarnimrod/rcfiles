@@ -1,0 +1,34 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+alias restart-kodi='ssh kodi.shore.co.il "sudo systemctl kill --kill-who=all --signal=9 xorg.service"'
+alias 0-day-cleanup='ssh kodi.shore.co.il "sudo -u debian-transmission find /srv/library/Comics -name *.part -path *0-Day\ Week\ of* -delete"'
+alias transmission-remote='forward kodi.shore.co.il 9091:localhost:9091 && transmission-remote'
+
+kodi_scan () {
+    # shellcheck disable=SC1083
+    ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"VideoLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc | jt
+    # shellcheck disable=SC1083
+    ssh kodi.shore.co.il curl --silent --fail --show-error --json \'{\"jsonrpc\": \"2.0\", \"id\": \"transmission\", \"method\": \"AudioLibrary.Scan\"}\' http://127.0.0.1:8080/jsonrpc | jt
+}
+
+mnt_lib () {
+    mkdir -p "$HOME/Library"
+    rclone mount \
+        --daemon \
+        --gid "$(id -g)" \
+        --vfs-cache-mode full \
+        --uid "$(id -u)" \
+        library:/ \
+        "$HOME/Library"
+}
+
+sync_comics () {
+    local this_month last_month format
+    format='+kodi.shore.co.il:/srv/library/Comics/0-Day\ Week\ of\ %Y.%m.*'
+    this_month="$( date "$format" )"
+    last_month="$( date --date '1 month ago' "$format" )"
+    rsync --prune-empty-dirs --ignore-missing-args --recursive --compress --progress --exclude "*.part" "$last_month" "$this_month" "$HOME/Downloads/Comics/"
+    # shellcheck disable=SC2033
+    find "$HOME/Downloads/Comics/" -name "$(date --date '2 month ago' +'0-Day\ Week\ of\ %Y.%m.*')" -exec rm -r {} +
+}

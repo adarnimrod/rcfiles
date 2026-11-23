@@ -1,0 +1,26 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+export ANSIBLE_CACHE_PLUGIN=jsonfile
+export ANSIBLE_CACHE_PLUGIN_CONNECTION="$HOME/.ansible/facts"
+export ANSIBLE_CALLBACKS_ENABLED="ansible.posix.profile_tasks, ansible.posix.timer"
+export ANSIBLE_DEPRECATION_WARNINGS=True
+export ANSIBLE_FORKS=5
+export ANSIBLE_GATHERING=smart
+export ANSIBLE_INVENTORY_ANY_UNPARSED_IS_FAILED=True
+export ANSIBLE_PIPELINING=True
+export ANSIBLE_PYTHON_INTERPRETER=auto
+export ANSIBLE_RETRY_FILES_SAVE_PATH=/tmp/
+export ANSIBLE_SSH_CONTROL_PATH="/tmp/ssh-%%h"
+export ANSIBLE_SYSTEM_WARNINGS=True
+export ANSIBLE_VERBOSITY=2
+
+alias ansible-local-playbook='ansible-playbook -i localhost, -c local -e "ansible_python_interpreter=$(which python3)"'
+alias ansible-local='ansible localhost -c local -i localhost, -e "ansible_python_interpreter=$(which python3)"'
+
+ansible_all () {
+    pushd ~/Repositories/Shore/homelab/Ansible || return
+    ansible all "$@"
+    # shellcheck disable=SC2164
+    popd
+}

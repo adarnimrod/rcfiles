@@ -1,0 +1,26 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+export GITLAB_BASE_URL='https://git.shore.co.il/api/v4'
+export GITLAB_HOST='https://git.shore.co.il'
+export PYTHON_GITLAB_CFG=~/.config/python-gitlab.cfg
+
+alias all-repos='find "$HOME/Repositories" -maxdepth 3 -type d -name .git -print0 | xargs -IX -0 git -C "X/../"'
+
+new_experiment () {
+    if [ "$#" -ne 1 ]
+    then
+        echo 'Usage: new_experiment EXPERIMENT_NAME' >&2
+        return 1
+    fi
+    local name="$1"
+    local repo="$HOME/Repositories/Shore/experiments"
+    if [ ! -d "$repo/.git" ]
+    then
+        git clone git@git.shore.co.il:nimrod/experiments.git "$repo"
+    fi
+    # shellcheck disable=SC2164
+    cd "$repo"
+    git checkout master
+    git checkout -b "$name/master"
+}

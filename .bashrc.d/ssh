@@ -1,0 +1,24 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+alias all-hosts='echo -n ns1 ns4 host01 kodi mr8300 | xargs -d " " -I HOST ssh HOST.shore.co.il'
+alias close='ssh -fnNTS ~/.ssh/%C.sock -O exit'
+alias gen-ssh-config="rc_make .ssh/config"
+alias unscp="scp -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
+alias unsftp="sftp -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
+alias unssh="ssh -o \"UserKnownHostsFile /dev/null\" -o \"StrictHostKeyChecking no\""
+
+# shellcheck disable=SC2120
+prune_ssh_sockets () {
+    { [ "${1:-}" != '-f' ] && [ "${1:-}" != '--force' ]; } || killall -v ssh || true
+    find ~/.ssh/ \
+        -maxdepth 1 \
+        -type s \
+        \! -name 'cm_*.sock' \
+        -execdir sh -c 'lsof -t "$1" >/dev/null || rm "$1"' _ {} \;
+}
+
+ssh_keyscan_add () {
+    ssh-keyscan "$@" >> "$HOME/.ssh/known_hosts"
+    sort -uo "$HOME/.ssh/known_hosts" "$HOME/.ssh/known_hosts"
+}
