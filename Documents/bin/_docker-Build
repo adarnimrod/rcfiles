@@ -1,3 +1,0 @@
-#!/bin/sh
-set -eu
-exec docker build -t "$(basename "$PWD" | awk "{print tolower(\$0)}" )" "$@" ./

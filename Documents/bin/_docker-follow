@@ -1,4 +1,0 @@
-#!/bin/sh
-set -eu
-
-exec docker logs --follow --since=1m "$@"
