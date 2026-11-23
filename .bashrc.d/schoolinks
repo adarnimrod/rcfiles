@@ -1,0 +1,35 @@
+# shellcheck shell=bash
+# vim: ft=sh
+
+alias sl-cf='curl --fail --proto "=https" --show-error --header "X-Auth-Email: ${CLOUDFLARE_EMAIL}" --header "X-Auth-Key: ${CLOUDFLARE_API_KEY}"'
+
+sla () {
+    local profiles="$(aws configure list-profiles | sed -n 's/^schoolinks-//p')"
+    local usage="sla [-h] [-l] profile"
+    local f
+    while getopts lh f
+    do
+        case "$f" in
+            l) echo "$profiles"; return 0;;
+            h) echo "$usage"; return 0;;
+            \?) echo "$usage"; return 1;;
+        esac
+    done
+    shift $((OPTIND - 1))
+    if [ "$#" -ne 1 ]
+    then
+        echo "$usage"; return 1;
+    fi
+    local profile="$1"
+    if ! echo "$profiles" | grep --quiet --fixed-strings --line-regexp "$profile"
+    then
+        echo "Unknown profile ${profile}. Possible profiles: $(echo $profiles | tr '\n' ', ')."
+        return 1
+    fi
+    export AWS_PROFILE="schoolinks-${profile}"
+    export AWS_DEFAULT_PROFILE="schoolinks-${profile}"
+    if ! aws sts get-caller-identity --query "Account" >/dev/null 2>/dev/null
+    then
+        aws sso login
+    fi
+}

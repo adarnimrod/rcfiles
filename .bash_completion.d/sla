@@ -1,0 +1,17 @@
+# vim: ft=bash
+
+_sla() {
+    local cur prev words cword opts
+    _init_completion || return
+    opts='-h --help -l --list -d --dry-update -u --update -k --kill -s --kill-server -i --in-workbench -r --rm --remove'
+    opts="-l -h"
+
+    if [[ $cur == -* ]]
+    then
+        COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    else
+        COMPREPLY=($(compgen -W "$(sla -l)" -- "$cur"))
+    fi
+}
+
+complete -F _sla sla
