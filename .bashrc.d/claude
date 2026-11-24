@@ -39,6 +39,7 @@ _claude() {
         DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" \
         DIRENV_LOG_FORMAT= DOCKER_HOST="$DOCKER_HOST"  \
         DISABLE_AUTOUPDATER=1 \
+        DOCKER_HOST="$DOCKER_HOST" \
         HELM_HOME="$HELM_HOME" \
         HOME="$HOME" \
         LANG="$LANG" \
@@ -70,12 +71,16 @@ _claude() {
         --ro-bind "${HOME}/.config/npmrc" "${HOME}/.config/npmrc" \
         --ro-bind "${HOME}/.config/git" "${HOME}/.config/git" \
         --ro-bind "${HOME}/.local/share/gh/extensions" "${HOME}/.local/share/gh/extensions" \
+        --ro-bind "${HOME}/Documents/bin" "${HOME}/Documents/bin" \
+        --ro-bind "${HOME}/.local/bin" "${HOME}/.local/bin" \
+        --ro-bind "${HOME}/.local/share/pipx" "${HOME}/.local/share/pipx" \
         --bind "${HOME}/.aws/sso/cache" "${HOME}/.aws/sso/cache" \
         --bind "${HOME}/.cache/tofu/plugins" "${HOME}/.cache/tofu/plugins" \
         --bind "${HOME}/.cache/tofu" "${HOME}/.cache/tofu" \
         --bind "${HOME}/.claude" "${HOME}/.claude" \
         --bind "${HOME}/.claude.json" "${HOME}/.claude.json" \
         --bind "${HOME}/.config/git/config.claude" "${HOME}/.config/git/config" \
+        --bind "${XDG_RUNTIME_DIR}/podman" "${XDG_RUNTIME_DIR}/podman" \
         --bind "$_sl" "$_sl" \
         --chdir "$_cd" \
         --unshare-all \

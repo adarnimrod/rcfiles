@@ -32,3 +32,6 @@
   Ansible), use the schoolinks-prod-readonly and schoolinks-dev-readonly AWS
   profiles (depending on which environment you on). If you need to use a
   different profile, ask directly first.
+
+- You have access to the podman socket and the `DOCKER_HOST` environment
+  variable points at that socket. When using podman run with `podman --remote`.
