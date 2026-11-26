@@ -76,7 +76,7 @@ _claude() {
         --ro-bind "${HOME}/.local/share/pipx" "${HOME}/.local/share/pipx" \
         --bind "${HOME}/.aws/sso/cache" "${HOME}/.aws/sso/cache" \
         --bind "${HOME}/.cache/tofu/plugins" "${HOME}/.cache/tofu/plugins" \
-        --bind "${HOME}/.cache/tofu" "${HOME}/.cache/tofu" \
+        --bind "${HOME}/.cache/pre-commit" "${HOME}/.cache/pre-commit" \
         --bind "${HOME}/.claude" "${HOME}/.claude" \
         --bind "${HOME}/.claude.json" "${HOME}/.claude.json" \
         --bind "${HOME}/.config/git/config.claude" "${HOME}/.config/git/config" \
